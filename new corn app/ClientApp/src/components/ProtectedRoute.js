@@ -6,8 +6,10 @@ const ProtectedRoute = ({ children }) => {
     const { user } = UserAuth();
 
     if (!user) {
+        console.log("why here");
         return <Navigate to='/' />;
     }
+    console.log("logged in");
     return children;
 };
 

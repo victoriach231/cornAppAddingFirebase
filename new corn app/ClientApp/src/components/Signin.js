@@ -1,6 +1,7 @@
 ﻿import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, Navigate} from 'react-router-dom';
 import { UserAuth } from '../context/AuthContext';
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const Signin = () => {
     const [email, setEmail] = useState('');
@@ -20,6 +21,19 @@ const Signin = () => {
             console.log(e.message)
         }
     };
+
+    const auth = getAuth();
+
+    // if user didn't log out, they can go straight to their homepage
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            console.log("hi");
+            console.log(user);
+            navigate('/account')
+        } else {
+            console.log("nope");
+        }
+    });
 
     return (
         <div>

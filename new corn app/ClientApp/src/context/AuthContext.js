@@ -4,16 +4,23 @@ import {
     signInWithEmailAndPassword,
     signOut,
     onAuthStateChanged,
+    updateProfile,
 } from 'firebase/auth';
 import { auth } from '../firebase';
 
 const UserContext = createContext();
+
+// TODO: add functionality for a user to update/change their password, photo, and name
 
 export const AuthContextProvider = ({ children }) => {
     const [user, setUser] = useState({});
 
     const createUser = (email, password) => {
         return createUserWithEmailAndPassword(auth, email, password);
+    };
+
+    const finalizeUserSetup = (displayNameInput) => {
+        return updateProfile(auth.currentUser, { displayName: displayNameInput, photoURL: "https://cdn.pixabay.com/photo/2012/04/26/19/43/profile-42914__340.png" });
     };
 
     const signIn = (email, password) => {
@@ -35,7 +42,7 @@ export const AuthContextProvider = ({ children }) => {
     }, []);
 
     return (
-        <UserContext.Provider value={{ createUser, user, logout, signIn }}>
+        <UserContext.Provider value={{ createUser, user, logout, signIn, finalizeUserSetup }}>
             {children}
         </UserContext.Provider>
     );
