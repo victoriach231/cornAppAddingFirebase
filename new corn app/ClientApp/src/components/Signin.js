@@ -2,6 +2,7 @@
 import { Link, useNavigate, Navigate} from 'react-router-dom';
 import { UserAuth } from '../context/AuthContext';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import './signin.css';
 
 const Signin = () => {
     const [email, setEmail] = useState('');
@@ -35,6 +36,7 @@ const Signin = () => {
         }
     });
 
+
     return (
         <div>
             <div>
@@ -46,6 +48,7 @@ const Signin = () => {
           </Link>
                 </p>
             </div>
+            <body>
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>Email Address</label>
@@ -56,11 +59,13 @@ const Signin = () => {
                     <input onChange={(e) => setPassword(e.target.value)} type='password' />
                 </div>
                 <button>
-                    Sign In
-        </button>
-            </form>
+                        Sign In
+                </button>
+                </form>
+            </body>
+            
         </div>
     );
 };
-
 export default Signin;
+

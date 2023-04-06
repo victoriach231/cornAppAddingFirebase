@@ -13,7 +13,7 @@ function App() {
 
         <div>
             <h1 className='text-center text-3xl font-bold'>
-                Firebase Auth & Context
+                Cornhusker Clicker
       </h1>
             <AuthContextProvider>
                 <Routes>
