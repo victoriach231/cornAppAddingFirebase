@@ -8,13 +8,19 @@ import { ChangeEvent, useState } from "react";
 const Account = () => {
     const { user, logout } = UserAuth();
     const navigate = useNavigate();
+
+    // variable storing the inputted new class name
     const [inputText, setInputText] = useState("");
+
+    // creating a new random string of chars to refer to a newly created class
+    const newClassKey = push(child(ref(getDatabase()), 'classes')).key;
 
     const handleClassInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         // 👇 Store the input value to local state
         setInputText(e.target.value);
     };
 
+    // logs out a user currently signed in
     const handleLogout = async () => {
         try {
             await logout();
@@ -25,11 +31,11 @@ const Account = () => {
         }
     };
 
+    // creates/adds a new class to the database
     const pushData = () => {
         console.log("test");
         console.log(inputText);
-        const db = getDatabase();
-        set(ref(db, 'classes/' + inputText), {
+        set(ref(getDatabase(), 'classes/' + newClassKey), {
             className: inputText,
             students: [],
             admin: [
@@ -38,8 +44,9 @@ const Account = () => {
         });
 
 
+        // reads in a newly created class and prints its info to the dev tools console
         const dbRef = ref(getDatabase());
-        get(child(dbRef, 'classes/' + inputText)).then((snapshot) => {
+        get(child(dbRef, 'classes/' + newClassKey)).then((snapshot) => {
             if (snapshot.exists()) {
                 console.log(snapshot.val());
             } else {
@@ -48,8 +55,6 @@ const Account = () => {
         }).catch((error) => {
             console.error(error);
         });
-
-
     };
 
 
@@ -65,6 +70,7 @@ const Account = () => {
             <br />
             <br />
             <input type="text" onChange={handleClassInputChange} value={inputText} />
+            
             <button onClick={pushData}>Add class to Firebase</button>
 
         </div>
