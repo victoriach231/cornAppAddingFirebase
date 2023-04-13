@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { UserAuth } from '../context/AuthContext';
 import { getDatabase, ref, child, push, update } from "firebase/database";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import './Signup.css';
 
 const Signup = () => {
     const [email, setEmail] = useState('');
@@ -71,21 +72,18 @@ const Signup = () => {
     return (
         <div>
             <div>
-                <h1>Sign up for a free account</h1>
-                <p>
-                    Already have an account yet?{' '}
-                    <Link to='/' className='underline'>
-                        Sign in.
-          </Link>
-                </p>
+                <h1>Sign Up</h1>
+                
             </div>
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>Name</label>
+                    <nameField>
                     <input
                         onChange={(e) => setDisplayNameInput(e.target.value)}
                         type='displayNameInput'
-                    />
+                        />
+                    </nameField>
                 </div>
                 <div>
                     <label>Email Address</label>
@@ -95,16 +93,25 @@ const Signup = () => {
                     />
                 </div>
                 <div>
+                    
                     <label>Password</label>
+                    <passInput>
                     <input
                         onChange={(e) => setPassword(e.target.value)}
                         type='password'
-                    />
+                        />
+                    </passInput>
                 </div>
                 <button>
                     Sign Up
         </button>
             </form>
+            <p>
+                Already have an account?{' '}
+                <Link to='/' className='underline'>
+                    Sign in
+          </Link>
+            </p>
         </div>
     );
 };

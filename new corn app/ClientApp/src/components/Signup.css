@@ -1,0 +1,26 @@
+﻿html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    margin: 0;
+    font-family: Inter;
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    background-color: #EBE7E7;
+}
+label {
+    padding-right: 5pt;
+    padding-bottom: 7pt;
+}
+nameField {
+    padding-left: 47pt;
+}
+passInput{
+    padding-left: 25pt;
+}
+p {
+    text-align: center;
+}

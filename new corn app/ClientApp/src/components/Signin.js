@@ -65,7 +65,7 @@ const Signin = () => {
             <p>
                 Don't have an account yet?{' '}
                 <Link to='/signup' className='underline'>
-                    Sign up.
+                    Sign up
           </Link>
             </p>
         </div>
