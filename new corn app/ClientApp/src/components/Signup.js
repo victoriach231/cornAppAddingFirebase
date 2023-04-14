@@ -70,6 +70,7 @@ const Signup = () => {
     };
 
     return (
+        <box>
         <div>
             <div>
                 <h1>Sign Up</h1>
@@ -102,8 +103,8 @@ const Signup = () => {
                         />
                     </passInput>
                 </div>
-                <button>
-                    Sign Up
+                    <button class="button">
+                <span>Sign Up</span>
         </button>
             </form>
             <p>
@@ -112,7 +113,8 @@ const Signup = () => {
                     Sign in
           </Link>
             </p>
-        </div>
+            </div>
+        </box>
     );
 };
 

@@ -38,6 +38,8 @@ const Signin = () => {
 
 
     return (
+        
+        <box>
         <div>
             <div>
                 <h1>Sign In</h1>
@@ -68,7 +70,8 @@ const Signin = () => {
                     Sign up
           </Link>
             </p>
-        </div>
+            </div>
+        </box>
     );
 };
 export default Signin;
