@@ -3,6 +3,7 @@ import { Link, useNavigate, Navigate} from 'react-router-dom';
 import { UserAuth } from '../context/AuthContext';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import './signin.css';
+import logo from './images/CornHusker.png'
 
 const Signin = () => {
     const [email, setEmail] = useState('');
@@ -38,40 +39,42 @@ const Signin = () => {
 
 
     return (
-        
-        <box>
         <div>
+            <img src={logo} width={304} height={120} />
+        <box>
             <div>
-                <h1>Sign In</h1>
+                <div>
+                    <h1>Sign In</h1>
                 
-            </div>
-            <body>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Email Address</label>
-                    <input onChange={(e) => setEmail(e.target.value)} type='email' />
-                 </div>
-                <div>
-                        <label>Password</label>
-                    <passInput>
-                            <input onChange={(e) => setPassword(e.target.value)} type='password' />
-                        </passInput>
                 </div>
-                    <button class = "button">
-                    <span>
-                            Sign In
-                        </span>
-                </button>
-            </form>
-            </body>
-            <p>
-                Don't have an account yet?{' '}
-                <Link to='/signup' className='underline'>
-                    Sign up
-          </Link>
-            </p>
-            </div>
-        </box>
+                <body>
+                <form onSubmit={handleSubmit}>
+                    <div>
+                        <label>Email Address</label>
+                        <input onChange={(e) => setEmail(e.target.value)} type='email' />
+                     </div>
+                    <div>
+                            <label>Password</label>
+                        <passInput>
+                                <input onChange={(e) => setPassword(e.target.value)} type='password' />
+                            </passInput>
+                    </div>
+                        <button class = "button">
+                        <span>
+                                Sign In
+                            </span>
+                    </button>
+                </form>
+                </body>
+                <p>
+                    Don't have an account yet?{' '}
+                    <Link to='/signup' className='underline'>
+                        Sign up
+              </Link>
+                </p>
+                </div>
+            </box>
+        </div>
     );
 };
 export default Signin;
