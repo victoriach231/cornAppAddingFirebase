@@ -1,5 +1,4 @@
 ﻿import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { RealTimeData } from "./realTimeData/index";
 import { useNavigate } from 'react-router-dom';
 import { UserAuth } from '../context/AuthContext';

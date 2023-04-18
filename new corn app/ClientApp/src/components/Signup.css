@@ -11,15 +11,21 @@ body {
     align-items: center;
     background-color: #EBE7E7;
 }
+
+h1 {
+    text-align: left;
+    font-size: 18px;
+}
+
 label {
     padding-right: 5pt;
     padding-bottom: 7pt;
 }
 nameField {
-    padding-left: 45pt;
+    padding-left: 47pt;
 }
 passInput{
-    padding-left: 24pt;
+    padding-left: 25pt;
 }
 p {
     padding-top: 10px;
