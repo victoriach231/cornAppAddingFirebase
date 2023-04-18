@@ -16,10 +16,10 @@ label {
     padding-bottom: 7pt;
 }
 nameField {
-    padding-left: 47pt;
+    padding-left: 45pt;
 }
 passInput{
-    padding-left: 25pt;
+    padding-left: 24pt;
 }
 p {
     padding-top: 10px;
@@ -60,4 +60,8 @@ button {
 }
 img {
     padding-bottom: 5px;
+}
+input {
+    border-color: transparent;
+    border-radius: 3px;
 }

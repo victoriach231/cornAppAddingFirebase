@@ -40,7 +40,7 @@ const Signin = () => {
 
     return (
         <div>
-            <img src={logo} width={304} height={120} />
+            <img src={logo} alt={"Cornhusker Clicker Logo"} width={304} height={120} />
         <box>
             <div>
                 <div>
