@@ -29,8 +29,6 @@ const Signin = () => {
     // if user didn't log out, they can go straight to their homepage
     onAuthStateChanged(auth, (user) => {
         if (user) {
-            console.log("hi");
-            console.log(user);
             navigate('/account')
         } else {
             console.log("nope");

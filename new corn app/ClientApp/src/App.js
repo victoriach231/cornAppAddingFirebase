@@ -3,6 +3,7 @@ import Signin from './components/Signin';
 import Signup from './components/Signup';
 import Class from './components/Class';
 import Account from './components/Account';
+import UpdateProfile from './components/UpdateProfile';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import { AuthContextProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -36,7 +37,23 @@ function App() {
                             </ProtectedRoute>
                         }
                     />
-                    <Route path='/class' element={<Class />} />
+                    <Route
+                        path='/class'
+                        element={
+                            <ProtectedRoute>
+                                <Class />
+                            </ProtectedRoute>
+                        }
+                    />
+
+                    <Route
+                        path='/update-profile'
+                        element={
+                            <ProtectedRoute>
+                                <UpdateProfile />
+                            </ProtectedRoute>
+                        }
+                    />
 
                 </Routes>
             </AuthContextProvider>

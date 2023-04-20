@@ -30,6 +30,15 @@ const Account = () => {
         setClassCodeInput(e.target.value);
     };
 
+    // navigate to the page to change email/photo/password
+    const updateProfile = async () => {
+        try {
+            navigate('/update-profile');
+        } catch (e) {
+            console.log(e.message);
+        }
+    };
+
     // logs out a user currently signed in
     const handleLogout = async () => {
         try {
@@ -221,6 +230,10 @@ const Account = () => {
 
             <button onClick={handleLogout}>Logout</button>
             <br />
+
+            <br />
+            <button onClick={updateProfile}>Update Profile Information</button>
+
             <br />
             <input type="text" onChange={handleClassInputChange} value={inputText} />
 
