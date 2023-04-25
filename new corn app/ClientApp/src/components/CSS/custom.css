@@ -11,9 +11,25 @@ code {
   color: #E01A76;
 }
 
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+.btn {
+    color: black;
+    background-color: #efefef;
+    border-color: #efefef;
 }
 
+.btn-primary {
+    color: black;
+    background-color: #efefef;
+    border-color: #efefef;
+}
+
+.btn-primary {
+    color: black;
+    background-color: #efefef;
+    border-color: #efefef;
+}
+
+.btn.active {
+    background:none
+   
+}

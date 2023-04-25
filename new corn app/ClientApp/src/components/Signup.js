@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { UserAuth } from '../context/AuthContext';
 import { getDatabase, ref, child, push, update } from "firebase/database";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import './Signup.css';
+import './CSS/Signup.css';
 import logo from './images/CornHusker.png'
 
 const Signup = () => {

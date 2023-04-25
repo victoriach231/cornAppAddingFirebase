@@ -2,7 +2,7 @@
 import { Link, useNavigate, Navigate} from 'react-router-dom';
 import { UserAuth } from '../context/AuthContext';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import './signin.css';
+import './CSS/Signin.css';
 import logo from './images/CornHusker.png'
 
 const Signin = () => {

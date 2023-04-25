@@ -5,6 +5,10 @@ import { UserAuth } from '../context/AuthContext';
 import { database } from '../firebase';
 import { getDatabase, ref, set, child, get, push, update, query, onValue  } from "firebase/database";
 import { ChangeEvent, useState } from "react";
+import './CSS/Account.css'
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
+
 
 const Account = () => {
     const { user, logout } = UserAuth();
@@ -221,19 +225,33 @@ const Account = () => {
     };
 
     return (
+       
         <div>
+            <br />
+            <div class='drop'>
+                <Dropdown>
+                    <Dropdown.Toggle id="dropdown-basic">
+                        <div class='userInfo'>
+                        <img src={user && user.photoURL} class="userImg" alt="default profile image" />
+
+                        {user && user.displayName}
+                        </div>
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>   
+                <div class='dropdownItems'>
+                <Dropdown.Item onClick={updateProfile}>Update Profile</Dropdown.Item>
+                            <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
+                        </div> 
+                    </Dropdown.Menu>
+                </Dropdown>
+            </div>
             <h1>Account</h1>
-            <p>User Email: {user && user.email}</p>
-            <p>Display Name: {user && user.displayName}</p>
-            <img src={user && user.photoURL} alt="default profile image" />
+            
+            
             <br />
 
-            <button onClick={handleLogout}>Logout</button>
-            <br />
-
-            <br />
-            <button onClick={updateProfile}>Update Profile Information</button>
-
+            
+           
             <br />
             <input type="text" onChange={handleClassInputChange} value={inputText} />
 
