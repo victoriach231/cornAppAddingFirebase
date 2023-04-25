@@ -29,6 +29,10 @@ export const AuthContextProvider = ({ children }) => {
         return updateProfile(auth.currentUser, { displayName: displayNameInput });
     };
 
+    const updateProfilePicture = (newImage) => {
+        return updateProfile(auth.currentUser, { photoURL: newImage });
+    };
+
     const updateEmailAddress = (emailInput) => {
         return updateEmail(auth.currentUser, emailInput);
     };
@@ -56,7 +60,7 @@ export const AuthContextProvider = ({ children }) => {
     }, []);
 
     return (
-        <UserContext.Provider value={{ createUser, user, logout, signIn, finalizeUserSetup, updateEmailAddress, updateDisplayName, updateUserPassword }}>
+        <UserContext.Provider value={{ createUser, user, logout, signIn, finalizeUserSetup, updateEmailAddress, updateDisplayName, updateUserPassword, updateProfilePicture }}>
             {children}
         </UserContext.Provider>
     );
