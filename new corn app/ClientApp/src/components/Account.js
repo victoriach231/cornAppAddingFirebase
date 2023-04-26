@@ -1,5 +1,5 @@
 ﻿import React from 'react';
-import { RealTimeData } from "./realTimeData/index";
+import RealTimeData from "./realTimeData/index";
 import { useNavigate } from 'react-router-dom';
 import { UserAuth } from '../context/AuthContext';
 import { database } from '../firebase';
@@ -86,8 +86,9 @@ const Account = () => {
         });
     };
 
-    const nameList = []
 
+    // TESTING PURPOSES
+    const nameList = []
     const dbRef = ref(getDatabase());
     get(child(dbRef, `classes`)).then((snapshot) => {
         if (snapshot.exists()) {
@@ -103,6 +104,7 @@ const Account = () => {
     }).catch((error) => {
         console.error(error);
     });
+
 
     // join a already existing class
     const joinClass = () => {

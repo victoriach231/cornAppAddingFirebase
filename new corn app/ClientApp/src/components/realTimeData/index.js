@@ -1,20 +1,21 @@
-﻿import React from 'react';
+﻿import React, { Component } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ref as sRef, onValue, getDatabase } from 'firebase/database';
+import { UserAuth } from '../../context/AuthContext';
+import goToClassPage from '../Account'
 import { Table } from 'react-bootstrap';
 
 const db = getDatabase();
 
-export class RealTimeData extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            tableData: []
-        }
-    }
+const RealTimeData = () => {
+    const [tableData, setTableData] = useState([]);
+    const user = UserAuth();
+    const navigate = useNavigate();
 
-
-    componentDidMount() {
-        const dbRef = sRef(db, "classes/");
+    // get all classes user is enrolled in and refresh when classes added
+    useEffect(() => {
+        const dbRef = sRef(db, 'users/classesEnrolled');
 
         onValue(dbRef, (snapshot) => {
             let records = [];
@@ -23,34 +24,44 @@ export class RealTimeData extends React.Component {
                 let data = childSnapshot.val();
                 records.push({ "key": keyName, "data": data });
             });
-            this.setState({ tableData: records });
+            setTableData(records);
         });
-    }
+    }, [tableData]);
 
 
-    render() {
-        return (
-            <Table>
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Class Name</th>
-                    </tr>
-                </thead>
+    // navigate to the class page
+    const goToClassPage = () => {
+        try {
+            navigate('/class');
+            console.log('went to class')
+        } catch (e) {
+            console.log(e.message);
+        }
 
-                <tbody>
-                    {this.state.tableData.map((rowdata, index) => {
-                        return (
-                            <tr>
-                                <td>{index}</td>
-                                <td>{rowdata.key}</td>
-                                <td>{rowdata.data.className}</td>
-                            </tr>
-                        )
-                    })}
-                </tbody>
-            </Table>
-        )
-    }
+    };
+
+
+    return (
+        <Table striped bordered hover>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Class Name</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {tableData.map((rowdata, index) => {
+                    return (
+                        <tr>
+                            <td onClick={goToClassPage}>{index}</td>
+                            <td onClick={goToClassPage}>{rowdata.key}</td>
+                            <td onClick={goToClassPage}> {rowdata.data.email}</td>
+                        </tr>
+                    )
+                })}
+            </tbody>
+        </Table>
+    );
 }
-
+export default RealTimeData;
