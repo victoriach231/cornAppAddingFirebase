@@ -3,6 +3,7 @@ import { UserAuth } from '../context/AuthContext';
 import { getDatabase, ref, set, update, get, child} from "firebase/database";
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import './CSS/UpdateProfile.css';
 
 const UpdateProfile = () => {
     const { user, updateEmailAddress, updateDisplayName, updateUserPassword, updateProfilePicture } = UserAuth();
@@ -118,35 +119,58 @@ const UpdateProfile = () => {
     return (
 
         <div>
-            <p>Hi welcome to the editing profile page</p>
-            <button onClick={backNavigate}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="arrow-back" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
-                </svg>
-            </button>
+            <div class='header'>
+                <div class='corner'>
+                <button onClick={backNavigate}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="arrow-back" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
+                    </svg>
 
+                    </button>
+                    </div>
+            <h1 class = 'title'>Update Your User Profile</h1>
+            
+            </div>
+
+
+            <p>Current User Email: {user && user.email}</p>
+            <p>Current Display Name: {user && user.displayName}</p>
             <br />
-            <p>Enter your new display name</p>
-            <input type="text" onChange={handleNameInputChange} value={newNameInput} />
+            <em>Enter your new display name: </em>
+            <nfield>
+                <input type="text" onChange={handleNameInputChange} value={newNameInput} />
+            </nfield>
             <button onClick={handleNameChange}>Save new name</button>
-
             <br />
-            <p>Enter your new email address</p>
-            <input type="text" onChange={handleEmailInputChange} value={newEmailInput} />
+            <br />
+            <em>Enter your new email address: </em>
+            <emailInput>
+                <input type="text" onChange={handleEmailInputChange} value={newEmailInput} />
+            </emailInput>
             <button onClick={handleEmailChange}>Save new email address</button>
-
             <br />
-            <p>Enter your new password </p>
-            <input type="text" onChange={handlePasswordInputChange} value={newPasswordInput} />
+            <br />
+            <em>Enter your new password: </em>
+            <passInput>
+                <input type="text" onChange={handlePasswordInputChange} value={newPasswordInput} />
+            </passInput>
             <button onClick={handlePasswordChange}>Save new password</button>
 
             <br />
-            <p>Current profile photo:</p>
+                
+            <div class='changeImage'>
+                <p>
+                <span>
+                    <p>Current profile photo:</p>
+                </span>
+                <span>
             <img src={user && user.photoURL} alt="default profile image" />
-            <br />
+                    <br />
+                    </span>
+                
 
 
-
+            
             <Button variant="primary" onClick={handleShow}>
                 Change Profile Picture
             </Button>
@@ -196,15 +220,10 @@ const UpdateProfile = () => {
                         </Button>
                     </form>
                 </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                        Close
-                    </Button>
-                    <Button variant="primary" onClick={handleClose}>
-                        Save Changes
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+                
+                    </Modal>
+                </p>
+            </div>
 
         </div>
     );

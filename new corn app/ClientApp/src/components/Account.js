@@ -257,7 +257,7 @@ const Account = () => {
             <br />
             <input type="text" onChange={handleClassInputChange} value={inputText} />
 
-            <button onClick={pushData}>Add class to Firebase</button>
+            <button onClick={pushData}>Create Class</button>
 
             <h2>List of Firebase Classes</h2>
             <RealTimeData />

@@ -1,0 +1,31 @@
+﻿div.header {
+    display: flex;
+    justify-content: center;
+}
+div .corner {
+    position: absolute;
+    top: 50px;
+    left: 150px;
+    font-size: 18px;
+}
+p{
+        line-height: 1;
+}
+
+div.changeImage {
+    display: flex;
+    justify-content: center;
+}
+
+modal {
+    font-family: Inter;
+}
+
+
+nfield{
+    padding-left: 6px;
+}
+
+emailInput {
+    padding-left: 2px;
+}
