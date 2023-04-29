@@ -9,8 +9,8 @@ import './CSS/Account.css'
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 
-
 const Account = () => {
+
     const { user, logout } = UserAuth();
     const navigate = useNavigate();
 
@@ -54,6 +54,7 @@ const Account = () => {
         }
     };
 
+
     // creates/adds a new class to the database
     const pushData = () => {
         console.log("test");
@@ -65,11 +66,7 @@ const Account = () => {
             admin: [
                 user.uid
             ],
-            classCode: (Math.floor(Math.random() * 10).toString()
-                + Math.floor(Math.random() * 10).toString()
-                + Math.floor(Math.random() * 10).toString()
-                + Math.floor(Math.random() * 10).toString()
-                + Math.floor(Math.random() * 10).toString())
+            classCode: generateClassCode()
         });
 
 
@@ -226,6 +223,11 @@ const Account = () => {
         });
     };
 
+    const goToSessionPage = () => {
+        navigate('/session');
+
+    }
+
     return (
        
         <div>
@@ -277,8 +279,11 @@ const Account = () => {
 
             <br />
             <button onClick={showSessionUsers}>Display users in the session</button>
+
+            <br />
+            <button onClick={goToSessionPage}>Visit session page</button>
         </div>
     );
 };
-
-export default Account;
+//export default Account;
+module.exports = { generateClassCode };
