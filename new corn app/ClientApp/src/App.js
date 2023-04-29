@@ -4,6 +4,7 @@ import Signup from './components/Signup';
 import Class from './components/Class';
 import Account from './components/Account';
 import UpdateProfile from './components/UpdateProfile';
+import Session from './components/Session';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import { AuthContextProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -61,6 +62,15 @@ function App() {
                         element={
                             <ProtectedRoute>
                                 <QuestionSetEdit />
+                            </ProtectedRoute>
+                        }
+                    />
+
+                    <Route
+                        path='/session'
+                        element={
+                            <ProtectedRoute>
+                                <Session />
                             </ProtectedRoute>
                         }
                     />

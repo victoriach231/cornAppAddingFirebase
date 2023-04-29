@@ -50,7 +50,24 @@ const getSessionExportCSVDataHeaders = (numQuestionsInSession) => {
 
 };
 
+// downloads a csv file to the user's computer with the given data
+const download = (data, fileName) => {
+    const blob = new Blob([data], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.setAttribute('href', url);
+    a.setAttribute('download', fileName + '.csv');
+    a.textContent = 'click to download';
+    document.querySelector('body').append(a);
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+};
 
-module.exports = { calculateScore, getSessionExportCSVDataNotAnonymousPolling, getSessionExportCSVDataHeaders }
+//const downloadCSVFileNotAnonymousPolling = (rows) => {
+//    return "";
+//};
+
+module.exports = { calculateScore, getSessionExportCSVDataNotAnonymousPolling, getSessionExportCSVDataHeaders, download }
 
 
