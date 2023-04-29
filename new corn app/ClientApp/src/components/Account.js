@@ -8,7 +8,7 @@ import { ChangeEvent, useState } from "react";
 import './CSS/Account.css'
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
-
+import { generateClassCode } from './AddingClassFunctionality';
 const Account = () => {
 
     const { user, logout } = UserAuth();
@@ -285,5 +285,4 @@ const Account = () => {
         </div>
     );
 };
-//export default Account;
-module.exports = { generateClassCode };
+export default Account;
