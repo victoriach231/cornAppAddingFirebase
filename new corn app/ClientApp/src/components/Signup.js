@@ -29,8 +29,6 @@ const Signup = () => {
         };
 
         // Get a key for a new user.
-        console.log("hihihi");
-        console.log(user);
         const newPostKey = user.uid;
 
         // Write the new post's data simultaneously in the posts list and the user's post list.
@@ -52,11 +50,7 @@ const Signup = () => {
             // if user didn't log out, they can go straight to their homepage
             onAuthStateChanged(auth, (user) => {
                 if (user) {
-                    console.log("hiheyo");
-                    console.log(user);
                     writeNewUser(user, displayNameInput, email, "");
-                } else {
-                    console.log("nope");
                 }
             });
 

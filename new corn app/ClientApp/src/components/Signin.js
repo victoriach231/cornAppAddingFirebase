@@ -30,8 +30,6 @@ const Signin = () => {
     onAuthStateChanged(auth, (user) => {
         if (user) {
             navigate('/account')
-        } else {
-            console.log("nope");
         }
     });
 

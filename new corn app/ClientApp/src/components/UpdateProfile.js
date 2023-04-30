@@ -40,7 +40,6 @@ const UpdateProfile = () => {
     const handleNameChange = async () => {
         try {
             await updateDisplayName(newNameInput);
-            console.log('name updated')
 
             const updates = {};
             updates['users/' + user.uid + '/name'] = newNameInput;
@@ -56,7 +55,6 @@ const UpdateProfile = () => {
     const handleEmailChange = async () => {
         try {
             await updateEmailAddress(newEmailInput);
-            console.log('email updated')
 
             const updates = {};
             updates['users/' + user.uid + '/email'] = newEmailInput;
@@ -72,7 +70,6 @@ const UpdateProfile = () => {
     const handlePasswordChange = async () => {
         try {
             await updateUserPassword(newPasswordInput);
-            console.log('password updated')
 
         } catch (e) {
             console.log(e.message);

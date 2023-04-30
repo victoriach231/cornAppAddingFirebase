@@ -44,7 +44,6 @@ const Account = () => {
         try {
             await logout();
             navigate('/');
-            console.log('You are logged out')
         } catch (e) {
             console.log(e.message);
         }
@@ -53,8 +52,6 @@ const Account = () => {
 
     // creates/adds a new class to the database
     const pushData = () => {
-        console.log("test");
-        console.log(inputText);
         set(ref(getDatabase(), 'classes/' + newClassKey), {
             className: inputText,
             sessionActive: false,
@@ -63,19 +60,6 @@ const Account = () => {
                 user.uid
             ],
             classCode: generateClassCode()
-        });
-
-
-        // reads in a newly created class and prints its info to the dev tools console
-        const dbRef = ref(getDatabase());
-        get(child(dbRef, 'classes/' + newClassKey)).then((snapshot) => {
-            if (snapshot.exists()) {
-                console.log(snapshot.val());
-            } else {
-                console.log("No data available");
-            }
-        }).catch((error) => {
-            console.error(error);
         });
     };
 
@@ -101,7 +85,6 @@ const Account = () => {
 
     // join a already existing class
     const joinClass = () => {
-        console.log("hi");
         get(child(ref(getDatabase()), 'classes/')).then((snapshot) => {
             if (snapshot.exists()) {
                 console.log(snapshot.val());
@@ -109,7 +92,6 @@ const Account = () => {
 
                 snapshot.forEach(function (childSnapshot) {
                     if (childSnapshot.val().classCode === classCodeInput) {
-                        console.log("YES");
                         console.log(childSnapshot.val().classCode);
                         console.log(childSnapshot.key);
 
@@ -154,18 +136,11 @@ const Account = () => {
 
     // navigate to the class page
     const goToClassPage = () => {
-        try {
-            navigate('/class');
-            console.log('went to class')
-        } catch (e) {
-            console.log(e.message);
-        }
-
+        navigate('/class');
     };
 
     // start/end a session
     const startSession = () => {
-        console.log("hi32");
         get(child(ref(getDatabase()), 'classes/-NTAht6jKvRKebh2RZyl/sessionActive')).then((snapshot) => {
             if (snapshot.exists()) {
                 console.log(snapshot.val()['sessionActive']);
@@ -214,14 +189,12 @@ const Account = () => {
         const starCountRef = ref(getDatabase(), 'classes/-NTAht6jKvRKebh2RZyl/sessionActive/activeStudents');
         onValue(starCountRef, (snapshot) => {
             const data = snapshot.val();
-            console.log("kdsajfhk;jasdjkl;afjklasdjkl;fsa");
             console.log(data);
         });
     };
 
     const goToSessionPage = () => {
         navigate('/session');
-
     }
 
     return (
