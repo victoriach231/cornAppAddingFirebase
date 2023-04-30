@@ -9,6 +9,8 @@ import './CSS/Account.css'
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import { generateClassCode } from './AddingClassFunctionality';
+import { Modal, Button } from 'react-bootstrap';
+
 const Account = () => {
 
     const { user, logout } = UserAuth();
@@ -197,6 +199,16 @@ const Account = () => {
         navigate('/session');
     }
 
+    // set up class creation popup
+    const [showCreateClass, setShowCreateClass] = useState(false);
+    const handleClose = () => setShowCreateClass(false);
+    const handleShow = () => setShowCreateClass(true);
+
+    // set up class joining popup
+    const [showJoinClass, setShowJoinClass] = useState(false);
+    const handleClassJoinClose = () => setShowJoinClass(false);
+    const handleClassJoinShow = () => setShowJoinClass(true);
+
     return (
        
         <div>
@@ -221,22 +233,49 @@ const Account = () => {
             <h1>Account</h1>
             
             
+            <br />           
             <br />
-
-            
-           
-            <br />
-            <input type="text" onChange={handleClassInputChange} value={inputText} />
-
-            <button onClick={pushData}>Create Class</button>
 
             <h2>List of Firebase Classes</h2>
             <RealTimeData />
 
             <br />
-            <input type="text" onChange={handleClassCodeInputChange} value={classCodeInput} />
-            <button onClick={joinClass}>Join Class</button>
+            <Button variant="primary" onClick={handleShow}>Create a class!</Button>
 
+            <Modal show={showCreateClass} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Create a new class!</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <h6>Type in your class name:</h6>
+                    <input type="text" onChange={handleClassInputChange} value={inputText} />
+                    <Button variant="primary" onClick={pushData}>Create Class</Button>
+                </Modal.Body>
+
+            </Modal>
+
+            <br />
+
+            <br />
+            <Button variant="primary" onClick={handleClassJoinShow}>Join a class!</Button>
+
+            <Modal show={showJoinClass} onHide={handleClassJoinClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Join a class!</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <h6>Enter the class code:</h6>
+                    <input type="text" onChange={handleClassCodeInputChange} value={classCodeInput} />
+
+                    <Button variant="primary" onClick={joinClass}>Join Class</Button>
+                </Modal.Body>
+
+            </Modal>
+
+
+            <br />
+
+            <p>Testing buttons: </p>
             <br />
             <button onClick={goToClassPage}>Go to the class page!</button>
 
