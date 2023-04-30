@@ -35,12 +35,8 @@ const Account = () => {
     };
 
     // navigate to the page to change email/photo/password
-    const updateProfile = async () => {
-        try {
-            navigate('/update-profile');
-        } catch (e) {
-            console.log(e.message);
-        }
+    const updateProfile = () => {
+        navigate('/update-profile');
     };
 
     // logs out a user currently signed in
