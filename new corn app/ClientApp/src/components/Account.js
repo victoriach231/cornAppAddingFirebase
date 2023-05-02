@@ -136,9 +136,35 @@ const Account = () => {
 
     };
 
-    // navigate to the class page
-    const goToClassPage = () => {
-        navigate('/class');
+    // navigate to the class page. TODO takes in the class id of the selected class in the table
+    const goToClassPage = (selectedClassID) => {
+        // TODO check if user logged in is a class instructor or a student
+        // if admin, move to class page
+        get(child(ref(getDatabase()), 'classes/-NTAht6jKvRKebh2RZyl')).then((snapshot) => {
+            if (snapshot.exists()) {
+                console.log(snapshot.val())
+                console.log(snapshot.val()['admin']);
+                if (snapshot.val()['admin'].includes(user.uid)) {
+                    console.log("omgg???");
+                    navigate('/class');
+                }
+                // if student, move to session page if class session is active
+                else if (snapshot.val()['sessionActive']['sessionActive'] === true) {
+                    // call joinSession()
+                    // navigate to session page
+                    console.log("sad student logic");
+                }
+                // user is a student and session not active, TODO display popup that session not started
+                else {
+                    console.log("user is a student and session not active");
+                }
+            } else {
+                console.log("No data available");
+            }
+        }).catch((error) => {
+            console.error(error);
+        });
+
     };
 
     // start/end a session
@@ -163,6 +189,7 @@ const Account = () => {
     };
 
     // join a session
+    // TODO use selected class ID
     const joinSession = () => {
         get(child(ref(getDatabase()), 'classes/-NTAht6jKvRKebh2RZyl/sessionActive')).then((snapshot) => {
             if (snapshot.exists()) {
@@ -187,6 +214,7 @@ const Account = () => {
 
     };
 
+    // TODO use current class ID
     const showSessionUsers = () => {
         const starCountRef = ref(getDatabase(), 'classes/-NTAht6jKvRKebh2RZyl/sessionActive/activeStudents');
         onValue(starCountRef, (snapshot) => {
