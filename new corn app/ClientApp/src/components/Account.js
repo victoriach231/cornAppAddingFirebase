@@ -66,7 +66,7 @@ const Account = () => {
     };
 
 
-    // TESTING PURPOSES
+    /* // TESTING PURPOSES
     const nameList = []
     const dbRef = ref(getDatabase());
     get(child(dbRef, `classes`)).then((snapshot) => {
@@ -82,7 +82,7 @@ const Account = () => {
         }
     }).catch((error) => {
         console.error(error);
-    });
+    }); */
 
 
     // join a already existing class
@@ -264,7 +264,7 @@ const Account = () => {
             <br />           
             <br />
 
-            <h2>List of Firebase Classes</h2>
+            <h2>Classes Enrolled</h2>
             <RealTimeData />
 
             <br />

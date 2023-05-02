@@ -10,12 +10,12 @@ const db = getDatabase();
 
 const RealTimeData = () => {
     const [tableData, setTableData] = useState([]);
-    const user = UserAuth();
+    const userTable = UserAuth();
     const navigate = useNavigate();
 
     // get all classes user is enrolled in and refresh when classes added
     useEffect(() => {
-        const dbRef = sRef(db, 'users/classesEnrolled');
+        const dbRef = sRef(db, 'users/' + userTable.user.uid + '/classesEnrolled/');
 
         onValue(dbRef, (snapshot) => {
             let records = [];
@@ -23,10 +23,11 @@ const RealTimeData = () => {
                 let keyName = childSnapshot.key;
                 let data = childSnapshot.val();
                 records.push({ "key": keyName, "data": data });
+                console.log(data);
             });
             setTableData(records);
         });
-    }, [tableData]);
+    }, []);
 
 
     // navigate to the class page
