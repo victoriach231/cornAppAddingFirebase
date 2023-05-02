@@ -12,11 +12,13 @@ const QuestionSetEdit = () => {
     const { user, logout } = UserAuth();
     const navigate = useNavigate();
 
+    //TODO: discuss db structure
+
     const currClassDir = "classes/-NTAht6jKvRKebh2RZyl" //change to be dynamic based on the last page
     const currQSetKey = "" //if new create key, if existing, should be existing key
 
-    const questionSet = []
-    const qSetName = ""
+    const [questionSet, setQuestionSet] = useState([])
+    let qSetName = ""
     
 
     //POP-UP FUNCTIONS
@@ -24,10 +26,67 @@ const QuestionSetEdit = () => {
     // put the question adding fields in a popup (modal)
     const [showAddQuestionField, setShowAddQuestionField] = useState(false);
     // handle the popup open and close
-    const handleClose = () => setShowAddQuestionField(false);
+    const handleClose = () => { //clear all fields
+        setShowAddQuestionField(false)
+    };
     const handleShow = () => setShowAddQuestionField(true);
 
+    //handle save question
+
+    const handleSaveQuesiton = () => {
+        if(ensureFilled()) {
+            let questionJSON = {
+                qText: {questionText}, 
+                qType: {questionType},
+                answers: {answerOptions},
+                trueAnswer: {correctAnswer} //may have to switch to index (prob not) 
+            }
+            console.log(questionJSON)
+            
+            //TODO: add edit question functionality
+            let newQuestion = true
+            if (newQuestion) {
+                setQuestionSet([...questionSet, questionJSON])
+            }
+            else {
+                console.log("not new quesiton")
+            }
+            handleClose()
+        }
+    }
+
+    //quick check for filled
+    const ensureFilled = () => {
+        if ((questionText !== "") && (questionType != null)) {
+            let allgood = true
+            switch (questionType) {
+                case "multi":
+                    allgood = checkAnswerChoices()
+                case "TF":
+                    allgood = correctAnswer !== null
+                case "short":
+                    return allgood
+                default:
+                    console.log("how")
+                    return false
+            }
+        }
+        else {
+            console.log("qtype or qtext empty")
+            return false
+        }
+    }
+
+    //ensure each option is filled
+    const checkAnswerChoices = () => {
+        let filled = true
+        answerOptions.forEach((e) => filled = !filled || e.value !== "")
+        return filled
+    }
+
     //QUESTION EDIT FUNCTIONS
+
+    let questionIndex = 1 //should change depending on the question selected
 
     //question type variable
     const [questionType, setQuestionType] = useState(null)
@@ -67,9 +126,7 @@ const QuestionSetEdit = () => {
     const [questionText, setQuestionText] = useState("")
 
     //handle question text update
-    const handleQTextChange = (e) => {
-        setQuestionText(e.target.value)
-    }
+    const handleQTextChange = (e) => setQuestionText(e.target.value)
 
     //qType options
     const questionTypeOptions = [
@@ -123,6 +180,7 @@ const QuestionSetEdit = () => {
         }
         else {
             //TODO: Show Error message, have to have at least 2 options
+            console.log("have to have at least 2 questions")
         }
     }
 
@@ -133,6 +191,14 @@ const QuestionSetEdit = () => {
         { value: false, label: "False" }
     ]
 
+    const logQSet = () => {
+        console.log(questionSet)
+    }
+
+    const logQText = () => {
+        console.log(questionText)
+    }
+
 
     //TODO: css: make <form> background transparent
     //TODO: html: make buttons look better
@@ -141,6 +207,9 @@ const QuestionSetEdit = () => {
             <Button variant="primary" onClick={handleShow}>
                 Add Question/ launch pop up
             </Button>
+
+            <br/>
+            <button onClick={logQSet}>Log Correct Answer</button>
 
             <Modal show={showAddQuestionField} onHide={handleClose}>
                 <Modal.Header closeButton>
@@ -162,6 +231,8 @@ const QuestionSetEdit = () => {
                         onChange={handleQTextChange}
                         cols={40}
                     />
+                    <br/>
+                    <button onClick={logQText}>printQText</button>
 
                     {questionType === "multi" &&
                     <div>
@@ -196,7 +267,7 @@ const QuestionSetEdit = () => {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>Cancel</Button>
-                    <Button variant="primary" onClick={handleClose}>Save Question</Button>
+                    <Button variant="primary" onClick={handleSaveQuesiton}>Save Question</Button>
                 </Modal.Footer>
             </Modal>
 
