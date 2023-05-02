@@ -23,10 +23,28 @@ const RealTimeData = () => {
                 let keyName = childSnapshot.key;
                 let data = childSnapshot.val();
                 records.push({ "key": keyName, "data": data });
-                console.log(data);
+                console.log(data.class);
+                //console.log((sRef(db, 'classes/' + data.class + '/')).childSnapshot);
             });
             setTableData(records);
         });
+
+        /*
+        tableData.forEach(function (record) {
+            const dbRef1 = sRef(db, 'classes/' + record.childSnapshot.val() + '/');
+            console.log(record.childSnapshot.val());
+            onValue(dbRef1, (snapshot) => {
+                let classNames = [];
+                snapshot.forEach(childSnapshot => {
+                    let keyName = childSnapshot.key;
+                    let data = childSnapshot.val();
+                    classNames.push({ "key": keyName, "data": data });
+                    console.log(data);
+                });
+                setTableData(classNames);
+            });
+        })*/
+
     }, []);
 
 
@@ -55,9 +73,9 @@ const RealTimeData = () => {
                 {tableData.map((rowdata, index) => {
                     return (
                         <tr>
-                            <td onClick={goToClassPage}>{index}</td>
-                            <td onClick={goToClassPage}>{rowdata.key}</td>
-                            <td onClick={goToClassPage}> {rowdata.data.email}</td>
+                            <td onClick={goToClassPage(rowdata.data.class)}>{index}</td>
+                            <td onClick={goToClassPage(rowdata.data.class)}>{rowdata.key}</td>
+                            <td onClick={goToClassPage(rowdata.data.class)}> {rowdata.data.email}</td>
                         </tr>
                     )
                 })}

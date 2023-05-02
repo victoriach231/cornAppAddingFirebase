@@ -140,7 +140,7 @@ const Account = () => {
     const goToClassPage = (selectedClassID) => {
         // TODO check if user logged in is a class instructor or a student
         // if admin, move to class page
-        get(child(ref(getDatabase()), 'classes/-NTAht6jKvRKebh2RZyl')).then((snapshot) => {
+        get(child(ref(getDatabase()), 'classes/' + selectedClassID)).then((snapshot) => {
             if (snapshot.exists()) {
                 console.log(snapshot.val())
                 console.log(snapshot.val()['admin']);
