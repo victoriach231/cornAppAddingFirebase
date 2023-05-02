@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { RealTimeData } from "./realTimeData/index";
 import { useNavigate } from 'react-router-dom';
 import { UserAuth } from '../context/AuthContext';
@@ -12,7 +12,22 @@ const QuestionSetEdit = () => {
     const { user, logout } = UserAuth();
     const navigate = useNavigate();
 
-    //TODO: question set selector
+    const currClassDir = "classes/-NTAht6jKvRKebh2RZyl" //change to be dynamic based on the last page
+    const currQSetKey = "" //if new create key, if existing, should be existing key
+
+    const questionSet = []
+    const qSetName = ""
+    
+
+    //POP-UP FUNCTIONS
+    
+    // put the question adding fields in a popup (modal)
+    const [showAddQuestionField, setShowAddQuestionField] = useState(false);
+    // handle the popup open and close
+    const handleClose = () => setShowAddQuestionField(false);
+    const handleShow = () => setShowAddQuestionField(true);
+
+    //QUESTION EDIT FUNCTIONS
 
     //question type variable
     const [questionType, setQuestionType] = useState(null)
@@ -21,27 +36,31 @@ const QuestionSetEdit = () => {
     const handleTypeChange = (e) => {
         setQuestionType(e.value)
         //test if changed
-        if (e.value != questionType) {
-            //show and hide structures based on new Qtype
+        if (e.value !== questionType) {
+            //show and hide structures based on new Qtype --- done with jsx
             //clear correct answer
-            //update correct answer options
+            setCorrectAnswer(null)
+            //update correct answer options --- done in switch statement
             //clear multi-choices
+            setChoices([
+                { value: '', label: '' },
+                { value: '', label: '' }
+            ])
             switch (e.value) {
                 case "multi":
                     console.log("multi-switch")
+                    setAnswerOptions(choices)
                     break;
                 case "TF":
                     console.log("tf-switch")
+                    setAnswerOptions(tfAnswerOptions)
                     break;
                 case "short":
                     console.log("short-switch")
+                    setAnswerOptions([])
                     break;
             }
         }
-    }
-
-    const addQuestion = () => {
-
     }
 
     //question text variable
@@ -74,21 +93,24 @@ const QuestionSetEdit = () => {
 
     //multiple choice variable
     const [choices, setChoices] = useState([
-        { answerChoice: '' },
-        { answerChoice: '' }
+        { value: '', label: '' },
+        { value: '', label: '' }
     ])
 
     //handle options change
     const handleOptionChange = (index, event) => {
         let data = [...choices]
-        data[index][event.target.name] = event.target.value
+        data[index]['value'] = event.target.value
+        data[index]['label'] = event.target.value
         setChoices(data)
+        setAnswerOptions(choices)
     }
 
     //add additional multi-choice fields
     const addFields = () => {
-        let newChoice = { answerChoice: '' }
+        let newChoice = { value: '', label:'' }
         setChoices([...choices, newChoice])
+        setAnswerOptions(choices)
     }
 
     //remove multi-choice fields
@@ -97,6 +119,7 @@ const QuestionSetEdit = () => {
         if (data.length > 2) {
             data.splice(index, 1)
             setChoices(data)
+            setAnswerOptions(choices)
         }
         else {
             //TODO: Show Error message, have to have at least 2 options
@@ -104,38 +127,12 @@ const QuestionSetEdit = () => {
     }
 
     //TRUE FALSE
-
     //hard-coded T/F options
     const tfAnswerOptions = () => [
         { value: true, label: "True" },
         { value: false, label: "False" }
     ]
 
-
-    //debug functions
-
-
-    //show choices variable
-    const [showChoices, setShowChoices] = useState(true)
-
-    //console log statement
-    const getVars = (e) => {
-        e.preventDefault()
-        console.log(questionType)
-    }
-
-    //toggle show choices
-    const toggleShowChoice = (e) => {
-        e.preventDefault()
-        setShowChoices(!showChoices)
-        console.log(!showChoices)
-    }
-
-    // put the question adding fields in a popup (modal)
-    const [showAddQuestionField, setShowAddQuestionField] = useState(false);
-    // handle the popup open and close
-    const handleClose = () => setShowAddQuestionField(false);
-    const handleShow = () => setShowAddQuestionField(true);
 
     //TODO: css: make <form> background transparent
     //TODO: html: make buttons look better
@@ -156,48 +153,43 @@ const QuestionSetEdit = () => {
                         name="Question Type"
                         options={questionTypeOptions}
                         onChange={handleTypeChange}
-                        cols={40}
                     />
 
                     <br />
-                    <button onClick={getVars}>log vars</button>
+                    <textarea
+                        name="questionText"
+                        placeholder="Question Text"
+                        onChange={handleQTextChange}
+                        cols={40}
+                    />
 
-            <br />
-            <textarea
-                name="questionText"
-                onChange={handleQTextChange}
-                cols={40}
-            />
-
-            {questionType === "multi" && <div>hello</div>}
-
-            <br />
-            <div>
-                {choices.map((input, index) => {
-                    return (
-                        <div key={index}>
-                            <input
-                                name='answerChoice'
-                                placeholder='Answer Text'
-                                value={input.answerChoice}
-                                onChange={event => handleOptionChange(index, event)}
-                            />
-                            <button onClick={() => removeFields(index)} >Remove</button>
-                        </div>
-                    )
-                })}
-
-                <br />
-                <Select
-                    name="correctAnswer"
-                    options={answerOptions}
-                    onChange={handleCorrectAnswerChange}
-                />
-
-                        <br />
+                    {questionType === "multi" &&
+                    <div>
+                        {choices.map((input, index) => {
+                            return (
+                                <div key={index}>
+                                    <input
+                                        name='answerChoice'
+                                        placeholder='Answer Text'
+                                        value={input.answerChoice}
+                                        onChange={event => handleOptionChange(index, event)}
+                                    />
+                                    <button onClick={() => removeFields(index)} >Remove</button>
+                                </div>
+                            )
+                        })}
+                        <br/>
                         <button onClick={addFields}>add field</button>
-
-                    </div>
+                    </div>}
+                    {(questionType === "multi" || questionType === "TF") &&
+                    <div>
+                        <br />
+                        <Select
+                            name="correctAnswer"
+                            options={answerOptions}
+                            onChange={handleCorrectAnswerChange}
+                        />
+                    </div>}
 
 
 
