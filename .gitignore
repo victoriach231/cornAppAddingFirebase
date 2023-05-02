@@ -409,3 +409,5 @@ ASALocalRun/
 
 # Local History for Visual Studio
 .localhistory/
+new corn app.sln
+new corn app/ClientApp/package.json
