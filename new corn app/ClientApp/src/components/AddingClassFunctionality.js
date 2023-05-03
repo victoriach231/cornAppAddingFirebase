@@ -1,5 +1,4 @@
-﻿
-const MAX_CLASSCODE = 99999;
+﻿const MAX_CLASSCODE = 99999;
 const MIN_CLASSCODE = 10000;
 
 const generateClassCode = () => {

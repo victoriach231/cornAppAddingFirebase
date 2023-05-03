@@ -8,9 +8,10 @@ import { ChangeEvent, useState } from "react";
 import './CSS/Account.css'
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
-import { generateClassCode } from './AddingClassFunctionality';
+//import { generateClassCode, goToClassPage } from './AddingClassFunctionality';
 import { Modal, Button } from 'react-bootstrap';
 
+const classFunctions = require('./AddingClassFunctionality');
 const Account = () => {
 
     const { user, logout } = UserAuth();
@@ -61,7 +62,7 @@ const Account = () => {
             admin: [
                 user.uid
             ],
-            classCode: generateClassCode()
+            classCode: classFunctions.generateClassCode()
         });
     };
 
@@ -136,36 +137,7 @@ const Account = () => {
 
     };
 
-    // navigate to the class page. TODO takes in the class id of the selected class in the table
-    const goToClassPage = (selectedClassID) => {
-        // TODO check if user logged in is a class instructor or a student
-        // if admin, move to class page
-        get(child(ref(getDatabase()), 'classes/-NTAht6jKvRKebh2RZyl')).then((snapshot) => {
-            if (snapshot.exists()) {
-                console.log(snapshot.val())
-                console.log(snapshot.val()['admin']);
-                if (snapshot.val()['admin'].includes(user.uid)) {
-                    console.log("omgg???");
-                    navigate('/class');
-                }
-                // if student, move to session page if class session is active
-                else if (snapshot.val()['sessionActive']['sessionActive'] === true) {
-                    // call joinSession()
-                    // navigate to session page
-                    console.log("sad student logic");
-                }
-                // user is a student and session not active, TODO display popup that session not started
-                else {
-                    console.log("user is a student and session not active");
-                }
-            } else {
-                console.log("No data available");
-            }
-        }).catch((error) => {
-            console.error(error);
-        });
-
-    };
+    
 
     // start/end a session
     const startSession = () => {
@@ -304,8 +276,7 @@ const Account = () => {
             <br />
 
             <p>Testing buttons: </p>
-            <br />
-            <button onClick={goToClassPage}>Go to the class page!</button>
+            
 
             <br />
             <button onClick={startSession}>Start session</button>
@@ -318,7 +289,11 @@ const Account = () => {
 
             <br />
             <button onClick={goToSessionPage}>Visit session page</button>
+            
         </div>
     );
 };
 export default Account;
+
+//<br />
+           // <button onClick={classFunctions.goToClassPage()}>Go to the class page!</button>
