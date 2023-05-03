@@ -1,13 +1,32 @@
-﻿import React, { useState } from 'react';
+﻿//import React, { useState, useContext } from 'react';
 import { Button } from 'react-bootstrap';
 import { Table } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import { ClassSelected, ClassContext } from './realTimeData/index';
+import { createContext, useContext, useEffect, useState } from 'react';
+
+//const ClassContext = React.createContext();
 
 const Class = (props) => {
+    //const chosenClass = useContext(ClassContext);
+    const chosenClass = useContext(ClassContext);
+
+    //const { class1 } = React.useContext(ClassContext);
+    //const [chosenClass1, setChosenClass] = class1;
 
     const navigate = useNavigate();
     const backNavigate = e => {
+        console.log("going back");
+        console.log(chosenClass);
         navigate('/Account');
+    };
+
+    const hi = () => {
+        console.log("pls");
+        console.log(chosenClass);
+        console.log('!!!!!');
+        console.log(window.globalVariable);
+        //console.log(chosenClass1);
     };
 
     return (
@@ -50,6 +69,10 @@ const Class = (props) => {
                 </tbody>
             </Table>
             <p>Hi welcome to your class</p>
+            <button onClick={hi}>
+                click
+
+            </button>
 
         </div>
     );

@@ -12,8 +12,6 @@ import { auth } from '../firebase';
 
 const UserContext = createContext();
 
-// TODO: add functionality for a user to update/change their password, photo, and name
-
 export const AuthContextProvider = ({ children }) => {
     const [user, setUser] = useState({});
 
@@ -51,7 +49,6 @@ export const AuthContextProvider = ({ children }) => {
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-            console.log(currentUser);
             setUser(currentUser);
         });
         return () => {

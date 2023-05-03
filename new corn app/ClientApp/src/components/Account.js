@@ -1,5 +1,5 @@
 ﻿import React from 'react';
-import RealTimeData from "./realTimeData/index";
+import { RealTimeData } from "./realTimeData/index";
 import { useNavigate } from 'react-router-dom';
 import { UserAuth } from '../context/AuthContext';
 import { database } from '../firebase';
