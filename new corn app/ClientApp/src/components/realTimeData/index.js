@@ -23,33 +23,29 @@ const RealTimeData = () => {
         const dbRef = sRef(db, 'users/' + userTable.user.uid + '/classesEnrolled/');
 
         onValue(dbRef, (snapshot) => {
-            let records = [];
+            let userRecords = [];
             snapshot.forEach(childSnapshot => {
                 let keyName = childSnapshot.key;
                 let data = childSnapshot.val();
-                records.push({ "key": keyName, "data": data });
-                //console.log(data.class);
-                //console.log((sRef(db, 'classes/' + data.class + '/')).childSnapshot);
+                userRecords.push({ "key": keyName, "data": data });
             });
-            setTableData(records);
-        });
 
-        /*
-        tableData.forEach(function (record) {
-            const dbRef1 = sRef(db, 'classes/' + record.childSnapshot.val() + '/');
-            console.log(record.childSnapshot.val());
-            onValue(dbRef1, (snapshot) => {
-                let classNames = [];
-                snapshot.forEach(childSnapshot => {
-                    let keyName = childSnapshot.key;
-                    let data = childSnapshot.val();
-                    classNames.push({ "key": keyName, "data": data });
-                    console.log(data);
+            // add display names to records
+            const dbRef2 = sRef(db, 'classes/');
+            let records = [];
+            userRecords.forEach((userRecord) => {
+                onValue(dbRef2, (snapshot) => {
+                    snapshot.forEach(childSnapshot => {
+                        let classKeyName = childSnapshot.key;
+                        let classData = childSnapshot.val();
+                        if (userRecord.key == classKeyName) {
+                            records.push({ "key": classKeyName, "data": classData });
+                        }
+                    });
+                    setTableData(records);
                 });
-                setTableData(classNames);
             });
-        })*/
-        
+        });
     }, []);
 
 
@@ -57,6 +53,7 @@ const RealTimeData = () => {
     useEffect(() => {
         newClass = chosenClass;
     }, [chosenClass]);
+
 
     // navigate to the class page, depending on whether the user is an instructor or student
     const goToClassPage = (selectedClassID) => {
@@ -68,7 +65,6 @@ const RealTimeData = () => {
                 console.log(snapshot.val())
                 console.log(snapshot.val()['admin']);
                 if (snapshot.val()['admin'].includes(userTable.user.uid)) {
-                    console.log("omgg???");
                     navigate('/class');
                 }
                 // if student, move to session page if class session is active
@@ -103,9 +99,8 @@ const RealTimeData = () => {
                     {tableData.map((rowdata, index) => {
                         return (
                             <tr>
-                                <td onClick={() => { setChosenClass(rowdata.data.class); goToClassPage(rowdata.data.class) }}> {index}</td>
-                                <td onClick={() => { setChosenClass(rowdata.data.class); goToClassPage(rowdata.data.class) }}> {rowdata.key}</td>
-                                <td onClick={() => { setChosenClass(rowdata.data.class); goToClassPage(rowdata.data.class) }}> {rowdata.data.email}</td>
+                                <td onClick={() => { setChosenClass(rowdata.key); goToClassPage(rowdata.key) }}> {index}</td>
+                                <td onClick={() => { setChosenClass(rowdata.key); goToClassPage(rowdata.key) }}> {rowdata.data.className}</td>
                             </tr>
                         )
                     })}
