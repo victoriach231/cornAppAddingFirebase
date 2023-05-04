@@ -8,7 +8,6 @@ import { ChangeEvent, useState } from "react";
 import './CSS/Account.css'
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
-//import { generateClassCode, goToClassPage } from './AddingClassFunctionality';
 import { Modal, Button } from 'react-bootstrap';
 
 const classFunctions = require('./AddingClassFunctionality');

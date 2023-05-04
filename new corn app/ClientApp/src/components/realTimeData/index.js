@@ -1,5 +1,4 @@
-﻿import React, { Component } from 'react';
-import { createContext, useContext, useEffect, useState } from 'react';
+﻿import React, { Component, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ref as sRef, onValue, getDatabase, get, child, ref } from 'firebase/database';
 import { UserAuth } from '../../context/AuthContext';
@@ -7,23 +6,17 @@ import { Table } from 'react-bootstrap';
 import { database } from '../../firebase';
 
 const db = getDatabase();
-const ClassContext = createContext();
+
+// store the currently selected class and export it to other files
+let newClass = "";
 
 const RealTimeData = () => {
     const [tableData, setTableData] = useState([]);
+    // store the class selected within the table, local
     const [chosenClass, setChosenClass] = useState('');
-
-    const handleClassInputChange = (classID, event) => {
-        // 👇 Store the input value to local state
-        console.log(event.target.lastChild.data);
-        setChosenClass(event.target.lastChild.data);
-        console.log("in handle class");
-        console.log(chosenClass);
-    };
 
     const userTable = UserAuth();
     const navigate = useNavigate();
-
 
     // get all classes user is enrolled in and refresh when classes added
     useEffect(() => {
@@ -56,19 +49,17 @@ const RealTimeData = () => {
                 setTableData(classNames);
             });
         })*/
-        console.log('*************');
-        console.log(chosenClass);
+        
+    }, []);
+
+
+    // set what class is currently selected
+    useEffect(() => {
+        newClass = chosenClass;
     }, [chosenClass]);
 
-
-    // navigate to the class page. TODO takes in the class id of the selected class in the table
+    // navigate to the class page, depending on whether the user is an instructor or student
     const goToClassPage = (selectedClassID) => {
-        console.log("hiiiiii");
-        console.log(selectedClassID);
-        console.log("chosen class:");
-        console.log(chosenClass);
-
-
         // TODO check if user logged in is a class instructor or a student
         // if admin, move to class page
         get(child(ref(getDatabase()), 'classes/' + selectedClassID)).then((snapshot) => {
@@ -98,48 +89,33 @@ const RealTimeData = () => {
         });
     };
 
-    const classSelectedd = () => {
-        console.log("AHHHHHHH");
-        console.log(chosenClass);
-        window.globalVariable = 'HELLO KELVIN';
-        console.log(userTable.user.uid);
-        // goToClassPage(rowdata.data.class)
-    };
-
     return (
         <div>
-            
-        <Table striped bordered hover>
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Class Name</th>
-                </tr>
-            </thead>
+            <Table striped bordered hover>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Class Name</th>
+                    </tr>
+                </thead>
 
-            <tbody>
-                {tableData.map((rowdata, index) => {
-                    return (
-                        <ClassContext.Provider value={chosenClass}>
+                <tbody>
+                    {tableData.map((rowdata, index) => {
+                        return (
                             <tr>
-                                <td onClick={() => { let temp = rowdata.data.class; setChosenClass((temp) => temp + ' '); classSelectedd(); handleClassInputChange(rowdata.data.class); goToClassPage(rowdata.data.class) }}> {index}</td>
-                                <td onClick={event => { let temp = rowdata.data.class; setChosenClass((temp) => temp + ' '); classSelectedd(); handleClassInputChange(rowdata.data.class, event); goToClassPage(rowdata.data.class) }}> {rowdata.key}</td>
-                                <td onClick={() => { let temp = rowdata.data.class; setChosenClass((temp) => temp + ' '); classSelectedd(); handleClassInputChange(rowdata.data.class); goToClassPage(rowdata.data.class) }}> {rowdata.data.email}</td>
+                                <td onClick={() => { setChosenClass(rowdata.data.class); goToClassPage(rowdata.data.class) }}> {index}</td>
+                                <td onClick={() => { setChosenClass(rowdata.data.class); goToClassPage(rowdata.data.class) }}> {rowdata.key}</td>
+                                <td onClick={() => { setChosenClass(rowdata.data.class); goToClassPage(rowdata.data.class) }}> {rowdata.data.email}</td>
                             </tr>
-                        </ClassContext.Provider>
+                        )
+                    })}
+                </tbody>
+            </Table>
 
-                    )
-                })}
-            </tbody>
-        </Table>
-            <p> {chosenClass}</p>
-            </div>
+        </div>
     );
 }
-const ClassSelected = () => {
-    return useContext(ClassContext);
-};
 
-export { RealTimeData, ClassSelected, ClassContext};
+export { RealTimeData, newClass };
 
-//                                 <td onClick={() => { let temp = rowdata.data.class; setChosenClass((temp) => temp + ' '); classSelectedd(); handleClassInputChange(rowdata.data.class); goToClassPage(rowdata.data.class) }}> {rowdata.key}</td>
+
