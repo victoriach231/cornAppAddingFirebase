@@ -6,7 +6,7 @@ import { database } from '../firebase';
 import { getDatabase, ref, set, child, get, push, update, query, onValue } from "firebase/database";
 import { ChangeEvent, useState } from "react";
 import Select from 'react-select';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, ListGroup } from 'react-bootstrap';
 
 const QuestionSetEdit = () => {
     const { user, logout } = UserAuth();
@@ -26,30 +26,56 @@ const QuestionSetEdit = () => {
     // put the question adding fields in a popup (modal)
     const [showAddQuestionField, setShowAddQuestionField] = useState(false);
     // handle the popup open and close
-    const handleClose = () => { //clear all fields
+    const handleClose = () => { 
+        //clear all fields
+        setQuestionType(null)
+        setChoices(defaultChoices)
+        setAnswerOptions([])
+        setCorrectAnswer(null)
+        setQuestionText("")
+        setQuestionIndex(-1)
+        //close popup
         setShowAddQuestionField(false)
     };
     const handleShow = () => setShowAddQuestionField(true);
+
+    const openQuestionAtIndex = (index, e) => {
+        //set curr index
+        setQuestionIndex(index)
+        //get json
+        let question = questionSet[index]
+        //set variables
+        setQuestionType(question.qType)
+        setQuestionText(question.qText)
+        setChoices(question.answers)
+        setAnswerOptions(question.answers)
+        setCorrectAnswer(question.trueAnswer)
+        
+        handleShow()
+    }
 
     //handle save question
 
     const handleSaveQuesiton = () => {
         if(ensureFilled()) {
             let questionJSON = {
-                qText: {questionText}, 
-                qType: {questionType},
-                answers: {answerOptions},
-                trueAnswer: {correctAnswer} //may have to switch to index (prob not) 
+                qText: questionText, 
+                qType: questionType,
+                answers: answerOptions,
+                trueAnswer: correctAnswer //may have to switch to index (prob not) 
             }
             console.log(questionJSON)
             
             //TODO: add edit question functionality
-            let newQuestion = true
-            if (newQuestion) {
+            if (questionIndex === -1) {
                 setQuestionSet([...questionSet, questionJSON])
             }
             else {
-                console.log("not new quesiton")
+                setQuestionSet([
+                    ...questionSet.slice(0, questionIndex),
+                    questionJSON,
+                    ...questionSet.slice(questionIndex)
+                ])
             }
             handleClose()
         }
@@ -80,13 +106,13 @@ const QuestionSetEdit = () => {
     //ensure each option is filled
     const checkAnswerChoices = () => {
         let filled = true
-        answerOptions.forEach((e) => filled = !filled || e.value !== "")
+        answerOptions.forEach((e) => filled = (!filled || e.value !== ""))
         return filled
     }
 
     //QUESTION EDIT FUNCTIONS
 
-    let questionIndex = 1 //should change depending on the question selected
+    const [questionIndex, setQuestionIndex] = useState(-1) //should change depending on the question selected
 
     //question type variable
     const [questionType, setQuestionType] = useState(null)
@@ -101,10 +127,7 @@ const QuestionSetEdit = () => {
             setCorrectAnswer(null)
             //update correct answer options --- done in switch statement
             //clear multi-choices
-            setChoices([
-                { value: '', label: '' },
-                { value: '', label: '' }
-            ])
+            setChoices(defaultChoices)
             switch (e.value) {
                 case "multi":
                     console.log("multi-switch")
@@ -135,6 +158,35 @@ const QuestionSetEdit = () => {
         { value: "TF", label: "True/False" }
     ]
 
+    //return select option based on value
+    const getSelObject = (v, isQType) => {
+        if(isQType) {
+            switch(v){
+                case "multi":
+                    return { value: "multi", label: "Multiple Choice" }
+                case "short":
+                    return { value: "short", label: "Short Answer" }
+                case "TF": 
+                    return { value: "TF", label: "True/False" }
+                default:
+                    return { value: '', label: ''}
+            }
+        }
+        else { //if not qType section, is answer section
+            if(questionType === "TF") {
+                if(v){
+                    return { value: true, label: "True" }
+                }
+                else{
+                    return { value: false, label: "False" }
+                }
+            }
+            else{
+                return {value: v, label: v}
+            }
+        }
+    }
+
     //correct answer selection (dependent on active qType)
     const [correctAnswer, setCorrectAnswer] = useState(null)
 
@@ -153,6 +205,11 @@ const QuestionSetEdit = () => {
         { value: '', label: '' },
         { value: '', label: '' }
     ])
+
+    const defaultChoices = [
+        { value: '', label: '' },
+        { value: '', label: '' }
+    ]
 
     //handle options change
     const handleOptionChange = (index, event) => {
@@ -186,7 +243,7 @@ const QuestionSetEdit = () => {
 
     //TRUE FALSE
     //hard-coded T/F options
-    const tfAnswerOptions = () => [
+    const tfAnswerOptions = [
         { value: true, label: "True" },
         { value: false, label: "False" }
     ]
@@ -194,9 +251,9 @@ const QuestionSetEdit = () => {
     const logQSet = () => {
         console.log(questionSet)
     }
-
-    const logQText = () => {
-        console.log(questionText)
+    
+    const logVars = () => {
+        console.log(questionType)
     }
 
 
@@ -204,6 +261,17 @@ const QuestionSetEdit = () => {
     //TODO: html: make buttons look better
     return (
         <div className="App">
+
+            <ListGroup>
+                {questionSet.map((set, index) => {
+                            return (
+                                <div key={index}>
+                                    <ListGroup.Item onClick={(e) => openQuestionAtIndex(index, e)}>{set.qText}</ListGroup.Item>
+                                </div>
+                            )
+                        })}
+            </ListGroup>
+
             <Button variant="primary" onClick={handleShow}>
                 Add Question/ launch pop up
             </Button>
@@ -213,6 +281,7 @@ const QuestionSetEdit = () => {
 
             <Modal show={showAddQuestionField} onHide={handleClose}>
                 <Modal.Header closeButton>
+
                     <Modal.Title>Add a Question!</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
@@ -221,6 +290,7 @@ const QuestionSetEdit = () => {
                     <Select
                         name="Question Type"
                         options={questionTypeOptions}
+                        defaultValue={getSelObject(questionType, true)}
                         onChange={handleTypeChange}
                     />
 
@@ -228,11 +298,10 @@ const QuestionSetEdit = () => {
                     <textarea
                         name="questionText"
                         placeholder="Question Text"
+                        defaultValue={questionText}
                         onChange={handleQTextChange}
                         cols={40}
                     />
-                    <br/>
-                    <button onClick={logQText}>printQText</button>
 
                     {questionType === "multi" &&
                     <div>
@@ -242,7 +311,8 @@ const QuestionSetEdit = () => {
                                     <input
                                         name='answerChoice'
                                         placeholder='Answer Text'
-                                        value={input.answerChoice}
+                                        value={input.value}
+                                        defaultValue={(answerOptions[index] ? answerOptions[index].value : '')}
                                         onChange={event => handleOptionChange(index, event)}
                                     />
                                     <button onClick={() => removeFields(index)} >Remove</button>
@@ -258,11 +328,13 @@ const QuestionSetEdit = () => {
                         <Select
                             name="correctAnswer"
                             options={answerOptions}
+                            defaultValue={getSelObject(correctAnswer, false)}
                             onChange={handleCorrectAnswerChange}
                         />
                     </div>}
 
-
+                    <br/>
+                    <button onClick={logVars}>logVars</button>
 
                 </Modal.Body>
                 <Modal.Footer>
