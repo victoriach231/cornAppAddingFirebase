@@ -25,6 +25,7 @@ const Class = (props) => {
     // keep track of class tas
     const [tasInClass, setTasInClass] = useState([]);
 
+    const [classInstructor, setClassInstructor] = useState();
 
     // toggle side bar that shows students currently in the session
     const [showStudentsBar, setShowStudentsBar] = useState(false);
@@ -41,7 +42,9 @@ const Class = (props) => {
 
     const goToSessionPage = () => {
         navigate('/session-instructor-view');
-    }
+    };
+
+
 
     // grab the students that are in the class
     useEffect(() => {
@@ -82,6 +85,7 @@ const Class = (props) => {
  
         });
 
+        // grab current tas in class
         const taRef = ref(getDatabase(), 'classes/' + chosenClass + '/tas');
         onValue(taRef, (snapshot) => {
             const data = snapshot.val();
@@ -103,6 +107,32 @@ const Class = (props) => {
                 });
             }
         });
+
+        // grab current instructor/creator of class
+        const instructorRef = ref(db, 'classes/' + chosenClass + '/admin');
+
+        onValue(instructorRef, (snapshot) => {
+            const data = snapshot.val();
+
+            if (data != null) {
+                const idsOfInstructorInClass = data;
+                const allUsers = get(child(ref(db), 'users/')).then((snapshot) => {
+                    if (snapshot.exists()) {
+
+                        let instructorNameList = [];
+                        console.log(idsOfInstructorInClass);
+                        idsOfInstructorInClass.forEach(element => instructorNameList.push(snapshot.val()[element]['name']));
+
+                        setClassInstructor(instructorNameList);
+                        return snapshot.val();
+                    } else {
+                        console.log("No data available");
+                    }
+                });
+            }
+        });
+
+
     }, []);
 
     const makeStudentTA = () => {
@@ -204,10 +234,12 @@ const Class = (props) => {
 
             <Offcanvas show={showStudentsBar} onHide={handleStudentBarClose}>
                 <Offcanvas.Header closeButton>
-                    <Offcanvas.Title>Students in the Class:</Offcanvas.Title>
+                    <Offcanvas.Title>Class roster:</Offcanvas.Title>
                 </Offcanvas.Header>
                 <div>
                     <Offcanvas.Body>
+                        <h6>Instructor: {classInstructor}</h6>
+                        <br />
                         <h6>Number of TAs: {tasInClass.length}</h6>
 
                         <ListGroup>
@@ -220,6 +252,7 @@ const Class = (props) => {
                             })}
 
                         </ListGroup>
+                        <br />
                         <h6>Number of students joined: {studentsInClass.length}</h6>
 
                         <ListGroup>

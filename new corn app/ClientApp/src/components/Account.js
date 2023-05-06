@@ -144,10 +144,10 @@ const Account = () => {
 
     // start/end a session
     const startSession = () => {
-        get(child(ref(getDatabase()), 'classes/-NTAht6jKvRKebh2RZyl/sessionActive')).then((snapshot) => {
+        get(child(ref(getDatabase()), 'classes/-NU2IaOonHDJBsY0oGkB/sessionActive')).then((snapshot) => {
             if (snapshot.exists()) {
                 console.log(snapshot.val()['sessionActive']);
-                set(ref(getDatabase(), 'classes/-NTAht6jKvRKebh2RZyl/sessionActive'), {
+                set(ref(getDatabase(), 'classes/-NU2IaOonHDJBsY0oGkB/sessionActive'), {
 
                     sessionActive: !snapshot.val()['sessionActive']
                 });
@@ -166,7 +166,7 @@ const Account = () => {
     // join a session
     // TODO use selected class ID
     const joinSession = () => {
-        get(child(ref(getDatabase()), 'classes/-NTAht6jKvRKebh2RZyl/sessionActive')).then((snapshot) => {
+        get(child(ref(getDatabase()), 'classes/-NU2IaOonHDJBsY0oGkB/sessionActive')).then((snapshot) => {
             if (snapshot.exists()) {
                 console.log(snapshot.val()['sessionActive']);
                 if (snapshot.val()['sessionActive'] === true) {
@@ -174,7 +174,7 @@ const Account = () => {
                         user: user.uid
                     };
                     const updates = {};
-                    updates['classes/-NTAht6jKvRKebh2RZyl/sessionActive/activeStudents/' + user.uid] = newStudent;
+                    updates['classes/-NU2IaOonHDJBsY0oGkB/sessionActive/activeStudents/' + user.uid] = newStudent;
 
                     update(ref(getDatabase()), updates);
                 }
@@ -191,16 +191,12 @@ const Account = () => {
 
     // TODO use current class ID
     const showSessionUsers = () => {
-        const starCountRef = ref(getDatabase(), 'classes/-NTAht6jKvRKebh2RZyl/sessionActive/activeStudents');
+        const starCountRef = ref(getDatabase(), 'classes/-NU2IaOonHDJBsY0oGkB/sessionActive/activeStudents');
         onValue(starCountRef, (snapshot) => {
             const data = snapshot.val();
             console.log(data);
         });
     };
-
-    const goToSessionPage = () => {
-        navigate('/session');
-    }
 
 
 
@@ -306,14 +302,8 @@ const Account = () => {
 
             <br />
             <button onClick={showSessionUsers}>Display users in the session</button>
-
-            <br />
-            <button onClick={goToSessionPage}>Visit session page</button>
             
         </div>
     );
 };
 export default Account;
-
-//<br />
-           // <button onClick={classFunctions.goToClassPage()}>Go to the class page!</button>
