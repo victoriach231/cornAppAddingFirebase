@@ -41,7 +41,7 @@ const RealTimeData = () => {
 
                         // check if student is a student in the class
                         if (userRecord.key == classKeyName) {
-                            records.push({ "key": classKeyName, "data": [classData, "🍎"] });
+                            records.push({ "key": classKeyName, "data": [classData, "🎓"] });
                         }
                     });
                 });
@@ -54,7 +54,7 @@ const RealTimeData = () => {
 
                     // check if student is admin of the class
                     if (userTable.user.uid == classData.admin) {
-                        records.push({ "key": classKeyName, "data": [classData, "🎓"] });
+                        records.push({ "key": classKeyName, "data": [classData, "🍎"] });
                     }
                 });
                 setTableData(records);
