@@ -68,3 +68,24 @@ img.userImg{
     padding-bottom: 0px;
     
 }
+
+input {
+    outline-style: solid;
+    outline-color: #EBE7E7;
+}
+
+.modal-body {
+    display: inline-flex;
+    flex: 1 1 auto;
+    padding: var(--bs-modal-padding);
+    flex-wrap: wrap;
+    align-items: baseline;
+}
+h6 {
+    padding-right: 15px;
+}
+
+mbtn{
+    justify-content: center;
+}
+

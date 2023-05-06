@@ -8,8 +8,8 @@ import { ChangeEvent, useState } from "react";
 import './CSS/Account.css'
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
-//import { generateClassCode, goToClassPage } from './AddingClassFunctionality';
 import { Modal, Button } from 'react-bootstrap';
+import Toast from 'react-bootstrap/Toast';
 
 const classFunctions = require('./AddingClassFunctionality');
 const Account = () => {
@@ -63,8 +63,11 @@ const Account = () => {
                 user.uid
             ],
             classCode: classFunctions.generateClassCode()
+        
         });
     };
+
+    
 
 
     /* // TESTING PURPOSES
@@ -199,6 +202,8 @@ const Account = () => {
         navigate('/session');
     }
 
+
+
     // set up class creation popup
     const [showCreateClass, setShowCreateClass] = useState(false);
     const handleClose = () => setShowCreateClass(false);
@@ -208,6 +213,12 @@ const Account = () => {
     const [showJoinClass, setShowJoinClass] = useState(false);
     const handleClassJoinClose = () => setShowJoinClass(false);
     const handleClassJoinShow = () => setShowJoinClass(true);
+
+    const [showCreateToast, setCreate] = useState(false);
+    //const [showB, setShowB] = useState(true);
+
+    //const toggleShowCreate = () => setCreate(!showCreateToast);
+    //const toggleShowB = () => setShowB(!showB);
 
     return (
        
@@ -249,7 +260,15 @@ const Account = () => {
                 <Modal.Body>
                     <h6>Type in your class name:</h6>
                     <input type="text" onChange={handleClassInputChange} value={inputText} />
-                    <Button variant="primary" onClick={pushData}>Create Class</Button>
+                    <Toast onClose={() => setCreate(false)} show={showCreateToast} delay={3000} autohide>
+                        <Toast.Header>
+                            <strong className="me-auto">Class Creation</strong>
+                        </Toast.Header>
+                        <Toast.Body>{inputText} created sucessfully!</Toast.Body>
+                    </Toast>
+                    <mbtn>
+                        <button class="m" onClick={() => { pushData(); setCreate(true) }}>Create Class</button>
+                    </mbtn>
                 </Modal.Body>
 
             </Modal>
@@ -266,8 +285,9 @@ const Account = () => {
                 <Modal.Body>
                     <h6>Enter the class code:</h6>
                     <input type="text" onChange={handleClassCodeInputChange} value={classCodeInput} />
-
-                    <Button variant="primary" onClick={joinClass}>Join Class</Button>
+                    <mbtn>
+                        <button class="m" onClick={joinClass}>Join Class</button>
+                    </mbtn>
                 </Modal.Body>
 
             </Modal>

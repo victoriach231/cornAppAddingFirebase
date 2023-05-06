@@ -1,5 +1,4 @@
-﻿import React, { Component } from 'react';
-import { createContext, useContext, useEffect, useState } from 'react';
+﻿import React, { Component, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ref as sRef, onValue, getDatabase, get, child, ref } from 'firebase/database';
 import { UserAuth } from '../../context/AuthContext';
@@ -7,68 +6,57 @@ import { Table } from 'react-bootstrap';
 import { database } from '../../firebase';
 
 const db = getDatabase();
-const ClassContext = createContext();
+
+// store the currently selected class and export it to other files
+let newClass = "";
 
 const RealTimeData = () => {
     const [tableData, setTableData] = useState([]);
+    // store the class selected within the table, local
     const [chosenClass, setChosenClass] = useState('');
-
-    const handleClassInputChange = (classID, event) => {
-        // 👇 Store the input value to local state
-        console.log(event.target.lastChild.data);
-        setChosenClass(event.target.lastChild.data);
-        console.log("in handle class");
-        console.log(chosenClass);
-    };
 
     const userTable = UserAuth();
     const navigate = useNavigate();
-
 
     // get all classes user is enrolled in and refresh when classes added
     useEffect(() => {
         const dbRef = sRef(db, 'users/' + userTable.user.uid + '/classesEnrolled/');
 
         onValue(dbRef, (snapshot) => {
-            let records = [];
+            let userRecords = [];
             snapshot.forEach(childSnapshot => {
                 let keyName = childSnapshot.key;
                 let data = childSnapshot.val();
-                records.push({ "key": keyName, "data": data });
-                //console.log(data.class);
-                //console.log((sRef(db, 'classes/' + data.class + '/')).childSnapshot);
+                userRecords.push({ "key": keyName, "data": data });
             });
-            setTableData(records);
-        });
 
-        /*
-        tableData.forEach(function (record) {
-            const dbRef1 = sRef(db, 'classes/' + record.childSnapshot.val() + '/');
-            console.log(record.childSnapshot.val());
-            onValue(dbRef1, (snapshot) => {
-                let classNames = [];
-                snapshot.forEach(childSnapshot => {
-                    let keyName = childSnapshot.key;
-                    let data = childSnapshot.val();
-                    classNames.push({ "key": keyName, "data": data });
-                    console.log(data);
+            // add display names to records
+            const dbRef2 = sRef(db, 'classes/');
+            let records = [];
+            userRecords.forEach((userRecord) => {
+                onValue(dbRef2, (snapshot) => {
+                    snapshot.forEach(childSnapshot => {
+                        let classKeyName = childSnapshot.key;
+                        let classData = childSnapshot.val();
+                        if (userRecord.key == classKeyName) {
+                            records.push({ "key": classKeyName, "data": classData });
+                        }
+                    });
+                    setTableData(records);
                 });
-                setTableData(classNames);
             });
-        })*/
-        console.log('*************');
-        console.log(chosenClass);
+        });
+    }, []);
+
+
+    // set what class is currently selected
+    useEffect(() => {
+        newClass = chosenClass;
     }, [chosenClass]);
 
 
-    // navigate to the class page. TODO takes in the class id of the selected class in the table
+    // navigate to the class page, depending on whether the user is an instructor or student
     const goToClassPage = (selectedClassID) => {
-        console.log("hiiiiii");
-        console.log(selectedClassID);
-        console.log("chosen class:");
-        console.log(chosenClass);
-
-
         // TODO check if user logged in is a class instructor or a student
         // if admin, move to class page
         get(child(ref(getDatabase()), 'classes/' + selectedClassID)).then((snapshot) => {
@@ -77,7 +65,6 @@ const RealTimeData = () => {
                 console.log(snapshot.val())
                 console.log(snapshot.val()['admin']);
                 if (snapshot.val()['admin'].includes(userTable.user.uid)) {
-                    console.log("omgg???");
                     navigate('/class');
                 }
                 // if student, move to session page if class session is active
@@ -98,48 +85,32 @@ const RealTimeData = () => {
         });
     };
 
-    const classSelectedd = () => {
-        console.log("AHHHHHHH");
-        console.log(chosenClass);
-        window.globalVariable = 'HELLO KELVIN';
-        console.log(userTable.user.uid);
-        // goToClassPage(rowdata.data.class)
-    };
-
     return (
         <div>
-            
-        <Table striped bordered hover>
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Class Name</th>
-                </tr>
-            </thead>
+            <Table striped bordered hover>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Class Name</th>
+                    </tr>
+                </thead>
 
-            <tbody>
-                {tableData.map((rowdata, index) => {
-                    return (
-                        <ClassContext.Provider value={chosenClass}>
+                <tbody>
+                    {tableData.map((rowdata, index) => {
+                        return (
                             <tr>
-                                <td onClick={() => { let temp = rowdata.data.class; setChosenClass((temp) => temp + ' '); classSelectedd(); handleClassInputChange(rowdata.data.class); goToClassPage(rowdata.data.class) }}> {index}</td>
-                                <td onClick={event => { let temp = rowdata.data.class; setChosenClass((temp) => temp + ' '); classSelectedd(); handleClassInputChange(rowdata.data.class, event); goToClassPage(rowdata.data.class) }}> {rowdata.key}</td>
-                                <td onClick={() => { let temp = rowdata.data.class; setChosenClass((temp) => temp + ' '); classSelectedd(); handleClassInputChange(rowdata.data.class); goToClassPage(rowdata.data.class) }}> {rowdata.data.email}</td>
+                                <td onClick={() => { setChosenClass(rowdata.key); goToClassPage(rowdata.key) }}> {index}</td>
+                                <td onClick={() => { setChosenClass(rowdata.key); goToClassPage(rowdata.key) }}> {rowdata.data.className}</td>
                             </tr>
-                        </ClassContext.Provider>
+                        )
+                    })}
+                </tbody>
+            </Table>
 
-                    )
-                })}
-            </tbody>
-        </Table>
-            <p> {chosenClass}</p>
-            </div>
+        </div>
     );
 }
-const ClassSelected = () => {
-    return useContext(ClassContext);
-};
 
-export { RealTimeData, ClassSelected, ClassContext};
+export { RealTimeData, newClass };
 
-//                                 <td onClick={() => { let temp = rowdata.data.class; setChosenClass((temp) => temp + ' '); classSelectedd(); handleClassInputChange(rowdata.data.class); goToClassPage(rowdata.data.class) }}> {rowdata.key}</td>
+
