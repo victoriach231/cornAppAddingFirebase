@@ -38,13 +38,28 @@ const RealTimeData = () => {
                     snapshot.forEach(childSnapshot => {
                         let classKeyName = childSnapshot.key;
                         let classData = childSnapshot.val();
+
+                        // check if student is a student in the class
                         if (userRecord.key == classKeyName) {
-                            records.push({ "key": classKeyName, "data": classData });
+                            records.push({ "key": classKeyName, "data": [classData, "🍎"] });
                         }
                     });
-                    setTableData(records);
                 });
             });
+
+            onValue(dbRef2, (snapshot) => {
+                snapshot.forEach(childSnapshot => {
+                    let classKeyName = childSnapshot.key;
+                    let classData = childSnapshot.val();
+
+                    // check if student is admin of the class
+                    if (userTable.user.uid == classData.admin) {
+                        records.push({ "key": classKeyName, "data": [classData, "🎓"] });
+                    }
+                });
+                setTableData(records);
+            });
+
         });
     }, []);
 
@@ -99,8 +114,8 @@ const RealTimeData = () => {
                     {tableData.map((rowdata, index) => {
                         return (
                             <tr>
-                                <td onClick={() => { setChosenClass(rowdata.key); goToClassPage(rowdata.key) }}> {index}</td>
-                                <td onClick={() => { setChosenClass(rowdata.key); goToClassPage(rowdata.key) }}> {rowdata.data.className}</td>
+                                <td onClick={() => { setChosenClass(rowdata.key); goToClassPage(rowdata.key) }}>{rowdata.data[1]}</td>
+                                <td onClick={() => { setChosenClass(rowdata.key); goToClassPage(rowdata.key) }}> {rowdata.data[0].className}</td>
                             </tr>
                         )
                     })}
