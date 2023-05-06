@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { RealTimeData } from "./realTimeData/index";
 import { useNavigate } from 'react-router-dom';
 import { UserAuth } from '../context/AuthContext';
@@ -17,6 +17,8 @@ const QuestionSetEdit = () => {
     const currClass = "-NTAht6jKvRKebh2RZyl" //change to be dynamic based on the last page
     const currQSetKey = "" //if new create key, if existing, should be existing key
 
+    const isNewQuestion = true
+
     //default multiple choice options
     const defaultChoices = [
         { value: '', label: '' },
@@ -31,7 +33,17 @@ const QuestionSetEdit = () => {
 
     //FIREBASE FUNCTIONALITY
 
-    
+    const addQuestion = () => {
+        get(child(ref(getDatabase()), 'classes/')).then((snapshot) => {
+
+        }).catch((error) => {
+            console.error(error);
+        })
+    }
+
+    const saveQuestion = () => {
+
+    }
 
     //POP-UP FUNCTIONS
     
