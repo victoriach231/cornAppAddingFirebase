@@ -96,7 +96,7 @@ const Account = () => {
                 console.log(snapshot.val());
                 console.log(snapshot.val()[0]);
 
-                snapshot.forEach(function (childSnapshot) {
+                snapshot.forEach((childSnapshot) => {
                     if (childSnapshot.val().classCode === classCodeInput) {
                         console.log(childSnapshot.val().classCode);
                         console.log(childSnapshot.key);
