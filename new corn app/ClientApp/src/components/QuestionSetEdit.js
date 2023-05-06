@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { RealTimeData } from "./realTimeData/index";
 import { useNavigate } from 'react-router-dom';
 import { UserAuth } from '../context/AuthContext';
@@ -14,11 +14,23 @@ const QuestionSetEdit = () => {
 
     //TODO: discuss db structure
 
-    const currClassDir = "classes/-NTAht6jKvRKebh2RZyl" //change to be dynamic based on the last page
+    const currClass = "-NTAht6jKvRKebh2RZyl" //change to be dynamic based on the last page
     const currQSetKey = "" //if new create key, if existing, should be existing key
 
+    //default multiple choice options
+    const defaultChoices = [
+        { value: '', label: '' },
+        { value: '', label: '' }
+    ]
+
+    const [questionIndex, setQuestionIndex] = useState(-1) //should change depending on the question selected
+
     const [questionSet, setQuestionSet] = useState([])
-    let qSetName = ""
+    const [qSetName, setQSetName] = useState("") //default should be whatever is passed on navigate
+
+
+    //FIREBASE FUNCTIONALITY
+
     
 
     //POP-UP FUNCTIONS
@@ -28,10 +40,10 @@ const QuestionSetEdit = () => {
     // handle the popup open and close
     const handleClose = () => { 
         //clear all fields
-        setQuestionType(null)
+        setQuestionType({value:"", label:""})
         setChoices(defaultChoices)
         setAnswerOptions([])
-        setCorrectAnswer(null)
+        setCorrectAnswer({value:"", label:""})
         setQuestionText("")
         setQuestionIndex(-1)
         //close popup
@@ -41,6 +53,7 @@ const QuestionSetEdit = () => {
 
     const openQuestionAtIndex = (index, e) => {
         //set curr index
+        console.log(index)
         setQuestionIndex(index)
         //get json
         let question = questionSet[index]
@@ -62,20 +75,27 @@ const QuestionSetEdit = () => {
                 qText: questionText, 
                 qType: questionType,
                 answers: answerOptions,
-                trueAnswer: correctAnswer //may have to switch to index (prob not) 
+                trueAnswer: correctAnswer  
             }
             console.log(questionJSON)
+            console.log(questionIndex)
             
             //TODO: add edit question functionality
             if (questionIndex === -1) {
                 setQuestionSet([...questionSet, questionJSON])
             }
             else {
-                setQuestionSet([
+                let newSet = [
                     ...questionSet.slice(0, questionIndex),
                     questionJSON,
-                    ...questionSet.slice(questionIndex)
-                ])
+                    ...questionSet.slice(questionIndex + 1)
+                ]
+
+                console.log("old")
+                console.log(questionSet)
+                console.log("new")
+                console.log(newSet)
+                setQuestionSet(newSet)
             }
             handleClose()
         }
@@ -83,9 +103,9 @@ const QuestionSetEdit = () => {
 
     //quick check for filled
     const ensureFilled = () => {
-        if ((questionText !== "") && (questionType != null)) {
+        if ((questionText !== "") && (questionType != null)) { //this needs to be changed to allow the user to understand whats wrong
             let allgood = true
-            switch (questionType) {
+            switch (questionType.value) {
                 case "multi":
                     allgood = checkAnswerChoices()
                 case "TF":
@@ -110,21 +130,26 @@ const QuestionSetEdit = () => {
         return filled
     }
 
+    //delete question function
+    const deleteQuestion = (index) => {
+        let data = [...questionSet]
+        data.splice(index, 1)
+        setQuestionSet(data)
+    }
+
     //QUESTION EDIT FUNCTIONS
 
-    const [questionIndex, setQuestionIndex] = useState(-1) //should change depending on the question selected
-
     //question type variable
-    const [questionType, setQuestionType] = useState(null)
+    const [questionType, setQuestionType] = useState({ value: '', label: ''})
 
     //qType event handler
     const handleTypeChange = (e) => {
-        setQuestionType(e.value)
+        setQuestionType(e)
         //test if changed
-        if (e.value !== questionType) {
+        if (e.value !== questionType.value) {
             //show and hide structures based on new Qtype --- done with jsx
             //clear correct answer
-            setCorrectAnswer(null)
+            setCorrectAnswer({value:'', label:''})
             //update correct answer options --- done in switch statement
             //clear multi-choices
             setChoices(defaultChoices)
@@ -145,6 +170,8 @@ const QuestionSetEdit = () => {
         }
     }
 
+    let qte = "default"
+
     //question text variable
     const [questionText, setQuestionText] = useState("")
 
@@ -158,42 +185,8 @@ const QuestionSetEdit = () => {
         { value: "TF", label: "True/False" }
     ]
 
-    //return select option based on value
-    const getSelObject = (v, isQType) => {
-        if(isQType) {
-            switch(v){
-                case "multi":
-                    return { value: "multi", label: "Multiple Choice" }
-                case "short":
-                    return { value: "short", label: "Short Answer" }
-                case "TF": 
-                    return { value: "TF", label: "True/False" }
-                default:
-                    return { value: '', label: ''}
-            }
-        }
-        else { //if not qType section, is answer section
-            if(questionType === "TF") {
-                if(v){
-                    return { value: true, label: "True" }
-                }
-                else{
-                    return { value: false, label: "False" }
-                }
-            }
-            else{
-                return {value: v, label: v}
-            }
-        }
-    }
-
     //correct answer selection (dependent on active qType)
-    const [correctAnswer, setCorrectAnswer] = useState(null)
-
-    //handle correctAnswerChange
-    const handleCorrectAnswerChange = (e) => {
-        setCorrectAnswer(e.value)
-    }
+    const [correctAnswer, setCorrectAnswer] = useState({ value: '', label: ''})
 
     //correct answer options
     const [answerOptions, setAnswerOptions] = useState([])
@@ -201,15 +194,8 @@ const QuestionSetEdit = () => {
     //MULTIPLE CHOICE
 
     //multiple choice variable
-    const [choices, setChoices] = useState([
-        { value: '', label: '' },
-        { value: '', label: '' }
-    ])
+    const [choices, setChoices] = useState(defaultChoices)
 
-    const defaultChoices = [
-        { value: '', label: '' },
-        { value: '', label: '' }
-    ]
 
     //handle options change
     const handleOptionChange = (index, event) => {
@@ -250,10 +236,14 @@ const QuestionSetEdit = () => {
 
     const logQSet = () => {
         console.log(questionSet)
+        console.log(questionIndex)
     }
     
     const logVars = () => {
         console.log(questionType)
+        console.log(correctAnswer)
+        console.log("index")
+        console.log(questionIndex)
     }
 
 
@@ -262,16 +252,32 @@ const QuestionSetEdit = () => {
     return (
         <div className="App">
 
+            <input
+                name="setName"
+                placeholder="Question Set Name"
+                value={qSetName}
+                onChange={(e) => setQSetName(e.target.value)}
+                cols={40}
+            />
+
             <ListGroup>
                 {questionSet.map((set, index) => {
+                    return (
+                        <div key={index}>
+                            <ListGroup.Item onClick={(e) => openQuestionAtIndex(index, e)}>{set.qText}</ListGroup.Item>
+                            <button onClick={() => deleteQuestion(index)} >Remove</button>
+                        </div>
+                    )
+                })}
+                {/* {questionSet.length === 0 ? <div><ListGroup.Item></ListGroup.Item></div> : questionSet.map((set, index) => {
                             return (
                                 <div key={index}>
                                     <ListGroup.Item onClick={(e) => openQuestionAtIndex(index, e)}>{set.qText}</ListGroup.Item>
                                 </div>
                             )
-                        })}
+                        })} // this is for creating an empty default listing*/}
             </ListGroup>
-
+            
             <Button variant="primary" onClick={handleShow}>
                 Add Question/ launch pop up
             </Button>
@@ -290,7 +296,7 @@ const QuestionSetEdit = () => {
                     <Select
                         name="Question Type"
                         options={questionTypeOptions}
-                        defaultValue={getSelObject(questionType, true)}
+                        value={questionType}
                         onChange={handleTypeChange}
                     />
 
@@ -298,12 +304,12 @@ const QuestionSetEdit = () => {
                     <textarea
                         name="questionText"
                         placeholder="Question Text"
-                        defaultValue={questionText}
+                        value={questionText}
                         onChange={handleQTextChange}
                         cols={40}
                     />
 
-                    {questionType === "multi" &&
+                    {questionType.value === "multi" &&
                     <div>
                         {choices.map((input, index) => {
                             return (
@@ -312,7 +318,6 @@ const QuestionSetEdit = () => {
                                         name='answerChoice'
                                         placeholder='Answer Text'
                                         value={input.value}
-                                        defaultValue={(answerOptions[index] ? answerOptions[index].value : '')}
                                         onChange={event => handleOptionChange(index, event)}
                                     />
                                     <button onClick={() => removeFields(index)} >Remove</button>
@@ -322,14 +327,14 @@ const QuestionSetEdit = () => {
                         <br/>
                         <button onClick={addFields}>add field</button>
                     </div>}
-                    {(questionType === "multi" || questionType === "TF") &&
+                    {(questionType.value === "multi" || questionType.value === "TF") &&
                     <div>
                         <br />
                         <Select
                             name="correctAnswer"
                             options={answerOptions}
-                            defaultValue={getSelObject(correctAnswer, false)}
-                            onChange={handleCorrectAnswerChange}
+                            value={correctAnswer}
+                            onChange={(e) => setCorrectAnswer(e)}
                         />
                     </div>}
 
