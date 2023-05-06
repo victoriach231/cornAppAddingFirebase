@@ -26,13 +26,13 @@ const Account = () => {
     // creating a new random string of chars to refer to a newly created class
     const newClassKey = push(child(ref(getDatabase()), 'classes')).key;
 
-    const handleClassInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleClassInputChange = (e) => {
         // 👇 Store the input value to local state
         setInputText(e.target.value);
     };
 
     // input to store class code entered
-    const handleClassCodeInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleClassCodeInputChange = (e) => {
         // 👇 Store the input value to local state
         setClassCodeInput(e.target.value);
     };
