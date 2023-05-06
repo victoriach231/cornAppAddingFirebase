@@ -89,3 +89,10 @@ mbtn{
     justify-content: center;
 }
 
+.modal-body {
+    justify-content: space-between;
+}
+
+.toast{
+    margin: 1.5rem;
+}

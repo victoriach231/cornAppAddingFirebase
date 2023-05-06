@@ -219,6 +219,17 @@ const Account = () => {
     return (
        
         <div>
+            <div class="toast-container
+                position-absolute
+                top-30 start-50
+                translate-middle-x">
+            <Toast onClose={() => setCreate(false)} show={showCreateToast} delay={3000} autohide>
+                <Toast.Header>
+                    <strong className="me-auto">Class Creation</strong>
+                </Toast.Header>
+                <Toast.Body>{inputText} created sucessfully!</Toast.Body>
+                </Toast>
+            </div>
             <br />
             <div class='drop'>
                 <Dropdown>
@@ -241,7 +252,7 @@ const Account = () => {
             
             
             <br />           
-            <br />
+
 
             <h2>Classes Enrolled</h2>
             <RealTimeData />
@@ -249,26 +260,21 @@ const Account = () => {
             <br />
             <Button variant="primary" onClick={handleShow}>Create a class!</Button>
 
-            <Modal show={showCreateClass} onHide={handleClose}>
+            <Modal show={showCreateClass} onHide={handleClose} delay={3000} autohide>
                 <Modal.Header closeButton>
                     <Modal.Title>Create a new class!</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <h6>Type in your class name:</h6>
                     <input type="text" onChange={handleClassInputChange} value={inputText} />
-                    <Toast onClose={() => setCreate(false)} show={showCreateToast} delay={3000} autohide>
-                        <Toast.Header>
-                            <strong className="me-auto">Class Creation</strong>
-                        </Toast.Header>
-                        <Toast.Body>{inputText} created sucessfully!</Toast.Body>
-                    </Toast>
+                    
                     <mbtn>
-                        <button class="m" onClick={() => { pushData(); setCreate(true) }}>Create Class</button>
+                        <button class="m" onClick={() => { pushData(); setCreate(true); handleClose() }}>Create Class</button>
                     </mbtn>
                 </Modal.Body>
-
+                
             </Modal>
-
+            
             <br />
 
             <br />
