@@ -109,7 +109,7 @@ const UpdateProfile = () => {
     };
 
     const backNavigate = e => {
-        navigate('/Account');
+        navigate('/account');
     };
 
 
