@@ -33,7 +33,7 @@ const Class = (props) => {
     const handleStudentBarShow = () => setShowStudentsBar(true);
 
     const backNavigate = e => {
-        navigate('/Account');
+        navigate('/account');
     };
 
     const getCurrClassID = () => {

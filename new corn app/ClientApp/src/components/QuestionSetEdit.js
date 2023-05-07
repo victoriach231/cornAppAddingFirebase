@@ -33,15 +33,33 @@ const QuestionSetEdit = () => {
 
     //FIREBASE FUNCTIONALITY
 
-    const addQuestion = () => {
-        get(child(ref(getDatabase()), 'classes/')).then((snapshot) => {
-
+    const saveQuestion = () => {
+        get(child(ref(getDatabase()), 'questionSets/')).then((snapshot) => {
+            if(snapshot.exists){
+                
+            }
         }).catch((error) => {
             console.error(error);
         })
     }
 
-    const saveQuestion = () => {
+    const testQuestion = () => {
+        
+        get(child(ref(getDatabase()), 'questionSets/')).then((snapshot) => {
+           
+            const updates = {}
+            updates['questionSets/testing/'] = {test: 'b'};
+
+            update(ref(getDatabase()), updates);
+
+        });
+    }
+
+    const addQuestion = () => {
+        //create new qset in database
+        set(ref(getDatabase(), 'questionSets/' + currQSetKey), {questionSet});
+
+        //add new qSet to class
 
     }
 
@@ -249,6 +267,7 @@ const QuestionSetEdit = () => {
     const logQSet = () => {
         console.log(questionSet)
         console.log(questionIndex)
+        testQuestion()
     }
     
     const logVars = () => {
