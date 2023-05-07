@@ -9,6 +9,7 @@ import { Route, Routes, Navigate } from 'react-router-dom';
 import { AuthContextProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import QuestionSetEdit from './components/QuestionSetEdit';
+import StudentSessionView from './components/StudentSessionView';
 
 
 function App() {
@@ -64,6 +65,15 @@ function App() {
                         element={
                             <ProtectedRoute>
                                 <InstructorSessionView />
+                            </ProtectedRoute>
+                        }
+                    />
+
+                    <Route
+                        path='/session-student-view'
+                        element={
+                            <ProtectedRoute>
+                                <StudentSessionView />
                             </ProtectedRoute>
                         }
                     />

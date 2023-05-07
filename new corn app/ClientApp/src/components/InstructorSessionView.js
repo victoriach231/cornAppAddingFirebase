@@ -21,7 +21,59 @@ const InstructorSessionView = () => {
     const handleStudentBarClose = () => setShowStudentsBar(false);
     const handleStudentBarShow = () => setShowStudentsBar(true);
 
-    
+    // get the id of the currently selected question set
+    const chosenQuestionSet = "1234";
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+    const [nextQuestionIndex, setNextQuestionIndex] = useState(0);
+
+    const [currQuestionMap, setCurrQuestionMap] = useState();
+
+    const [currQuestion, setCurrQuestion] = useState();
+    const [nextQuestion, setNextQuestion] = useState();
+
+    // get all the question set data, swap current / next question labels
+    useEffect(() => {
+        get(child(ref(getDatabase()), 'questionSets/' + chosenQuestionSet)).then((snapshot) => {
+
+            if (snapshot.exists()) {
+
+                if (nextQuestionIndex < snapshot.val().length) {
+
+                    console.log(snapshot.val())
+                    console.log("ah2");
+                    console.log(nextQuestionIndex);
+                    setNextQuestion(snapshot.val()[nextQuestionIndex]["qText"]);
+                    if (nextQuestionIndex !== 0) {
+                        setCurrentQuestionIndex(nextQuestionIndex);
+                        setCurrQuestion(snapshot.val()[currentQuestionIndex]["qText"]);
+                        console.log(currQuestion);
+                    }
+
+                    //return snapshot.val();
+                }
+                // last swap
+                else if (nextQuestionIndex === snapshot.val().length) {
+                    console.log("in right place");
+                    console.log(nextQuestionIndex);
+                    console.log(currentQuestionIndex);
+                    setCurrentQuestionIndex(nextQuestionIndex - 1);
+                    console.log(currentQuestionIndex);
+                    setCurrQuestion(snapshot.val()[currentQuestionIndex]["qText"]);
+                    console.log(currQuestion);
+                    setNextQuestion();
+                }
+                else {
+                    // no more questions left
+                }
+
+            } else {
+                console.log("No data available");
+            }
+        }).catch((error) => {
+            console.error(error);
+        });
+    }, [nextQuestionIndex]);
+
 
     // grab the students that are in the session
     useEffect(() => {
@@ -57,7 +109,7 @@ const InstructorSessionView = () => {
 
     return (
         <div>
-            <p> hi welcome to instructor view of session</p>
+            <p> hi welcome to instructor view of session </p>
             <br />
 
             <Button variant="primary" onClick={handleStudentBarShow}>
@@ -81,16 +133,15 @@ const InstructorSessionView = () => {
                             })}
 
                         </ListGroup>
-                        
-
-                            
                     </Offcanvas.Body>
                 </div>
-                
             </Offcanvas>
+            <p>Current question:</p>
+            <p>{currQuestion}</p>
 
-
-
+            <p>Next question:</p>
+            <p>{nextQuestion}</p>
+                        <Button onClick={() => { setNextQuestionIndex(nextQuestionIndex + 1) }}>Display Question</Button>
 
             <br />
 
@@ -100,4 +151,3 @@ const InstructorSessionView = () => {
 };
 export default InstructorSessionView;
 
-// will the curr count number of students in sidebar change in real time??? 

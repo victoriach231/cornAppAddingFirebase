@@ -140,65 +140,6 @@ const Account = () => {
 
     };
 
-    
-
-    // start/end a session
-    const startSession = () => {
-        get(child(ref(getDatabase()), 'classes/-NU2IaOonHDJBsY0oGkB/sessionActive')).then((snapshot) => {
-            if (snapshot.exists()) {
-                console.log(snapshot.val()['sessionActive']);
-                set(ref(getDatabase(), 'classes/-NU2IaOonHDJBsY0oGkB/sessionActive'), {
-
-                    sessionActive: !snapshot.val()['sessionActive']
-                });
-
-            } else {
-                console.log("No data available");
-            }
-        }).catch((error) => {
-            console.error(error);
-        });
-
-
-
-    };
-
-    // join a session
-    // TODO use selected class ID
-    const joinSession = () => {
-        get(child(ref(getDatabase()), 'classes/-NU2IaOonHDJBsY0oGkB/sessionActive')).then((snapshot) => {
-            if (snapshot.exists()) {
-                console.log(snapshot.val()['sessionActive']);
-                if (snapshot.val()['sessionActive'] === true) {
-                    const newStudent = {
-                        user: user.uid
-                    };
-                    const updates = {};
-                    updates['classes/-NU2IaOonHDJBsY0oGkB/sessionActive/activeStudents/' + user.uid] = newStudent;
-
-                    update(ref(getDatabase()), updates);
-                }
-
-
-            } else {
-                console.log("No data available");
-            }
-        }).catch((error) => {
-            console.error(error);
-        });
-
-    };
-
-    // TODO use current class ID
-    const showSessionUsers = () => {
-        const starCountRef = ref(getDatabase(), 'classes/-NU2IaOonHDJBsY0oGkB/sessionActive/activeStudents');
-        onValue(starCountRef, (snapshot) => {
-            const data = snapshot.val();
-            console.log(data);
-        });
-    };
-
-
 
     // set up class creation popup
     const [showCreateClass, setShowCreateClass] = useState(false);
@@ -296,18 +237,6 @@ const Account = () => {
 
 
             <br />
-
-            <p>Testing buttons: </p>
-            
-
-            <br />
-            <button onClick={startSession}>Start session</button>
-
-            <br />
-            <button onClick={joinSession}>Join session</button>
-
-            <br />
-            <button onClick={showSessionUsers}>Display users in the session</button>
             
         </div>
     );

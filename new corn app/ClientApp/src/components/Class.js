@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { newClass } from './realTimeData/index';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-import { getDatabase, ref, child, get, onValue, update, remove} from "firebase/database";
+import { getDatabase, ref, child, get, onValue, update, remove, set} from "firebase/database";
 import { useState, useEffect } from 'react';
 import { Modal } from 'react-bootstrap';
 
@@ -44,7 +44,24 @@ const Class = (props) => {
         navigate('/session-instructor-view');
     };
 
+    // start/end a session
+    const startSession = () => {
+        get(child(ref(getDatabase()), 'classes/' + chosenClass + '/sessionActive')).then((snapshot) => {
+            if (snapshot.exists()) {
+                console.log(snapshot.val()['sessionActive']);
+                set(ref(getDatabase(), 'classes/' + chosenClass + '/sessionActive'), {
 
+                    sessionActive: !snapshot.val()['sessionActive'],
+                    currentQuestion: 0
+                });
+
+            } else {
+                console.log("No data available");
+            }
+        }).catch((error) => {
+            console.error(error);
+        });
+    };
 
     // grab the students that are in the class
     useEffect(() => {
@@ -187,7 +204,6 @@ const Class = (props) => {
                 <h1 class='title'>Class Name</h1>
 
             </div>
-            <Button>Start Session</Button>
 
             <Table striped bordered hover responsive>
                 <thead>
@@ -273,6 +289,9 @@ const Class = (props) => {
                 click to see class id
 
             </button>
+
+            <br />
+            <button onClick={startSession}>Start session</button>
 
             <br />
             <button onClick={goToSessionPage}>Visit session page</button>

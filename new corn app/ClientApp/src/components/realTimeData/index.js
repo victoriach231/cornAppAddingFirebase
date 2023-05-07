@@ -1,6 +1,6 @@
 ﻿import React, { Component, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ref as sRef, onValue, getDatabase, get, child, ref } from 'firebase/database';
+import { ref as sRef, onValue, getDatabase, get, child, ref, update } from 'firebase/database';
 import { UserAuth } from '../../context/AuthContext';
 import { Table } from 'react-bootstrap';
 import { database } from '../../firebase';
@@ -69,6 +69,31 @@ const RealTimeData = () => {
         newClass = chosenClass;
     }, [chosenClass]);
 
+    // join a session
+    // TODO use selected class ID
+    const joinSession = (selectedClassID) => {
+        get(child(ref(getDatabase()), 'classes/' + selectedClassID + '/sessionActive')).then((snapshot) => {
+            if (snapshot.exists()) {
+                console.log(snapshot.val()['sessionActive']);
+                if (snapshot.val()['sessionActive'] === true) {
+                    const newStudent = {
+                        user: userTable.user.uid
+                    };
+                    const updates = {};
+                    updates['classes/' + selectedClassID + '/sessionActive/activeStudents/' + userTable.user.uid] = newStudent;
+
+                    update(ref(getDatabase()), updates);
+                }
+
+
+            } else {
+                console.log("No data available");
+            }
+        }).catch((error) => {
+            console.error(error);
+        });
+
+    };
 
     // navigate to the class page, depending on whether the user is an instructor or student
     const goToClassPage = (selectedClassID) => {
@@ -84,9 +109,8 @@ const RealTimeData = () => {
                 }
                 // if student, move to session page if class session is active
                 else if (snapshot.val()['sessionActive']['sessionActive'] === true) {
-                    // call joinSession()
-                    // navigate to session page
-                    console.log("sad student logic");
+                    joinSession(selectedClassID);
+                    navigate('/session-student-view');
                 }
                 // user is a student and session not active, TODO display popup that session not started
                 else {
