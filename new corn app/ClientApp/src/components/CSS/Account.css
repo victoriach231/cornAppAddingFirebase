@@ -74,12 +74,12 @@ input {
     outline-color: #EBE7E7;
 }
 
-.modal-body {
-    display: inline-flex;
+div.accountClass {
+    display: flex;
     flex: 1 1 auto;
-    padding: var(--bs-modal-padding);
     flex-wrap: wrap;
     align-items: baseline;
+    justify-content: space-between;
 }
 h6 {
     padding-right: 15px;
@@ -90,7 +90,7 @@ mbtn{
 }
 
 .modal-body {
-    justify-content: space-between;
+    
 }
 
 .toast{
