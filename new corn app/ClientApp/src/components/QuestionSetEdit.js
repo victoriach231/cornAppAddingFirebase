@@ -7,6 +7,7 @@ import { getDatabase, ref, set, child, get, push, update, query, onValue } from 
 import { ChangeEvent, useState } from "react";
 import Select from 'react-select';
 import { Modal, Button, ListGroup } from 'react-bootstrap';
+import { newClass } from './realTimeData/index';
 
 const QuestionSetEdit = () => {
     const { user, logout } = UserAuth();
@@ -14,7 +15,7 @@ const QuestionSetEdit = () => {
 
     //TODO: discuss db structure
 
-    const currClass = "-NTAht6jKvRKebh2RZyl" //change to be dynamic based on the last page
+    const currClass = newClass 
     const currQSetKey = "" //if new create key, if existing, should be existing key
 
     const isNewQuestion = true
@@ -33,34 +34,68 @@ const QuestionSetEdit = () => {
 
     //FIREBASE FUNCTIONALITY
 
-    const saveQuestion = () => {
-        get(child(ref(getDatabase()), 'questionSets/')).then((snapshot) => {
-            if(snapshot.exists){
-                
-            }
-        }).catch((error) => {
-            console.error(error);
-        })
+    //geneeric save function
+    const saveQuestion = (key) => {
+        //set rewrites the entire key, update adds to the key (and/or rewrites children)
+        //we will use set since we are basically rewriting question sets in order to edit them
+        set(ref(getDatabase(), 'questionSets/' + key), {name: qSetName, qSet: questionSet});
     }
 
     const testQuestion = () => {
         
         get(child(ref(getDatabase()), 'questionSets/')).then((snapshot) => {
-           
+            const numSets = snapshot.child("abc").size
+            console.log(numSets)
+
             const updates = {}
-            updates['questionSets/testing/'] = {test: 'b'};
+            updates['questionSets/testing/' + numSets] = numSets;
 
             update(ref(getDatabase()), updates);
+
+            console.log(snapshot.hasChild("testing"))
 
         });
     }
 
-    const addQuestion = () => {
+    //for new sets
+    const addQuestionSet = () => {
+        const newKey = push(child(ref(getDatabase()), 'questionSets')).key
+
         //create new qset in database
-        set(ref(getDatabase(), 'questionSets/' + currQSetKey), {questionSet});
+        saveQuestion()
 
         //add new qSet to class
+        get(child(ref(getDatabase()), 'classes/' + currClass)).then((snapshot) => {
+            if(snapshot.exists){
+                // const numSets = snapshot.size
+                //should use above but we've already had code done relying on .key rather than .value >:(
 
+                const updates = {}
+                updates['classes/' + currClass + "/questionSets/" + currQSetKey] = currQSetKey
+
+                update(ref(getDatabase()), updates)
+            }
+        }).catch((error) => {
+            console.error(error);
+        })
+
+        navigate('/class')
+    }
+
+    //for existing sets
+    const saveExistingSet = () => {
+
+        const newKey = push(child(ref(getDatabase()), 'questionSets')).key
+        //save qSet
+        saveQuestion(newKey)
+
+        //TODO: leave page and dont break everything
+        navigate('/class')
+    }
+
+    //cancel question edit
+    const cancel = () => {
+        navigate('/class')
     }
 
     //POP-UP FUNCTIONS
@@ -265,8 +300,8 @@ const QuestionSetEdit = () => {
     ]
 
     const logQSet = () => {
-        console.log(questionSet)
-        console.log(questionIndex)
+        // console.log(questionSet)
+        // console.log(questionIndex)
         testQuestion()
     }
     
@@ -306,19 +341,23 @@ const QuestionSetEdit = () => {
                                     <ListGroup.Item onClick={(e) => openQuestionAtIndex(index, e)}>{set.qText}</ListGroup.Item>
                                 </div>
                             )
-                        })} // this is for creating an empty default listing*/}
+                        })} // this is for creating an empty default listing (doesn't work, will be smushed)*/}
             </ListGroup>
             
-            <Button variant="primary" onClick={handleShow}>
-                Add Question/ launch pop up
-            </Button>
+            <Button variant="primary" onClick={handleShow}>Add Question</Button>
 
             <br/>
-            <button onClick={logQSet}>Log Correct Answer</button>
+            <button onClick={logQSet}>test button</button>
+            <div>
+                <Button onClick={cancel} variant='secondary'>Cancel</Button>
+                <Button onClick={saveExistingSet} variant='primary'>Save & Exit</Button>
+            </div>
+            
+
+
 
             <Modal show={showAddQuestionField} onHide={handleClose}>
                 <Modal.Header closeButton>
-
                     <Modal.Title>Add a Question!</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>

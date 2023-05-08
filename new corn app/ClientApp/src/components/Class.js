@@ -27,7 +27,7 @@ const Class = (props) => {
 
     const [classInstructor, setClassInstructor] = useState();
 
-    // toggle side bar that shows students currently in the session
+    // toggle side bar that shows students currently in the session~
     const [showStudentsBar, setShowStudentsBar] = useState(false);
     const handleStudentBarClose = () => setShowStudentsBar(false);
     const handleStudentBarShow = () => setShowStudentsBar(true);
@@ -43,6 +43,10 @@ const Class = (props) => {
     const goToSessionPage = () => {
         navigate('/session-instructor-view');
     };
+
+    const goToQuestionEdit = () => {
+        navigate('/edit-questions')
+    }
 
     // start/end a session
     const startSession = () => {
@@ -295,6 +299,9 @@ const Class = (props) => {
 
             <br />
             <button onClick={goToSessionPage}>Visit session page</button>
+
+            <br />
+            <button onClick={goToQuestionEdit}>Go To Question Set Edit Page</button>
 
         </div>
     );
