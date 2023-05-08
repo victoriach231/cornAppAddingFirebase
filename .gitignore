@@ -1,7 +1,6 @@
 #qol changes
 node_modules/
 package-lock.json
-package.json
 .env.development.local
 
 # globs
@@ -410,5 +409,4 @@ ASALocalRun/
 # Local History for Visual Studio
 .localhistory/
 new corn app.sln
-new corn app/ClientApp/package.json
 new corn app/ClientApp/package-lock.json
