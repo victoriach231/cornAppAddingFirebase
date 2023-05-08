@@ -220,8 +220,8 @@ const Account = () => {
                 </Modal.Header>
                 <Modal.Body>
                 <div class='accountClass'>
-                    <h6>Type in your class name:</h6>
-                    <input type="text" onChange={handleClassInputChange} value={inputText} />
+                    <h6>Enter class name:</h6>
+                        <input class = 'createClass' type="text" onChange={handleClassInputChange} value={inputText} />
                     
                     <mbtn>
                         <button class="m" onClick={() => { pushData(); setCreate(true); handleClose() }}>Create Class</button>

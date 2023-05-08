@@ -75,18 +75,20 @@ input {
 }
 
 div.accountClass {
-    display: flex;
-    flex: 1 1 auto;
+    display: inline-flex;
     flex-wrap: wrap;
+    justify-content: space-around;
+    flex-direction: row;
+    align-content: center;
     align-items: baseline;
-    justify-content: space-between;
 }
 h6 {
-    padding-right: 15px;
+    padding-right: 10px;
 }
 
 mbtn{
     justify-content: center;
+    padding-left: 5px;
 }
 
 .modal-body {
@@ -95,4 +97,8 @@ mbtn{
 
 .toast{
     margin: 1.5rem;
+}
+
+input.createClass{
+    width: 197px;
 }
