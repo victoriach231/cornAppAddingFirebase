@@ -18,7 +18,7 @@ const RealTimeData = () => {
     const userTable = UserAuth();
     const navigate = useNavigate();
 
-    // get all classes user is enrolled in and refresh when classes added
+    // get all classes user is enrolled in and refresh when enroll in new classe
     useEffect(() => {
         const dbRef = sRef(db, 'users/' + userTable.user.uid + '/classesEnrolled/');
 
@@ -47,19 +47,19 @@ const RealTimeData = () => {
                 });
             });
 
+            
             onValue(dbRef2, (snapshot) => {
                 snapshot.forEach(childSnapshot => {
                     let classKeyName = childSnapshot.key;
                     let classData = childSnapshot.val();
 
-                    // check if student is admin of the class
+                    // check if user is admin of the class
                     if (userTable.user.uid == classData.admin) {
                         records.push({ "key": classKeyName, "data": [classData, "🍎"] });
                     }
                 });
                 setTableData(records);
             });
-
         });
     }, []);
 

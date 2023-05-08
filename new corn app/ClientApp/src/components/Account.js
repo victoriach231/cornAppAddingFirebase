@@ -54,7 +54,7 @@ const Account = () => {
 
 
     // creates/adds a new class to the database
-    const pushData = () => {
+    const createClass = () => {
         set(ref(getDatabase(), 'classes/' + newClassKey), {
             className: inputText,
             sessionActive: false,
@@ -224,7 +224,7 @@ const Account = () => {
                         <input class = 'createClass' type="text" onChange={handleClassInputChange} value={inputText} />
                     
                     <mbtn>
-                        <button class="m" onClick={() => { pushData(); setCreate(true); handleClose() }}>Create Class</button>
+                        <button class="m" onClick={() => { createClass(); setCreate(true); handleClose() }}>Create Class</button>
                         </mbtn>
                     </div>
                 </Modal.Body>
