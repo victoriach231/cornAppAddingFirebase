@@ -127,15 +127,18 @@ const Account = () => {
                         update2['users/' + user.uid + '/classesEnrolled/' + childSnapshot.key] = newClass;
 
                         update(ref(getDatabase()), update2);
+                        
 
 
                     }
                 });
             } else {
                 console.log("No data available");
+                setJoin(false);
             }
         }).catch((error) => {
             console.error(error);
+            setJoin(false)
         });
 
     };
@@ -152,14 +155,12 @@ const Account = () => {
     const handleClassJoinShow = () => setShowJoinClass(true);
 
     const [showCreateToast, setCreate] = useState(false);
-    //const [showB, setShowB] = useState(true);
-
-    //const toggleShowCreate = () => setCreate(!showCreateToast);
-    //const toggleShowB = () => setShowB(!showB);
+    const [showJoinToast, setJoin] = useState(false);
 
     return (
        
         <div>
+            {/* Confirmation of Class Creation */}
             <div class="toast-container
                 position-absolute
                 top-30 start-50
@@ -169,6 +170,18 @@ const Account = () => {
                     <strong className="me-auto">Class Creation</strong>
                 </Toast.Header>
                 <Toast.Body>{inputText} created sucessfully!</Toast.Body>
+                </Toast>
+            </div>
+            {/* Confirmation of Joining Class */}
+            <div class="toast-container
+                position-absolute
+                top-30 start-50
+                translate-middle-x">
+                <Toast onClose={() => setJoin(false)} show={showJoinToast} delay={3000} autohide>
+                    <Toast.Header>
+                        <strong className="me-auto">Joining Class</strong>
+                    </Toast.Header>
+                    <Toast.Body>Class joined sucessfully!</Toast.Body>
                 </Toast>
             </div>
             <br />
@@ -229,7 +242,7 @@ const Account = () => {
                     <h6>Enter the class code:</h6>
                     <input type="text" onChange={handleClassCodeInputChange} value={classCodeInput} />
                     <mbtn>
-                        <button class="m" onClick={joinClass}>Join Class</button>
+                        <button class="m" onClick={() => { joinClass(); setJoin(true); handleClassJoinClose() }}>Join Class</button>
                     </mbtn>
                 </Modal.Body>
 
