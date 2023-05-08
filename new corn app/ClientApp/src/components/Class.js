@@ -202,7 +202,8 @@ const Class = (props) => {
 
                     </button>
                 </div>
-                <h1 class='title'>Class Name</h1>
+                {/* TODO: Change 'chosenClass' to class name*/}
+                <h1 class='title'>Class Name {chosenClass}</h1>
 
             </div>
 
