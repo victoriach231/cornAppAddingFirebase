@@ -206,7 +206,8 @@ const Class = (props) => {
 
                     </button>
                 </div>
-                <h1 class='title'>Class Name</h1>
+                {/* TODO: Change 'chosenClass' to class name*/}
+                <h1 class='title'>Class Name {chosenClass}</h1>
 
             </div>
 
@@ -290,19 +291,19 @@ const Class = (props) => {
             </Offcanvas>
 
             <br />
-            <button onClick={getCurrClassID}>
+            <button class="btn btn-primary" onClick={getCurrClassID}>
                 click to see class id
 
             </button>
 
             <br />
-            <button onClick={startSession}>Start session</button>
+            <button class="btn btn-primary" onClick={startSession}>Start session</button>
 
             <br />
-            <button onClick={goToSessionPage}>Visit session page</button>
+            <button class="btn btn-primary" onClick={goToSessionPage}>Visit session page</button>
 
             <br />
-            <button onClick={goToQuestionEdit}>Go To Question Set Edit Page</button>
+            <button class="btn btn-primary" onClick={goToQuestionEdit}>Go To Question Set Edit Page</button>
 
         </div>
     );
