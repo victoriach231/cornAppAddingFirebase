@@ -219,12 +219,14 @@ const Account = () => {
                     <Modal.Title>Create a new class!</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <h6>Type in your class name:</h6>
-                    <input type="text" onChange={handleClassInputChange} value={inputText} />
+                <div class='accountClass'>
+                    <h6>Enter class name:</h6>
+                        <input class = 'createClass' type="text" onChange={handleClassInputChange} value={inputText} />
                     
                     <mbtn>
                         <button class="m" onClick={() => { pushData(); setCreate(true); handleClose() }}>Create Class</button>
-                    </mbtn>
+                        </mbtn>
+                    </div>
                 </Modal.Body>
                 
             </Modal>
@@ -239,11 +241,13 @@ const Account = () => {
                     <Modal.Title>Join a class!</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
+                <div class='accountClass'>
                     <h6>Enter the class code:</h6>
                     <input type="text" onChange={handleClassCodeInputChange} value={classCodeInput} />
                     <mbtn>
                         <button class="m" onClick={() => { joinClass(); setJoin(true); handleClassJoinClose() }}>Join Class</button>
-                    </mbtn>
+                        </mbtn>
+                    </div>
                 </Modal.Body>
 
             </Modal>

@@ -411,3 +411,4 @@ ASALocalRun/
 .localhistory/
 new corn app.sln
 new corn app/ClientApp/package.json
+new corn app/ClientApp/package-lock.json

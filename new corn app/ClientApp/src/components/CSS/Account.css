@@ -74,25 +74,31 @@ input {
     outline-color: #EBE7E7;
 }
 
-.modal-body {
+div.accountClass {
     display: inline-flex;
-    flex: 1 1 auto;
-    padding: var(--bs-modal-padding);
     flex-wrap: wrap;
+    justify-content: space-around;
+    flex-direction: row;
+    align-content: center;
     align-items: baseline;
 }
 h6 {
-    padding-right: 15px;
+    padding-right: 10px;
 }
 
 mbtn{
     justify-content: center;
+    padding-left: 5px;
 }
 
 .modal-body {
-    justify-content: space-between;
+    
 }
 
 .toast{
     margin: 1.5rem;
+}
+
+input.createClass{
+    width: 197px;
 }
