@@ -86,7 +86,7 @@ h6 {
     padding-right: 10px;
 }
 
-mbtn{
+div.mbtn{
     justify-content: center;
     padding-left: 5px;
 }
@@ -101,4 +101,8 @@ mbtn{
 
 input.createClass{
     width: 197px;
+}
+
+.toast.incorrectCode{
+    background-color: #ff726f;
 }
