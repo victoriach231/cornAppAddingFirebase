@@ -52,7 +52,8 @@ const Class = (props) => {
                 set(ref(getDatabase(), 'classes/' + chosenClass + '/sessionActive'), {
 
                     sessionActive: !snapshot.val()['sessionActive'],
-                    currentQuestion: 0
+                    currentQuestion: 0,
+                    timerToggled: false
                 });
 
             } else {
