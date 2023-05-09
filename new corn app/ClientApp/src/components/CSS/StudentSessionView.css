@@ -1,0 +1,12 @@
+﻿body {
+}
+
+.list-group-item-action.list-group-item-action{
+    border-radius: 4px;
+    box-shadow: 0 6px 10px 0 rgba(0,0,0,0.15);
+    transition: all 0.5s;
+}
+
+.btn:disabled {
+    background-color: #b0b1b2;
+}
