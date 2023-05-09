@@ -33,13 +33,15 @@ const InstructorSessionView = () => {
     const chosenQuestionSet = "1234";
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [nextQuestionIndex, setNextQuestionIndex] = useState(0);
+    const [currQuestionType, setCurrQuestionType] = useState();
+    const [FRQResponses, setFRQResponses] = useState([]);
 
     const [currQuestionMap, setCurrQuestionMap] = useState();
 
     const [currQuestion, setCurrQuestion] = useState();
     const [nextQuestion, setNextQuestion] = useState();
 
-    // keep track of question answers
+    // keep track of question answers (all of the possible answer options)
     const [currQuestionAnswers, setCurrQuestionAnswers] = useState([]);
 
     // for timer
@@ -74,43 +76,61 @@ const InstructorSessionView = () => {
 
     // get student answers to curr question TODO show / print frq student answers
     const getStudentAnswers = () => {
+        console.log(currQuestionType);
+
         get(child(ref(db), 'classes/' + chosenClass + '/sessionActive/activeStudents')).then((snapshot) => {
             if (snapshot.exists()) {
                 console.log("start student answers");
                 console.log(snapshot.val());
 
                 // TODO put a if/else check here. do the stuff below if MC/TF
-                let answerCount = new Map();
+                if ((currQuestionType === 'multi') || (currQuestionType === 'TF')) {
+                    let answerCount = new Map();
                     //answerList.forEach(answer => answerCount.set(answer, 0));
-                console.log(currQuestionAnswers);
-
-                currQuestionAnswers.forEach(answerOption => answerCount.set(answerOption, 0));
-                console.log(currentQuestionIndex);
-
-                snapshot.forEach((childSnapshot) => {
-                    if (childSnapshot.val()) {
-                        console.log(childSnapshot.val());
-                        if (childSnapshot.val()['responses']) {
-                            console.log(childSnapshot.val()['responses']);
-                            if (childSnapshot.val()['responses'][currentQuestionIndex - 1]) {
-                                console.log(childSnapshot.val());
-                                console.log(currentQuestionIndex - 1);
+                    console.log(currQuestionAnswers);
+                    currQuestionAnswers.forEach(answerOption => answerCount.set(answerOption, 0));
+                    console.log(currentQuestionIndex);
+                    console.log(currQuestionType);
+                    snapshot.forEach((childSnapshot) => {
+                        if (childSnapshot.val()) {
+                            console.log(childSnapshot.val());
+                            if (childSnapshot.val()['responses']) {
                                 console.log(childSnapshot.val()['responses']);
-                                console.log(childSnapshot.val()['responses'][currentQuestionIndex - 1]);
-                                const filteredArray = currQuestionAnswers.filter(value => childSnapshot.val()['responses'][currentQuestionIndex - 1].includes(value));
-                                console.log(filteredArray);
+                                if (childSnapshot.val()['responses'][currentQuestionIndex - 1]) {
+                                    console.log(childSnapshot.val());
+                                    console.log(currentQuestionIndex - 1);
+                                    console.log(childSnapshot.val()['responses']);
+                                    console.log(childSnapshot.val()['responses'][currentQuestionIndex - 1]);
+                                    // TODO add an if check to handle if one of the students in the sesion hasn't answered the curr question yet
+                                    const filteredArray = currQuestionAnswers.filter(value => childSnapshot.val()['responses'][currentQuestionIndex - 1].includes(value));
+                                    console.log(filteredArray);
 
-                                filteredArray.forEach((answer => answerCount.set(answer, answerCount.get(answer) + 1)));
+                                    filteredArray.forEach((answer => answerCount.set(answer, answerCount.get(answer) + 1)));
 
-                                console.log(answerCount);
-                                setAnswerCountMap(answerCount);
+                                    console.log(answerCount);
+                                    setAnswerCountMap(answerCount);
+                                }
                             }
                         }
-                    }
-                });
+                    });
 
-                console.log(answerCount);
-                //setAnswerCountMap(answerCount);
+                    console.log(answerCount);
+                    //setAnswerCountMap(answerCount);
+                }
+                else if (currQuestionType === "short") {
+                    let studentFRQAnswers = [];
+                    snapshot.forEach((childSnapshot) => {
+                        if (childSnapshot.val()) {
+                            if (childSnapshot.val()['responses']) {
+                                if (childSnapshot.val()['responses'][currentQuestionIndex - 1]) {
+                                    studentFRQAnswers.push(childSnapshot.val()['responses'][currentQuestionIndex - 1][currentQuestionIndex - 1]);
+                                    setFRQResponses(studentFRQAnswers);
+                                }
+                            }
+                        }
+                    });
+                }
+
 
             } else {
                 console.log("No data available");
@@ -138,9 +158,10 @@ const InstructorSessionView = () => {
                         setCurrentQuestionIndex(nextQuestionIndex);
                         updateCurrQuestionIndexDB(nextQuestionIndex - 1);
                         setCurrQuestion(snapshot.val()[currentQuestionIndex]["qText"]);
+                        // TODO PRINTING ONE QUESTION BEHIND
                         console.log(currQuestion);
+                        setCurrQuestionType(snapshot.val()[currentQuestionIndex]["qType"]);
 
-                        
 
                     }
 
@@ -155,6 +176,7 @@ const InstructorSessionView = () => {
                     updateCurrQuestionIndexDB(nextQuestionIndex - 1)
                     console.log(currentQuestionIndex);
                     setCurrQuestion(snapshot.val()[currentQuestionIndex]["qText"]);
+                    setCurrQuestionType(snapshot.val()[currentQuestionIndex]["qType"]);
                     console.log(currQuestion);
                     setNextQuestion();
                 }
@@ -164,7 +186,7 @@ const InstructorSessionView = () => {
                 }
 
                 // make curr question answer options show up
-
+                // || nextQuestionIndex === snapshot.val().length
                 if (nextQuestionIndex !== 0 || nextQuestionIndex === snapshot.val().length) {
                     // question is MC or TF
                     if (snapshot.val()[currentQuestionIndex]['answers']) {
@@ -186,10 +208,11 @@ const InstructorSessionView = () => {
                         //console.log(answerCountMap);
                     }
                     else {
+                        console.log("why HERE");
                         setCurrQuestionAnswers([]);
                     }
 
-                    
+
                 }
 
 
@@ -305,16 +328,41 @@ const InstructorSessionView = () => {
             <p>Current question:</p>
             <p>{currQuestion}</p>
             <br />
-            <ListGroup>
-                {currQuestionAnswers.map((element, index) => {
-                    return (
-                        <div key={index}>
-                            <ListGroup.Item>{element} &nbsp;&nbsp;&nbsp; {answerCountMap ? answerCountMap.get(element) : "Why here??"}</ListGroup.Item>
-                        </div>
-                    );
-                })}
+            {
+                (currQuestionType === "short") ?
+                    <div>
+                        <ListGroup>
+                            {FRQResponses.map((element, index) => {
+                                return (
+                                    <div key={index}>
+                                        <ListGroup.Item>{element}</ListGroup.Item>
+                                    </div>
+                                );
+                            })}
 
-            </ListGroup>
+                        </ListGroup>
+                    </div>
+
+                    :
+                    <div>
+                        <ListGroup>
+                            {currQuestionAnswers.map((element, index) => {
+                                return (
+                                    <div key={index}>
+                                        <ListGroup.Item>{String(element)} &nbsp;&nbsp;&nbsp; {answerCountMap ? answerCountMap.get(element) : "Why here??"}</ListGroup.Item>
+                                    </div>
+                                );
+                            })}
+
+                        </ListGroup>
+                        <p>hiii</p>
+                        <p>{currQuestionAnswers}</p>
+                        <p>{console.log(currQuestionAnswers)}</p>
+                        <p>{console.log(currentQuestionIndex)}</p>
+
+
+                    </div>
+            }
 
             <br />
 
