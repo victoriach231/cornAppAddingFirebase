@@ -311,7 +311,7 @@ const Class = (props) => {
 
             <br />
             <div className="sessionActivity">
-            <button className="btn btn-primary" onClick={startSession}>Start session</button>
+            <button className="btn btn-primary" onClick={startSession}>DEBUG: toggle session</button>
                 <p>Session Active: {sessionActive} </p>
             </div>
 
