@@ -38,7 +38,7 @@ const InstructorSessionView = () => {
     const handleStudentBarShow = () => setShowStudentsBar(true);
 
     // get the id of the currently selected question set
-    const chosenQuestionSet = "1234";
+    const chosenQuestionSet = '-NV0XiVh5AW93RezT5NF';
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [nextQuestionIndex, setNextQuestionIndex] = useState(0);
     const [currQuestionType, setCurrQuestionType] = useState();
@@ -150,7 +150,7 @@ const InstructorSessionView = () => {
 
     // get all the question set data, swap current / next question labels
     useEffect(() => {
-        get(child(ref(getDatabase()), 'questionSets/' + chosenQuestionSet)).then((snapshot) => {
+        get(child(ref(getDatabase()), 'questionSets/' + chosenQuestionSet + '/qSet')).then((snapshot) => {
 
             if (snapshot.exists()) {
 
@@ -168,7 +168,7 @@ const InstructorSessionView = () => {
                         setCurrQuestion(snapshot.val()[currentQuestionIndex]["qText"]);
                         // TODO PRINTING ONE QUESTION BEHIND
                         console.log(currQuestion);
-                        setCurrQuestionType(snapshot.val()[currentQuestionIndex]["qType"]);
+                        setCurrQuestionType(snapshot.val()[currentQuestionIndex]["qType"]["value"]);
 
 
                     }
@@ -184,7 +184,7 @@ const InstructorSessionView = () => {
                     updateCurrQuestionIndexDB(nextQuestionIndex - 1)
                     console.log(currentQuestionIndex);
                     setCurrQuestion(snapshot.val()[currentQuestionIndex]["qText"]);
-                    setCurrQuestionType(snapshot.val()[currentQuestionIndex]["qType"]);
+                    setCurrQuestionType(snapshot.val()[currentQuestionIndex]["qType"]["value"]);
                     console.log(currQuestion);
                     setNextQuestion();
                 }
