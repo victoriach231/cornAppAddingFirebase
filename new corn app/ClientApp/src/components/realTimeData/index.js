@@ -18,8 +18,9 @@ const RealTimeData = () => {
     const userTable = UserAuth();
     const navigate = useNavigate();
 
-    // get all classes user is enrolled in and refresh when classes added
+    // refresh when enroll in new classes or create a new class
     useEffect(() => {
+        // get all classes user is enrolled in
         const dbRef = sRef(db, 'users/' + userTable.user.uid + '/classesEnrolled/');
 
         onValue(dbRef, (snapshot) => {
@@ -30,36 +31,30 @@ const RealTimeData = () => {
                 userRecords.push({ "key": keyName, "data": data });
             });
 
-            // add display names to records
+            // get all classes in firebase
             const dbRef2 = sRef(db, 'classes/');
-            let records = [];
-            userRecords.forEach((userRecord) => {
-                onValue(dbRef2, (snapshot) => {
-                    snapshot.forEach(childSnapshot => {
-                        let classKeyName = childSnapshot.key;
-                        let classData = childSnapshot.val();
 
-                        // check if student is a student in the class
-                        if (userRecord.key == classKeyName) {
-                            records.push({ "key": classKeyName, "data": [classData, "🎓"] });
-                        }
-                    });
-                });
-            });
 
             onValue(dbRef2, (snapshot) => {
+                let records = [];
                 snapshot.forEach(childSnapshot => {
                     let classKeyName = childSnapshot.key;
                     let classData = childSnapshot.val();
 
-                    // check if student is admin of the class
+                    userRecords.forEach((userRecord) => {
+                        // check if current class equals the current enrolled in class (to get display name)
+                        if (userRecord.key == classKeyName) {
+                            records.push({ "key": classKeyName, "data": [classData, "🎓"] });
+                        }
+                    });
+
+                    // check if current user is admin of the current class
                     if (userTable.user.uid == classData.admin) {
                         records.push({ "key": classKeyName, "data": [classData, "🍎"] });
                     }
                 });
                 setTableData(records);
             });
-
         });
     }, []);
 

@@ -54,7 +54,7 @@ const Account = () => {
 
 
     // creates/adds a new class to the database
-    const pushData = () => {
+    const createClass = () => {
         set(ref(getDatabase(), 'classes/' + newClassKey), {
             className: inputText,
             sessionActive: false,
@@ -127,9 +127,13 @@ const Account = () => {
                         update2['users/' + user.uid + '/classesEnrolled/' + childSnapshot.key] = newClass;
 
                         update(ref(getDatabase()), update2);
-                        
 
 
+
+                    }
+                    else {
+                        setJoin(false);
+                        setIncorrectJoin(true);
                     }
                 });
             } else {
@@ -137,6 +141,7 @@ const Account = () => {
                 setJoin(false);
             }
         }).catch((error) => {
+            console.log("error");
             console.error(error);
             setJoin(false)
         });
@@ -156,6 +161,7 @@ const Account = () => {
 
     const [showCreateToast, setCreate] = useState(false);
     const [showJoinToast, setJoin] = useState(false);
+    const [showIncorrectJoin, setIncorrectJoin] = useState(false);
 
     return (
        
@@ -165,7 +171,7 @@ const Account = () => {
                 position-absolute
                 top-30 start-50
                 translate-middle-x">
-            <Toast onClose={() => setCreate(false)} show={showCreateToast} delay={3000} autohide>
+            <Toast onClose={() => setCreate(false)} show={showCreateToast} delay={3000} autohide='true'>
                 <Toast.Header>
                     <strong className="me-auto">Class Creation</strong>
                 </Toast.Header>
@@ -177,18 +183,36 @@ const Account = () => {
                 position-absolute
                 top-30 start-50
                 translate-middle-x">
-                <Toast onClose={() => setJoin(false)} show={showJoinToast} delay={3000} autohide>
+                <Toast onClose={() => setJoin(false)} show={showJoinToast} delay={3000} autohide='true'>
                     <Toast.Header>
                         <strong className="me-auto">Joining Class</strong>
                     </Toast.Header>
                     <Toast.Body>Class joined sucessfully!</Toast.Body>
                 </Toast>
             </div>
+            {/* Incorrect Code for Joining Class */}
+            <div class="toast-container
+                position-absolute
+                top-30 start-50
+                translate-middle-x
+                "
+            >
+                
+                <Toast className="incorrectCode" onClose={() => setIncorrectJoin(false)} show={showIncorrectJoin} delay={5000} autohide='true'>
+                    
+                    <Toast.Header>
+                        <strong className="me-auto">Joining Class</strong>
+                    </Toast.Header>
+                        <Toast.Body>Incorrect Class Code. Try Again!</Toast.Body>
+                    
+                </Toast>
+                
+            </div>
             <br />
-            <div class='drop'>
+            <div className='drop'>
                 <Dropdown>
                     <Dropdown.Toggle id="dropdown-basic">
-                        <div class='userInfo'>
+                        <div className='userInfo'>
                         <img src={user && user.photoURL} class="userImg" alt="default profile image" />
 
                         {user && user.displayName}
@@ -214,18 +238,18 @@ const Account = () => {
             <br />
             <Button variant="primary" onClick={handleShow}>Create a class!</Button>
 
-            <Modal show={showCreateClass} onHide={handleClose} delay={3000} autohide>
+            <Modal show={showCreateClass} onHide={handleClose} delay={3000} autohide='true'>
                 <Modal.Header closeButton>
                     <Modal.Title>Create a new class!</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                <div class='accountClass'>
+                <div className='accountClass'>
                     <h6>Enter class name:</h6>
                         <input class = 'createClass' type="text" onChange={handleClassInputChange} value={inputText} />
                     
-                    <mbtn>
-                        <button class="m" onClick={() => { pushData(); setCreate(true); handleClose() }}>Create Class</button>
-                        </mbtn>
+                    <div className='mbtn'>
+                        <button class="m" onClick={() => { createClass(); setCreate(true); handleClose() }}>Create Class</button>
+                        </div>
                     </div>
                 </Modal.Body>
                 
@@ -241,12 +265,12 @@ const Account = () => {
                     <Modal.Title>Join a class!</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                <div class='accountClass'>
+                <div className='accountClass'>
                     <h6>Enter the class code:</h6>
                     <input type="text" onChange={handleClassCodeInputChange} value={classCodeInput} />
-                    <mbtn>
+                    <div className='mbtn'>
                         <button class="m" onClick={() => { joinClass(); setJoin(true); handleClassJoinClose() }}>Join Class</button>
-                        </mbtn>
+                        </div>
                     </div>
                 </Modal.Body>
 

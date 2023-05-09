@@ -9,12 +9,14 @@ div .corner {
     font-size: 18px;
 }
 p{
-        line-height: 1;
+line-height: 1;
 }
 
 div.changeImage {
     display: flex;
     justify-content: center;
+    flex-direction: column;
+    align-items: center;
 }
 
 modal {
@@ -22,10 +24,12 @@ modal {
 }
 
 
-nfield{
-    padding-left: 6px;
+
+em.nfield-spacing{
+    padding-right: 5px;
 }
 
-emailInput {
-    padding-left: 2px;
+em.passfield-spacing{
+    padding-right: 31px;
 }
+

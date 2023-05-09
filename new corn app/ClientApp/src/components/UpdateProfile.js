@@ -116,16 +116,16 @@ const UpdateProfile = () => {
     return (
 
         <div>
-            <div class='header'>
-                <div class='corner'>
+            <div className='header'>
+                <div className='corner'>
                 <button onClick={backNavigate}>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="arrow-back" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="arrow-back" viewBox="0 0 16 16">
+                        <path fillRule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
                     </svg>
 
                     </button>
                     </div>
-            <h1 class = 'title'>Update Your User Profile</h1>
+            <h1 class= 'title'>Update Your User Profile</h1>
             
             </div>
 
@@ -133,30 +133,33 @@ const UpdateProfile = () => {
             <p>Current User Email: {user && user.email}</p>
             <p>Current Display Name: {user && user.displayName}</p>
             <br />
-            <em>Enter your new display name: </em>
-            <nfield>
+            <div>
+                <em className="nfield-spacing">Enter your new display name: </em>
+            
                 <input type="text" onChange={handleNameInputChange} value={newNameInput} />
-            </nfield>
-            <button onClick={handleNameChange}>Save new name</button>
+            
+                <button onClick={handleNameChange}>Save new name</button>
+            </div>
             <br />
-            <br />
-            <em>Enter your new email address: </em>
-            <emailInput>
+            <div>
+            <em className="emailfield-spacing">Enter your new email address: </em>
+            
                 <input type="text" onChange={handleEmailInputChange} value={newEmailInput} />
-            </emailInput>
-            <button onClick={handleEmailChange}>Save new email address</button>
+                <button onClick={handleEmailChange}>Save new email address</button>
+            </div>
+            
             <br />
-            <br />
-            <em>Enter your new password: </em>
-            <passInput>
+            <div>
+            <em className="passfield-spacing">Enter your new password: </em>
+            
                 <input type="text" onChange={handlePasswordInputChange} value={newPasswordInput} />
-            </passInput>
+            
             <button onClick={handlePasswordChange}>Save new password</button>
-
+            </div>
             <br />
                 
-            <div class='changeImage'>
-                <p>
+            <div className='changeImage'>
+                
                 <span>
                     <p>Current profile photo:</p>
                 </span>
@@ -219,7 +222,7 @@ const UpdateProfile = () => {
                 </Modal.Body>
                 
                     </Modal>
-                </p>
+                
             </div>
 
         </div>
