@@ -55,6 +55,10 @@ const InstructorSessionView = () => {
     // for timer
     let isSwitchOn = false;
 
+    // for anonymous session
+    let isAnonymousOn = false;
+
+
     const [answerCountMap, setAnswerCountMap] = useState();
 
     // for timer
@@ -67,6 +71,18 @@ const InstructorSessionView = () => {
         updates['classes/' + chosenClass + '/sessionActive/timerToggled'] = isSwitchOn;
         update(ref(db), updates);
 
+    };
+
+    // for anonymous session
+    const onAnonymousAction = () => {
+        console.log('IN THE ANONYMOUS SWITCH FUNCTION');
+        isAnonymousOn = !isAnonymousOn;
+        console.log(isAnonymousOn);
+
+        /*
+        const updates = {};
+        updates['classes/' + chosenClass + '/sessionActive/timerToggled'] = isSwitchOn;
+        update(ref(db), updates); */
     };
 
     const clearQuestionIndexDB = () => {
@@ -381,6 +397,12 @@ const InstructorSessionView = () => {
                 id="custom-switch"
                 label="Set timer?"
                 onChange={onSwitchAction}
+            />
+            <Form.Check // prettier-ignore
+                type="switch"
+                id="custom-switch"
+                label="Anonymous Session?"
+                onChange={onAnonymousAction}
             />
             <Button onClick={() => { setNextQuestionIndex(nextQuestionIndex + 1); setAnswerCountMap(new Map()) }}>Display Next Question</Button>
 
