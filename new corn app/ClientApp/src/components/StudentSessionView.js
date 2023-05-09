@@ -27,7 +27,7 @@ const StudentSessionView = () => {
     });
 
     // get the id of the currently selected question set
-    const chosenQuestionSet = "1234";
+    const chosenQuestionSet = '-NV0XiVh5AW93RezT5NF';
 
     // current question displayed to students
     const [currQuestion, setCurrQuestion] = useState();
@@ -71,7 +71,7 @@ const StudentSessionView = () => {
 
     // update displayed question prompt to match currQuestion index in DB
     useEffect(() => {
-        const questionSetAll = get(child(ref(db), 'questionSets/' + chosenQuestionSet)).then((snapshot2) => {
+        const questionSetAll = get(child(ref(db), 'questionSets/' + chosenQuestionSet + '/qSet')).then((snapshot2) => {
             if (snapshot2.exists()) {
                 console.log(snapshot2.val());
                 return snapshot2.val();
@@ -93,7 +93,7 @@ const StudentSessionView = () => {
                 setCurrQuestionIndex(currentQuestion);
                 setCurrQuestion(questionSetAll[currentQuestion]['qText']);
 
-                if (questionSetAll[currentQuestion]['qType'] === "short") {
+                if (questionSetAll[currentQuestion]['qType']['value'] === "short") {
                     setIsFRQ(true);
 
                 }
