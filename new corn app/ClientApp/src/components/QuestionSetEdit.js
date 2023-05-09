@@ -82,15 +82,24 @@ const QuestionSetEdit = () => {
         navigate('/class')
     }
 
+    //make sure no empty fields
+    const validateQSet = () => {
+        return qSetName !== "" && questionSet.length != 0
+    }
+
     //for existing sets
     const saveExistingSet = () => {
-
-        const newKey = push(child(ref(getDatabase()), 'questionSets')).key
-        //save qSet
-        saveQuestion(newKey)
-
-        //TODO: leave page and dont break everything
-        navigate('/class')
+        if(validateQSet()) {
+            const newKey = push(child(ref(getDatabase()), 'questionSets')).key
+            //save qSet
+            saveQuestion(newKey)
+    
+            //TODO: leave page and dont break everything
+            navigate('/class')
+        }
+        else {
+            console.log("empty name or set")
+        }
     }
 
     //cancel question edit
