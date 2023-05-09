@@ -7,6 +7,7 @@ import { Button } from 'react-bootstrap';
 import ReactDOM from 'react-dom';
 import Countdown from 'react-countdown';
 import { useNavigate } from 'react-router-dom';
+import './CSS/StudentSessionView.css'
 
 const db = getDatabase();
 
@@ -91,6 +92,7 @@ const StudentSessionView = () => {
                 setRestartTimer(Date.now());
                 const currentQuestion = snapshot.val();
                 setCurrQuestionIndex(currentQuestion);
+                setAnswerSelected();
                 setCurrQuestion(questionSetAll[currentQuestion]['qText']);
 
                 if (questionSetAll[currentQuestion]['qType']['value'] === "short") {
@@ -204,9 +206,11 @@ const StudentSessionView = () => {
                         {currQuestionAnswers.map((element, index) => {
                             return (
                                 <div key={index}>
-                                    <ListGroup.Item action onClick={() => { setAnswerSelected(element) }}>{String(element)}</ListGroup.Item>
+                                    <ListGroup.Item action active={String(element) == answerSelected} onClick={() => { setAnswerSelected(element) }}>{String(element)}</ListGroup.Item>
                                 </div>
                             );
+                            
+                            
                         })}
 
                     </ListGroup>

@@ -4,6 +4,7 @@ import { ref as sRef, onValue, getDatabase, get, child, ref, update } from 'fire
 import { UserAuth } from '../../context/AuthContext';
 import { Table } from 'react-bootstrap';
 import { database } from '../../firebase';
+import Toast from 'react-bootstrap/Toast';
 
 const db = getDatabase();
 
@@ -64,6 +65,14 @@ const RealTimeData = () => {
         newClass = chosenClass;
     }, [chosenClass]);
 
+    // get the display name of the currently selected class
+    let chosenClassDisplayName = "";
+    const displayNameRef = ref(db, 'classes/' + chosenClass + "/className/");
+    onValue(displayNameRef, (snapshot) => {
+        const data = snapshot.val();
+        chosenClassDisplayName = data;
+    });
+
     // join a session
     // TODO use selected class ID
     const joinSession = (selectedClassID) => {
@@ -109,6 +118,7 @@ const RealTimeData = () => {
                 }
                 // user is a student and session not active, TODO display popup that session not started
                 else {
+                    setNoSession(true);
                     console.log("user is a student and session not active");
                 }
             } else {
@@ -118,9 +128,22 @@ const RealTimeData = () => {
             console.error(error);
         });
     };
+    const [showNoSession, setNoSession] = useState(false);
 
     return (
         <div>
+            {/* Joining Class Session When Not Active*/}
+            <div className="toast-container
+                position-absolute
+                top-30 start-50
+                translate-middle-x">
+                <Toast onClose={() => setNoSession(false)} show={showNoSession} delay={3000} autohide='true'>
+                    <Toast.Header>
+                        <strong className="me-auto">Class Session</strong>
+                    </Toast.Header>
+                    <Toast.Body>The session for {chosenClassDisplayName} has not started yet. </Toast.Body>
+                </Toast>
+            </div>
             <Table striped bordered hover>
                 <thead>
                     <tr>

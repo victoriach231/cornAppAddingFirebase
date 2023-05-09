@@ -8,6 +8,7 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import { getDatabase, ref, child, get, onValue, update, remove, set } from "firebase/database";
 import { useState, useEffect } from 'react';
 import { Modal } from 'react-bootstrap';
+import './CSS/Class.css'
 
 
 const Class = (props) => {
@@ -48,6 +49,7 @@ const Class = (props) => {
 
     // toggle side bar that shows students currently in the session~
     const [showStudentsBar, setShowStudentsBar] = useState(false);
+    const [sessionActive, setSessionActive] = useState("false");
     const handleStudentBarClose = () => setShowStudentsBar(false);
     const handleStudentBarShow = () => setShowStudentsBar(true);
 
@@ -80,6 +82,8 @@ const Class = (props) => {
         get(child(ref(getDatabase()), 'classes/' + chosenClass + '/sessionActive')).then((snapshot) => {
             if (snapshot.exists()) {
                 console.log(snapshot.val()['sessionActive']);
+                setSessionActive((!snapshot.val()['sessionActive']).toString());
+                
                 set(ref(getDatabase(), 'classes/' + chosenClass + '/sessionActive'), {
 
                     sessionActive: !snapshot.val()['sessionActive'],
@@ -306,7 +310,10 @@ const Class = (props) => {
             </button>
 
             <br />
+            <div className="sessionActivity">
             <button className="btn btn-primary" onClick={startSession}>Start session</button>
+                <p>Session Active: {sessionActive.toString()} </p>
+            </div>
 
             <br />
             <button className="btn btn-primary" onClick={goToSessionPage}>Visit session page</button>
