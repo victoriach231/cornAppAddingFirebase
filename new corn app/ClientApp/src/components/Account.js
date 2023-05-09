@@ -167,7 +167,7 @@ const Account = () => {
        
         <div>
             {/* Confirmation of Class Creation */}
-            <div class="toast-container
+            <div className="toast-container
                 position-absolute
                 top-30 start-50
                 translate-middle-x">
@@ -179,7 +179,7 @@ const Account = () => {
                 </Toast>
             </div>
             {/* Confirmation of Joining Class */}
-            <div class="toast-container
+            <div className="toast-container
                 position-absolute
                 top-30 start-50
                 translate-middle-x">
@@ -191,7 +191,7 @@ const Account = () => {
                 </Toast>
             </div>
             {/* Incorrect Code for Joining Class */}
-            <div class="toast-container
+            <div className="toast-container
                 position-absolute
                 top-30 start-50
                 translate-middle-x
@@ -213,13 +213,13 @@ const Account = () => {
                 <Dropdown>
                     <Dropdown.Toggle id="dropdown-basic">
                         <div className='userInfo'>
-                        <img src={user && user.photoURL} class="userImg" alt="default profile image" />
+                        <img src={user && user.photoURL} className="userImg" alt="default profile image" />
 
                         {user && user.displayName}
                         </div>
                     </Dropdown.Toggle>
                     <Dropdown.Menu>   
-                <div class='dropdownItems'>
+                <div className='dropdownItems'>
                 <Dropdown.Item onClick={updateProfile}>Update Profile</Dropdown.Item>
                             <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
                         </div> 
@@ -245,10 +245,10 @@ const Account = () => {
                 <Modal.Body>
                 <div className='accountClass'>
                     <h6>Enter class name:</h6>
-                        <input class = 'createClass' type="text" onChange={handleClassInputChange} value={inputText} />
+                        <input className= 'createClass' type="text" onChange={handleClassInputChange} value={inputText} />
                     
                     <div className='mbtn'>
-                        <button class="m" onClick={() => { createClass(); setCreate(true); handleClose() }}>Create Class</button>
+                        <button className="m" onClick={() => { createClass(); setCreate(true); handleClose() }}>Create Class</button>
                         </div>
                     </div>
                 </Modal.Body>
@@ -269,7 +269,7 @@ const Account = () => {
                     <h6>Enter the class code:</h6>
                     <input type="text" onChange={handleClassCodeInputChange} value={classCodeInput} />
                     <div className='mbtn'>
-                        <button class="m" onClick={() => { joinClass(); setJoin(true); handleClassJoinClose() }}>Join Class</button>
+                        <button className="m" onClick={() => { joinClass(); setJoin(true); handleClassJoinClose() }}>Join Class</button>
                         </div>
                     </div>
                 </Modal.Body>

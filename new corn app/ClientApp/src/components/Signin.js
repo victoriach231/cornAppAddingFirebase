@@ -37,31 +37,31 @@ const Signin = () => {
     return (
         <div>
             <img src={logo} alt={"Cornhusker Clicker Logo"} width={304} height={120} />
-        <box>
+            <div className='box'>
             <div>
                 <div>
                         <h1>Sign In</h1>
                 
                 </div>
-                <body>
+                
                 <form onSubmit={handleSubmit}>
                     <div>
                         <label>Email Address</label>
                         <input onChange={(e) => setEmail(e.target.value)} type='email' />
                      </div>
                     <div>
-                            <label>Password</label>
-                        <passInput>
-                                <input onChange={(e) => setPassword(e.target.value)} type='password' />
-                            </passInput>
+                                <label className='passInput'>Password</label>
+                                
+                                    <input onChange={(e) => setPassword(e.target.value)} type='password'  />
+                            
                     </div>
-                        <button class = "button">
+                        <button className= "button">
                         <span>
                                 Sign In
                             </span>
                     </button>
                 </form>
-                </body>
+                
                 <p>
                     Don't have an account yet?{' '}
                     <Link to='/signup' className='underline'>
@@ -69,7 +69,7 @@ const Signin = () => {
               </Link>
                 </p>
                 </div>
-            </box>
+            </div>
         </div>
     );
 };

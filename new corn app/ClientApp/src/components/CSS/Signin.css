@@ -16,7 +16,7 @@ body {
     
 }
 
-box {
+.box {
     background-color: #EBE7E7;
     display: flex;
     flex-direction: row;
@@ -35,8 +35,8 @@ label{
     padding-right: 5pt;
     padding-bottom: 7pt;
 }
-passInput{
-    padding-left: 25pt;
+label.passInput{
+    padding-right: 30pt;
 }
 
 p{
