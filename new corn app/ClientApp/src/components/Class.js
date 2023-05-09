@@ -239,8 +239,8 @@ const Class = (props) => {
                 </div>
 
                 {/* TODO: Style Class Code so it isn't so janky'*/}
-                <h1 class='title'>Class Name: {chosenClassDisplayName}</h1>
-                <h2 class='title'> Class Code: {chosenClassCode}</h2>
+                <h1 className='title'>Class Name: {chosenClassDisplayName}</h1>
+                <h2 className='title'> Class Code: {chosenClassCode}</h2>
 
 
             </div>
@@ -303,21 +303,19 @@ const Class = (props) => {
                 </div>
             </Offcanvas>
 
-            <br />
-            <button className="btn btn-primary" onClick={getCurrClassID}>
-                click to see class id
-
-            </button>
+            
 
             <br />
             <div className="sessionActivity">
             <button className="btn btn-primary" onClick={startSession}>Start session</button>
                 <p>Session Active: {sessionActive} </p>
             </div>
-
-            <br />
             <button className="btn btn-primary" onClick={goToSessionPage}>Visit session page</button>
+            <br />
+            <button className="btn btn-primary" onClick={getCurrClassID}>
+                TESTING: click to see class id
 
+            </button>
         </div>
     );
 };

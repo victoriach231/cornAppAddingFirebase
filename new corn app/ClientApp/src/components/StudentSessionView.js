@@ -83,9 +83,6 @@ const StudentSessionView = () => {
                 console.log("No data available");
             }
         }).then((questionSetAll) => {
-            console.log(questionSetAll);
-            console.log("in here");
-            console.log(chosenClass);
             const questionRef = ref(db, 'classes/' + chosenClass + '/sessionActive/currentQuestion');
             onValue(questionRef, (snapshot) => {
                 setSubmitAnswerDisabled(false);
@@ -113,7 +110,6 @@ const StudentSessionView = () => {
         }).then(() => {
             const timerRef = ref(db, 'classes/' + chosenClass + '/sessionActive/');
             onValue(timerRef, (snapshot) => {
-                console.log('LALALALALALALALA');
                 console.log(snapshot.val()['timerToggled']);
                 //timerState = snapshot.val()['timerToggled'];
                 setTimerState(snapshot.val()['timerToggled']);

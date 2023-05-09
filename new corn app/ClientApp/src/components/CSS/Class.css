@@ -1,3 +1,7 @@
 ﻿body {
 }
 
+.sessionActivity {
+    display: flex;
+    align-items: baseline;
+}

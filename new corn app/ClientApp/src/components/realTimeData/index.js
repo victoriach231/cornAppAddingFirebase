@@ -78,7 +78,6 @@ const RealTimeData = () => {
     const joinSession = (selectedClassID) => {
         get(child(ref(getDatabase()), 'classes/' + selectedClassID + '/sessionActive')).then((snapshot) => {
             if (snapshot.exists()) {
-                console.log(snapshot.val()['sessionActive']);
                 if (snapshot.val()['sessionActive'] === true) {
                     const newStudent = {
                         user: userTable.user.uid
@@ -106,8 +105,6 @@ const RealTimeData = () => {
         get(child(ref(getDatabase()), 'classes/' + selectedClassID)).then((snapshot) => {
 
             if (snapshot.exists()) {
-                console.log(snapshot.val())
-                console.log(snapshot.val()['admin']);
                 if (snapshot.val()['admin'].includes(userTable.user.uid)) {
                     navigate('/class');
                 }
@@ -119,7 +116,6 @@ const RealTimeData = () => {
                 // user is a student and session not active, TODO display popup that session not started
                 else {
                     setNoSession(true);
-                    console.log("user is a student and session not active");
                 }
             } else {
                 console.log("No data available");

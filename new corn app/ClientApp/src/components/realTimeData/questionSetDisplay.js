@@ -20,9 +20,7 @@ const QSetRealTimeData = () => {
 
     const currClass = newClass
 
-    const logVars = () => {
-        console.log(selectedQSetKey)
-    }
+    
 
     //populate table 
     useEffect(() => {
@@ -75,7 +73,7 @@ const QSetRealTimeData = () => {
                 </tbody>
             </Table>
             <button className="btn btn-primary" onClick={() => {createNewQSet()}}>Add new Question Set</button>
-            <button onClick = {logVars}>log vars</button>
+            
         </div>
     )
 }
