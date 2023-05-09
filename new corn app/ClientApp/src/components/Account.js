@@ -95,6 +95,7 @@ const Account = () => {
             if (snapshot.exists()) {
                 console.log(snapshot.val());
                 console.log(snapshot.val()[0]);
+                let classMatch = false;
 
                 snapshot.forEach((childSnapshot) => {
                     if (childSnapshot.val().classCode === classCodeInput) {
@@ -127,15 +128,18 @@ const Account = () => {
                         update2['users/' + user.uid + '/classesEnrolled/' + childSnapshot.key] = newClass;
 
                         update(ref(getDatabase()), update2);
-
+                        classMatch = true;
+                        
 
 
                     }
-                    else {
-                        setJoin(false);
-                        setIncorrectJoin(true);
-                    }
+                    
                 });
+                if (classMatch == false) {
+                    setJoin(false);
+                    console.log("incorrect");
+                    setIncorrectJoin(true);
+                }
             } else {
                 console.log("No data available");
                 setJoin(false);

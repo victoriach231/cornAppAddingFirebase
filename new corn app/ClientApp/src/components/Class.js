@@ -222,18 +222,20 @@ const Class = (props) => {
 
     return (
         <div>
-            <div class='header'>
-                <div class='corner'>
+            <div className='header'>
+                <div className='corner'>
                     <button onClick={backNavigate}>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="arrow-back" viewBox="0 0 16 16">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="arrow-back" viewBox="0 0 16 16">
                             <path fillRule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
                         </svg>
 
                     </button>
                 </div>
+
                 {/* TODO: Style Class Code so it isn't so janky'*/}
                 <h1 class='title'>Class Name: {chosenClassDisplayName}</h1>
                 <h2 class='title'> Class Code: {chosenClassCode}</h2>
+
 
             </div>
 
@@ -251,7 +253,7 @@ const Class = (props) => {
                 <Modal.Body>
                     <h6>Make this student a TA?</h6>
                     <mbtn>
-                        <button class="m" onClick={() => { makeStudentTA() }}>OK</button>
+                        <button className="m" onClick={() => { makeStudentTA() }}>OK</button>
                     </mbtn>
                 </Modal.Body>
 
@@ -294,19 +296,19 @@ const Class = (props) => {
             </Offcanvas>
 
             <br />
-            <button class="btn btn-primary" onClick={getCurrClassID}>
+            <button className="btn btn-primary" onClick={getCurrClassID}>
                 click to see class id
 
             </button>
 
             <br />
-            <button class="btn btn-primary" onClick={startSession}>Start session</button>
+            <button className="btn btn-primary" onClick={startSession}>Start session</button>
 
             <br />
-            <button class="btn btn-primary" onClick={goToSessionPage}>Visit session page</button>
+            <button className="btn btn-primary" onClick={goToSessionPage}>Visit session page</button>
 
             <br />
-            <button class="btn btn-primary" onClick={goToQuestionEdit}>Go To Question Set Edit Page</button>
+            <button className="btn btn-primary" onClick={goToQuestionEdit}>Go To Question Set Edit Page</button>
 
         </div>
     );
