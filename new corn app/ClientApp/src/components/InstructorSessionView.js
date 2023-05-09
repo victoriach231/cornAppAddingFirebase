@@ -6,6 +6,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import { getDatabase, ref, child, get, onValue, update } from "firebase/database";
 import Form from 'react-bootstrap/Form';
 import { useNavigate } from 'react-router-dom';
+import Badge from 'react-bootstrap/Badge';
 
 
 //TODO: solve -1 error for seeing last questions responses
@@ -289,8 +290,9 @@ const InstructorSessionView = () => {
 
                         let studentNameList = [];
 
-
-                        idsOfStudentsInSession.forEach(element => studentNameList.push(snapshot.val()[element]['name']));
+                        console.log(currentQuestionIndex);
+                        idsOfStudentsInSession.forEach(element => console.log(data[element]['responses']));
+                        idsOfStudentsInSession.forEach(element => studentNameList.push([snapshot.val()[element]['name'], data[element]['responses'][currentQuestionIndex]]));
 
 
                         console.log(studentNameList);
@@ -340,7 +342,7 @@ const InstructorSessionView = () => {
                             {studentsInSession.map((element, index) => {
                                 return (
                                     <div key={index}>
-                                        <ListGroup.Item>{element}</ListGroup.Item>
+                                        <ListGroup.Item>{element[0]}<Badge bg="primary" pill>{element[1]}</Badge></ListGroup.Item>
                                     </div>
                                 );
                             })}
