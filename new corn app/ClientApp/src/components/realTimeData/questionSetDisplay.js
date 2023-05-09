@@ -1,51 +1,59 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ref as sRef, onValue, getDatabase, get, child, ref, update } from 'firebase/database';
+import { ref , onValue, getDatabase, get, child, update } from 'firebase/database';
 import { UserAuth } from '../../context/AuthContext';
 import { newClass } from './index';
 import { Table } from 'react-bootstrap';
 
 const db = getDatabase()
-const currClass = newClass
+
 
 // store the currently selected qSet and export it to other files
-let currQSetKey = "";
+let selectedQSetKey = "";
 let isNewSet = false;
 
 const QSetRealTimeData = () => {
     const [tableData, setTableData] = useState([]);
     // store the qSet selected within the table, local
-    const [chosenQSet, setChosenQset] = useState('');
 
     const navigate = useNavigate();
 
-    //set the current key when selected qSetChanges
-    useEffect(() => {currQSetKey = chosenQSet}, [chosenQSet])
+    const currClass = newClass
 
     //populate table 
     useEffect(() => {
         // get all classes in firebase
-        const dbRef2 = sRef(db, 'classes/questionSets');
+        console.log(currClass)
+        const dbRef2 = ref(db, 'classes/'+ currClass +'/questionSets');
         onValue(dbRef2, (snapshot) => {
             let records = [];
+
             console.log("before")
+            console.log(snapshot.key)
+            console.log(snapshot.hasChildren())
 
             snapshot.forEach(child => {
                 console.log(child.val())
+
                 let qSetKey = child.key
                 let qSetName = child.child("name").val()
 
-                records.push({key: qSetKey, name: qSetName})
-                
+                console.log(qSetKey)
+                console.log(qSetName)
 
+
+
+                records.push({key: qSetKey, name: qSetName})
             })
             console.log("after")
             setTableData(records)
         })
     }, [])
 
-    // navigate to the qSetEditor, theoretically the chosen set has been saved already
-    const goToQSetEditor = () => {
+    // navigate to the qSetEditor, saving the key as we go
+    const goToQSetEditor = (text) => {
+        console.log(text)
+        selectedQSetKey = text
         navigate('/edit-questions')
     }
     
@@ -69,8 +77,8 @@ const QSetRealTimeData = () => {
                     {tableData.map((rowdata, index) => {
                         return (
                             <tr key={index}>
-                                <td onClick={() => { setChosenQset(rowdata.key); goToQSetEditor() }}>{index}</td>
-                                <td onClick={() => { setChosenQset(rowdata.key); goToQSetEditor() }}> {rowdata.name}</td>
+                                <td onClick={() => { goToQSetEditor(rowdata.key) }}>{index}</td>
+                                <td onClick={() => { goToQSetEditor(rowdata.key) }}>{rowdata.name}</td>
                             </tr>
                         )
                     })}
@@ -81,4 +89,4 @@ const QSetRealTimeData = () => {
     )
 }
 
-export { QSetRealTimeData, currQSetKey, isNewSet };
+export { QSetRealTimeData, selectedQSetKey, isNewSet };

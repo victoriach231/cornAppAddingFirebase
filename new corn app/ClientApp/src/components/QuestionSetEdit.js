@@ -1,22 +1,21 @@
 ﻿import React from 'react';
+import { selectedQSetKey, isNewSet } from './realTimeData/questionSetDisplay';
 import { useNavigate } from 'react-router-dom';
-import { UserAuth } from '../context/AuthContext';
 import { getDatabase, ref, set, child, get, push, update, query, onValue } from "firebase/database";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import Select from 'react-select';
 import { Modal, Button, ListGroup } from 'react-bootstrap';
 import { newClass } from './realTimeData/index';
 
 const QuestionSetEdit = () => {
-    const { user, logout } = UserAuth();
     const navigate = useNavigate();
 
     //TODO: discuss db structure
 
     const currClass = newClass 
-    const currQSetKey = "" //if new create key, if existing, should be existing key
+    const currQSetKey = selectedQSetKey //existing key
 
-    const isNewQuestion = true
+    const isNewQSet = isNewSet
 
     //default multiple choice options
     const defaultChoices = [
@@ -69,7 +68,7 @@ const QuestionSetEdit = () => {
                 //should use above but we've already had code done relying on .key rather than .value >:(
 
                 const updates = {}
-                updates['classes/' + currClass + "/questionSets/" + currQSetKey] = currQSetKey
+                updates['classes/' + currClass + "/questionSets/" + currQSetKey] = {name: qSetName}
 
                 update(ref(getDatabase()), updates)
             }
@@ -309,7 +308,11 @@ const QuestionSetEdit = () => {
     const logQSet = () => {
         // console.log(questionSet)
         // console.log(questionIndex)
-        testQuestion()
+        // testQuestion()
+        console.log("currclass")
+        console.log(currClass)
+        console.log("qsetkey")
+        console.log(currQSetKey)
     }
     
     const logVars = () => {
