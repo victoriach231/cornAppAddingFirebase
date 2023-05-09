@@ -183,36 +183,36 @@ const UpdateProfile = () => {
                     <form onSubmit={handleSubmit}>
                         <Form.Group controlId="imageSelected">
                             <Form.Check
-                                value="default.png"
+                                value="./images/default.png"
                                 type="radio"
                                 aria-label="radio 1"
-                                label=<img src="default.png" alt="default profile image 1" />
+                                label=<img src="./images/default.png" alt="default profile image 1" />
                                 onChange={handleChange}
-                                checked={imageSelected === "default.png"}
+                                checked={imageSelected === "./images/default.png"}
                             />
                             <Form.Check
-                                value="woman.png"
+                                value="./images/woman.png"
                                 type="radio"
                                 aria-label="radio 2"
-                                label=<img src="woman.png" alt="default profile image 2" />
+                                label=<img src="./images/woman.png" alt="default profile image 2" />
                                 onChange={handleChange}
-                                checked={imageSelected === "woman.png"}
+                                checked={imageSelected === "./images/woman.png"}
                             />
                             <Form.Check
-                                value="turtle.png"
+                                value="./images/turtle.png"
                                 type="radio"
                                 aria-label="radio 3"
-                                label=<img src="turtle.png" alt="default profile image 3 " />
+                                label=<img src="./images/turtle.png" alt="default profile image 3 " />
                                 onChange={handleChange}
-                                checked={imageSelected === "turtle.png"}
+                                checked={imageSelected === "./images/turtle.png"}
                             />
                             <Form.Check
-                                value="penguin.png"
+                                value="./images/penguin.png"
                                 type="radio"
                                 aria-label="radio 4"
-                                label=<img src="penguin.png" alt="default profile image 4" />
+                                label=<img src="./images/penguin.png" alt="default profile image 4" />
                                 onChange={handleChange}
-                                checked={imageSelected === "penguin.png"}
+                                checked={imageSelected === "./images/penguin.png"}
                             />
                         </Form.Group>
                         <Button variant="primary" type="submit">
