@@ -67,7 +67,7 @@ const Signup = () => {
     return (
         <div>
             <img src={logo} alt={"Cornhusker Clicker Logo"} width={304} height={120} />
-        <box>
+        <div className='box'>
         <div>
             <div>
                 <h1>Sign Up</h1>
@@ -75,13 +75,13 @@ const Signup = () => {
             </div>
             <form onSubmit={handleSubmit}>
                 <div>
-                    <label>Name</label>
-                    <nameField>
+                    <label className='nameField'>Name</label>
+                    
                     <input
                         onChange={(e) => setDisplayNameInput(e.target.value)}
                         type='displayNameInput'
                         />
-                    </nameField>
+                    
                 </div>
                 <div>
                     <label>Email Address</label>
@@ -92,15 +92,15 @@ const Signup = () => {
                 </div>
                 <div>
                     
-                    <label>Password</label>
-                    <passInput>
+                    <label className='passInput'>Password</label>
+                    
                     <input
                         onChange={(e) => setPassword(e.target.value)}
                         type='password'
                         />
-                    </passInput>
+                    
                 </div>
-                    <button class="button">
+                    <button className="button">
                 <span>Sign Up</span>
         </button>
             </form>
@@ -111,7 +111,7 @@ const Signup = () => {
           </Link>
             </p>
             </div>
-            </box>
+            </div>
         </div>
     );
 };
