@@ -2,11 +2,13 @@
 import { Table } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { newClass } from './realTimeData/index';
+import { QSetRealTimeData } from './realTimeData/questionSetDisplay'
 import ListGroup from 'react-bootstrap/ListGroup';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { getDatabase, ref, child, get, onValue, update, remove, set } from "firebase/database";
 import { useState, useEffect } from 'react';
 import { Modal } from 'react-bootstrap';
+
 
 const Class = (props) => {
     const db = getDatabase();
@@ -241,6 +243,8 @@ const Class = (props) => {
 
             <p>Hi welcome to your class</p>
             <br />
+
+            <QSetRealTimeData />
 
             <Button variant="primary" onClick={handleStudentBarShow}>
                 See students in the class

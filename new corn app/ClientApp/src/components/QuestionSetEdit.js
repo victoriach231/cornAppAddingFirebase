@@ -1,24 +1,18 @@
-﻿import React from 'react';
-import { RealTimeData } from "./realTimeData/index";
+﻿import { selectedQSetKey, isNewSet } from './realTimeData/questionSetDisplay';
 import { useNavigate } from 'react-router-dom';
-import { UserAuth } from '../context/AuthContext';
-import { database } from '../firebase';
 import { getDatabase, ref, set, child, get, push, update, query, onValue } from "firebase/database";
-import { ChangeEvent, useState } from "react";
+import { React, useState, useEffect } from "react";
 import Select from 'react-select';
 import { Modal, Button, ListGroup } from 'react-bootstrap';
 import { newClass } from './realTimeData/index';
 
 const QuestionSetEdit = () => {
-    const { user, logout } = UserAuth();
     const navigate = useNavigate();
 
-    //TODO: discuss db structure
-
     const currClass = newClass 
-    const currQSetKey = "" //if new create key, if existing, should be existing key
+    const currQSetKey = selectedQSetKey //existing key
 
-    const isNewQuestion = true
+    const isNewQSet = isNewSet
 
     //default multiple choice options
     const defaultChoices = [
@@ -41,56 +35,48 @@ const QuestionSetEdit = () => {
         set(ref(getDatabase(), 'questionSets/' + key), {name: qSetName, qSet: questionSet});
     }
 
-    const testQuestion = () => {
-        
-        get(child(ref(getDatabase()), 'questionSets/')).then((snapshot) => {
-            const numSets = snapshot.child("abc").size
-            console.log(numSets)
-
-            const updates = {}
-            updates['questionSets/testing/' + numSets] = numSets;
-
-            update(ref(getDatabase()), updates);
-
-            console.log(snapshot.hasChild("testing"))
-
-        });
-    }
-
     //for new sets
-    const addQuestionSet = () => {
+    const addNewQuestionSet = () => {
         const newKey = push(child(ref(getDatabase()), 'questionSets')).key
 
         //create new qset in database
-        saveQuestion()
+        saveQuestion(newKey)
 
         //add new qSet to class
-        get(child(ref(getDatabase()), 'classes/' + currClass)).then((snapshot) => {
-            if(snapshot.exists){
-                // const numSets = snapshot.size
-                //should use above but we've already had code done relying on .key rather than .value >:(
-
-                const updates = {}
-                updates['classes/' + currClass + "/questionSets/" + currQSetKey] = currQSetKey
-
-                update(ref(getDatabase()), updates)
-            }
-        }).catch((error) => {
-            console.error(error);
-        })
+        update(ref(getDatabase(),'classes/' + currClass + '/questionSets/' + newKey), {name: qSetName})
 
         navigate('/class')
     }
 
+    //make sure no empty fields
+    const validateQSet = () => {
+        return qSetName !== "" && questionSet.length != 0
+    }
+
     //for existing sets
-    const saveExistingSet = () => {
-
-        const newKey = push(child(ref(getDatabase()), 'questionSets')).key
+    const saveExistingQuestionSet = () => {
         //save qSet
-        saveQuestion(newKey)
+        saveQuestion(currQSetKey)
 
-        //TODO: leave page and dont break everything
+        //change name
+        update(ref(getDatabase(),'classes/' + currClass + '/questionSets/' + currQSetKey), {name: qSetName})
+
         navigate('/class')
+    }
+
+    //save question handler
+    const saveQuestionSetHandler = () => {
+        if(validateQSet()) {
+            if(isNewQSet) {
+                addNewQuestionSet()
+            }
+            else {
+                saveExistingQuestionSet()
+            }
+        }
+        else {
+            console.log("qset or name is empty")
+        }
     }
 
     //cancel question edit
@@ -299,10 +285,45 @@ const QuestionSetEdit = () => {
         { value: false, label: "False" }
     ]
 
+
+    //populate fields on load
+    
+    //get questionSet 
+    useEffect(() => {
+        if(!isNewQSet) {
+            let newSet = []
+            get(child(ref(getDatabase()), 'questionSets/' + currQSetKey)).then((snapshot) => {
+                if(snapshot.exists() && snapshot.hasChildren()){
+                    let name = snapshot.child("name").val()
+                    setQSetName(name)
+                    snapshot.child("qSet").forEach(questionSnap => {
+                        let question = questionSnap.val()
+                        if(snapshot.child("answers").exists()) {
+                            let answerArr = []
+                            questionSnap.child("answers").forEach((answer) => {
+                                answerArr.push(answer.val())
+                            })
+                            question.answers = answerArr
+                        }
+                        newSet.push(question)
+                    })
+
+                }
+            })
+            setQuestionSet(newSet)
+        }    
+    }, [])
+
     const logQSet = () => {
         // console.log(questionSet)
         // console.log(questionIndex)
-        testQuestion()
+        // testQuestion()
+        console.log("currclass")
+        console.log(currClass)
+        console.log("qsetkey")
+        console.log(currQSetKey)
+        console.log("question set")
+        console.log(questionSet)
     }
     
     const logVars = () => {
@@ -350,7 +371,7 @@ const QuestionSetEdit = () => {
             <button onClick={logQSet}>test button</button>
             <div>
                 <Button onClick={cancel} variant='secondary'>Cancel</Button>
-                <Button onClick={saveExistingSet} variant='primary'>Save & Exit</Button>
+                <Button onClick={saveQuestionSetHandler} variant='primary'>Save & Exit</Button>
             </div>
             
 
