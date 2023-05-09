@@ -79,11 +79,6 @@ const InstructorSessionView = () => {
         console.log('IN THE ANONYMOUS SWITCH FUNCTION');
         isAnonymousOn = !isAnonymousOn;
         console.log(isAnonymousOn);
-
-        /*
-        const updates = {};
-        updates['classes/' + chosenClass + '/sessionActive/timerToggled'] = isSwitchOn;
-        update(ref(db), updates); */
     };
 
     const clearQuestionIndexDB = () => {
@@ -292,8 +287,15 @@ const InstructorSessionView = () => {
 
                         console.log(currentQuestionIndex);
                         idsOfStudentsInSession.forEach(element => console.log(data[element]['responses']));
-                        idsOfStudentsInSession.forEach(element => studentNameList.push([snapshot.val()[element]['name'], data[element]['responses'][currentQuestionIndex]]));
 
+                        // if not in anonymous session, show student answers in list of students in session
+                        if (!isAnonymousOn) {
+                            idsOfStudentsInSession.forEach(element => studentNameList.push([snapshot.val()[element]['name'], data[element]['responses'][currentQuestionIndex]]));
+                        } else {
+                            // otherwise, show a checkmark indicating student has answered
+                            console.log("checkmarkkkkkk");
+                            idsOfStudentsInSession.forEach(element => studentNameList.push([snapshot.val()[element]['name'], "✅"]));
+                        }
 
                         console.log(studentNameList);
                         setStudentsInSession(studentNameList);
