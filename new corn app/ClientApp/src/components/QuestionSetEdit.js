@@ -1,6 +1,6 @@
 ﻿import { selectedQSetKey, isNewSet } from './realTimeData/questionSetDisplay';
 import { useNavigate } from 'react-router-dom';
-import { getDatabase, ref, set, child, get, push, update, query, onValue } from "firebase/database";
+import { getDatabase, ref, set, child, get, push, update } from "firebase/database";
 import { React, useState, useEffect } from "react";
 import Select from 'react-select';
 import { Modal, Button, ListGroup } from 'react-bootstrap';
