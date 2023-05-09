@@ -1,10 +1,8 @@
 ﻿import React from 'react';
-import { RealTimeData } from "./realTimeData/index";
 import { useNavigate } from 'react-router-dom';
 import { UserAuth } from '../context/AuthContext';
-import { database } from '../firebase';
 import { getDatabase, ref, set, child, get, push, update, query, onValue } from "firebase/database";
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import Select from 'react-select';
 import { Modal, Button, ListGroup } from 'react-bootstrap';
 import { newClass } from './realTimeData/index';

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ref as sRef, onValue, getDatabase, get, child, ref, update } from 'firebase/database';
 import { UserAuth } from '../../context/AuthContext';
-import { newClass } from './index.js';
+import { newClass } from './index';
 import { Table } from 'react-bootstrap';
 
 const db = getDatabase()
@@ -22,14 +22,16 @@ const QSetRealTimeData = () => {
     //set the current key when selected qSetChanges
     useEffect(() => {currQSetKey = chosenQSet}, [chosenQSet])
 
-    //create Table
+    //populate table 
     useEffect(() => {
         // get all classes in firebase
         const dbRef2 = sRef(db, 'classes/questionSets');
-
         onValue(dbRef2, (snapshot) => {
             let records = [];
+            console.log("before")
+
             snapshot.forEach(child => {
+                console.log(child.val())
                 let qSetKey = child.key
                 let qSetName = child.child("name").val()
 
@@ -37,6 +39,7 @@ const QSetRealTimeData = () => {
                 
 
             })
+            console.log("after")
             setTableData(records)
         })
     }, [])
@@ -53,27 +56,28 @@ const QSetRealTimeData = () => {
     }
 
     return(
-    <div>
-        <Table striped bordered hover>
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Class Name</th>
-                </tr>
-            </thead>
+        <div>
+            <Table striped bordered hover>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Question Set Name</th>
+                    </tr>
+                </thead>
 
-            <tbody>
-                {tableData.map((rowdata, index) => {
-                    return (
-                        <tr key={index}>
-                            <td onClick={() => { setChosenQset(rowdata.key); goToQSetEditor() }}> {rowdata.name}</td>
-                        </tr>
-                    )
-                })}
-            </tbody>
-        </Table>
-        <button onClick={() => {createNewQSet()}}>Add new Question Set</button>
-    </div>
+                <tbody>
+                    {tableData.map((rowdata, index) => {
+                        return (
+                            <tr key={index}>
+                                <td onClick={() => { setChosenQset(rowdata.key); goToQSetEditor() }}>{index}</td>
+                                <td onClick={() => { setChosenQset(rowdata.key); goToQSetEditor() }}> {rowdata.name}</td>
+                            </tr>
+                        )
+                    })}
+                </tbody>
+            </Table>
+            <button onClick={() => {createNewQSet()}}>Add new Question Set</button>
+        </div>
     )
 }
 
