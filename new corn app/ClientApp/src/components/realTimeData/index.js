@@ -132,7 +132,7 @@ const RealTimeData = () => {
                 <tbody>
                     {tableData.map((rowdata, index) => {
                         return (
-                            <tr>
+                            <tr key={index}>
                                 <td onClick={() => { setChosenClass(rowdata.key); goToClassPage(rowdata.key) }}>{rowdata.data[1]}</td>
                                 <td onClick={() => { setChosenClass(rowdata.key); goToClassPage(rowdata.key) }}> {rowdata.data[0].className}</td>
                             </tr>
