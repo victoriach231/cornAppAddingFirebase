@@ -24,6 +24,14 @@ const InstructorSessionView = () => {
     // get the id of the currently selected class
     const chosenClass = newClass;
 
+    // get the display name of the currently selected class
+    let chosenClassDisplayName = "";
+    const displayNameRef = ref(db, 'classes/' + chosenClass + "/className/");
+    onValue(displayNameRef, (snapshot) => {
+        const data = snapshot.val();
+        chosenClassDisplayName = data;
+    });
+
     // toggle side bar that shows students currently in the session
     const [showStudentsBar, setShowStudentsBar] = useState(false);
     const handleStudentBarClose = () => setShowStudentsBar(false);
@@ -298,7 +306,7 @@ const InstructorSessionView = () => {
                     </button>
                 </div>
             </div>
-            <p> Instructor Session View: *class name* </p>
+            <p> Instructor Session View: {chosenClassDisplayName} </p>
             <br />
 
             <Button variant="primary" onClick={handleStudentBarShow}>

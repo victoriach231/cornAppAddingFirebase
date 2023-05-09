@@ -18,6 +18,14 @@ const StudentSessionView = () => {
     // get the id of the currently selected class
     const chosenClass = newClass;
 
+    // get the display name of the currently selected class
+    let chosenClassDisplayName = "";
+    const displayNameRef = ref(db, 'classes/' + chosenClass + "/className/");
+    onValue(displayNameRef, (snapshot) => {
+        const data = snapshot.val();
+        chosenClassDisplayName = data;
+    });
+
     // get the id of the currently selected question set
     const chosenQuestionSet = "1234";
 
@@ -166,7 +174,20 @@ const StudentSessionView = () => {
             }
             
             <br />
+
+            <h1>Class: {chosenClassDisplayName}</h1>
             <p>student session view</p>
+
+            <div className='drop'>
+                <Button>
+                    <div className='userInfo'>
+                        <img src={user && user.photoURL} class="userImg" alt="default profile image" />
+
+                        {user && user.displayName}
+                    </div>
+                </Button>
+            </div>
+
             <p>{currQuestion}</p>
             <br />
 
