@@ -312,14 +312,11 @@ const Class = (props) => {
             <br />
             <div className="sessionActivity">
             <button className="btn btn-primary" onClick={startSession}>Start session</button>
-                <p>Session Active: {sessionActive.toString()} </p>
+                <p>Session Active: {sessionActive} </p>
             </div>
 
             <br />
             <button className="btn btn-primary" onClick={goToSessionPage}>Visit session page</button>
-
-            <br />
-            <button className="btn btn-primary" onClick={goToQuestionEdit}>Go To Question Set Edit Page</button>
 
         </div>
     );

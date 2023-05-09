@@ -74,7 +74,7 @@ const QSetRealTimeData = () => {
                     })}
                 </tbody>
             </Table>
-            <button onClick={() => {createNewQSet()}}>Add new Question Set</button>
+            <button className="btn btn-primary" onClick={() => {createNewQSet()}}>Add new Question Set</button>
             <button onClick = {logVars}>log vars</button>
         </div>
     )
