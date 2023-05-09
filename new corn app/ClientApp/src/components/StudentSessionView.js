@@ -183,7 +183,7 @@ const StudentSessionView = () => {
                         {currQuestionAnswers.map((element, index) => {
                             return (
                                 <div key={index}>
-                                    <ListGroup.Item action onClick={() => { setAnswerSelected(element) }}>{element}</ListGroup.Item>
+                                    <ListGroup.Item action onClick={() => { setAnswerSelected(element) }}>{String(element)}</ListGroup.Item>
                                 </div>
                             );
                         })}
