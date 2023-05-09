@@ -4,14 +4,31 @@ import { useNavigate } from 'react-router-dom';
 import { newClass } from './realTimeData/index';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-import { getDatabase, ref, child, get, onValue, update, remove, set} from "firebase/database";
+import { getDatabase, ref, child, get, onValue, update, remove, set } from "firebase/database";
 import { useState, useEffect } from 'react';
 import { Modal } from 'react-bootstrap';
 
 const Class = (props) => {
+    const db = getDatabase();
+
     // get the id of the currently selected class
     const chosenClass = newClass;
-    const db = getDatabase();
+
+    // get the display name of the currently selected class
+    let chosenClassDisplayName = "";
+    const displayNameRef = ref(db, 'classes/' + chosenClass + "/className/");
+    onValue(displayNameRef, (snapshot) => {
+        const data = snapshot.val();
+        chosenClassDisplayName = data;
+    });
+
+    // get the class code of the currently selected class
+    let chosenClassCode = "";
+    const classCodeRef = ref(db, 'classes/' + chosenClass + "/classCode/");
+    onValue(classCodeRef, (snapshot) => {
+        const data = snapshot.val();
+        chosenClassCode = data;
+    });
 
     const navigate = useNavigate();
 
@@ -39,6 +56,14 @@ const Class = (props) => {
     const getCurrClassID = () => {
         console.log(chosenClass);
     };
+
+    /*const getCurrClassDispayName = () => {
+        const displayNameRef = ref(db, 'classes/' + chosenClass + "/className/");
+        onValue(displayNameRef, (snapshot) => {
+            const data = snapshot.val();
+            chosenClassDisplayname = data;
+        });
+    }; */
 
     const goToSessionPage = () => {
         navigate('/session-instructor-view');
@@ -74,7 +99,7 @@ const Class = (props) => {
         const studentsRef = ref(getDatabase(), 'classes/' + chosenClass + '/students');
         onValue(studentsRef, (snapshot) => {
             const data = snapshot.val();
-            
+
             // accounts for empty student list
             if (data === null || data.length === 0) {
                 setStudentsInClass([]);
@@ -104,7 +129,7 @@ const Class = (props) => {
             } else {
                 console.log('were here');
             }
- 
+
         });
 
         // grab current tas in class
@@ -162,7 +187,7 @@ const Class = (props) => {
         if (studentNameIDMap) {
             const studentID = studentNameIDMap.get(studentName);
 
-                get(child(ref(getDatabase()), 'classes/' + chosenClass)).then((snapshot) => {
+            get(child(ref(getDatabase()), 'classes/' + chosenClass)).then((snapshot) => {
                 if (snapshot.exists()) {
                     console.log(snapshot.val());
 
@@ -206,34 +231,12 @@ const Class = (props) => {
 
                     </button>
                 </div>
-                {/* TODO: Change 'chosenClass' to class name*/}
-                <h1 class='title'>Class Name {chosenClass}</h1>
+                {/* TODO: Style Class Code so it isn't so janky'*/}
+                <h1 class='title'>Class Name: {chosenClassDisplayName}</h1>
+                <h2 class='title'> Class Code: {chosenClassCode}</h2>
 
             </div>
 
-            <Table striped bordered hover responsive>
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Question Set</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    <tr>
-                        <td>0</td>
-                        <td>Intro To Potatoes</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>Carrot Science</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Celery Economics</td>
-                    </tr>
-                </tbody>
-            </Table>
             <p>Hi welcome to your class</p>
             <br />
 
@@ -309,5 +312,3 @@ const Class = (props) => {
     );
 };
 export default Class;
-
-
