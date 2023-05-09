@@ -20,47 +20,37 @@ const QSetRealTimeData = () => {
 
     const currClass = newClass
 
+    const logVars = () => {
+        console.log(selectedQSetKey)
+    }
+
     //populate table 
     useEffect(() => {
         // get all classes in firebase
-        console.log(currClass)
         const dbRef2 = ref(db, 'classes/'+ currClass +'/questionSets');
         onValue(dbRef2, (snapshot) => {
             let records = [];
-
-            console.log("before")
-            console.log(snapshot.key)
-            console.log(snapshot.hasChildren())
-
             snapshot.forEach(child => {
-                console.log(child.val())
-
                 let qSetKey = child.key
                 let qSetName = child.child("name").val()
 
-                console.log(qSetKey)
-                console.log(qSetName)
-
-
-
                 records.push({key: qSetKey, name: qSetName})
             })
-            console.log("after")
             setTableData(records)
         })
     }, [])
 
     // navigate to the qSetEditor, saving the key as we go
     const goToQSetEditor = (text) => {
-        console.log(text)
         selectedQSetKey = text
+        isNewSet = false
         navigate('/edit-questions')
     }
     
     //navigate to qSetEditor, with 
     const createNewQSet = () => {
         isNewSet = true;
-        goToQSetEditor()
+        goToQSetEditor("")
     }
 
     return(
@@ -85,6 +75,7 @@ const QSetRealTimeData = () => {
                 </tbody>
             </Table>
             <button onClick={() => {createNewQSet()}}>Add new Question Set</button>
+            <button onClick = {logVars}>log vars</button>
         </div>
     )
 }
