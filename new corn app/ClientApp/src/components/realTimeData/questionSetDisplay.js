@@ -146,7 +146,7 @@ const QSetRealTimeData = () => {
             <button className="btn btn-primary" onClick={startSession} disabled={sessionActive}>Start session</button>
                 <p>Session Active: {sessionActive.toString()} </p>
             </div>
-            <button onClick={goToSession} disabled={!sessionActive}>Join Session</button>
+            <button onClick={goToSession} disabled={!sessionActive}>View Session</button>
             <button onClick={stopSession} disabled={!sessionActive}>Stop Session</button>
         </div>
     )

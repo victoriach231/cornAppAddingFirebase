@@ -5,3 +5,9 @@
     display: flex;
     align-items: baseline;
 }
+
+div.titles {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}

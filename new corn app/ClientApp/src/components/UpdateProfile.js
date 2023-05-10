@@ -84,7 +84,7 @@ const UpdateProfile = () => {
 
 
 
-    const [image, setImage] = useState({ imageSelected: "", another: "another" });
+    const [image, setImage] = useState({ imageSelected: "./images/default.png", another: "another" });
 
     const { imageSelected } = image;
 
@@ -186,7 +186,7 @@ const UpdateProfile = () => {
                                 value="./images/default.png"
                                 type="radio"
                                 aria-label="radio 1"
-                                label=<img src="./images/default.png" alt="default profile image 1" />
+                                label=<img src="./images/default.png" alt="Default Profile Pic" />
                                 onChange={handleChange}
                                 checked={imageSelected === "./images/default.png"}
                             />
@@ -194,7 +194,7 @@ const UpdateProfile = () => {
                                 value="./images/woman.png"
                                 type="radio"
                                 aria-label="radio 2"
-                                label=<img src="./images/woman.png" alt="default profile image 2" />
+                                label=<img src="./images/woman.png" alt="Woman Profile Pic" />
                                 onChange={handleChange}
                                 checked={imageSelected === "./images/woman.png"}
                             />
@@ -202,7 +202,7 @@ const UpdateProfile = () => {
                                 value="./images/turtle.png"
                                 type="radio"
                                 aria-label="radio 3"
-                                label=<img src="./images/turtle.png" alt="default profile image 3 " />
+                                label=<img src="./images/turtle.png" alt="Turtle Profile Pic" />
                                 onChange={handleChange}
                                 checked={imageSelected === "./images/turtle.png"}
                             />
@@ -210,9 +210,17 @@ const UpdateProfile = () => {
                                 value="./images/penguin.png"
                                 type="radio"
                                 aria-label="radio 4"
-                                label=<img src="./images/penguin.png" alt="default profile image 4" />
+                                label=<img src="./images/penguin.png" alt="Penguin Profile Pic" />
                                 onChange={handleChange}
                                 checked={imageSelected === "./images/penguin.png"}
+                            />
+                            <Form.Check
+                                    value="./images/bobSpaghetti.png"
+                                    type="radio"
+                                    aria-label="radio 4"
+                                    label=<img src="./images/bobSpaghetti.png" alt="Bob Spaghetti Profile Pic" />
+                                onChange={handleChange}
+                                checked={imageSelected === "./images/bobSpaghetti.png"}
                             />
                         </Form.Group>
                         <Button variant="primary" type="submit">
