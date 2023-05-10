@@ -7,6 +7,7 @@ import { Button } from 'react-bootstrap';
 import ReactDOM from 'react-dom';
 import Countdown from 'react-countdown';
 import { useNavigate } from 'react-router-dom';
+import { launchedQSetKey } from './realTimeData/questionSetDisplay';
 import './CSS/StudentSessionView.css'
 
 const db = getDatabase();
@@ -28,7 +29,7 @@ const StudentSessionView = () => {
     });
 
     // get the id of the currently selected question set
-    const chosenQuestionSet = '-NV0XiVh5AW93RezT5NF';
+    const chosenQuestionSet = launchedQSetKey;
 
     // current question displayed to students
     const [currQuestion, setCurrQuestion] = useState();
