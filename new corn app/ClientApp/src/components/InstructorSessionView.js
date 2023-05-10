@@ -57,11 +57,11 @@ const InstructorSessionView = () => {
     let isSwitchOn = false;
 
     // for anonymous session
-    let isAnonymousOn = false;
-
+    const [anonymousState, setAnonymousState] = useState(false);
 
     const [answerCountMap, setAnswerCountMap] = useState();
 
+    // TODO is this timer code used?? or just student session view timer code?
     // for timer
     const onSwitchAction = () => {
         console.log('IN THE TIMER SWITCH FUNCTION');
@@ -76,9 +76,7 @@ const InstructorSessionView = () => {
 
     // for anonymous session
     const onAnonymousAction = () => {
-        console.log('IN THE ANONYMOUS SWITCH FUNCTION');
-        isAnonymousOn = !isAnonymousOn;
-        console.log(isAnonymousOn);
+        setAnonymousState(!anonymousState);
     };
 
     const clearQuestionIndexDB = () => {
@@ -247,11 +245,11 @@ const InstructorSessionView = () => {
 
     // grab the students that are in the session
     useEffect(() => {
-        const studentsRef = ref(db, 'classes/' + chosenClass + '/sessionActive/activeStudents');
+        const studentsRef = ref(db, 'classes/' + chosenClass + '/sessionActive');
         onValue(studentsRef, (snapshot) => {
             console.log('for real');
             const data = snapshot.val();
-            console.log(data);
+            console.log(data['activeStudents']);
             if (data != null) {
                 
 
@@ -278,26 +276,20 @@ const InstructorSessionView = () => {
 
  
 
-                const idsOfStudentsInSession = Object.keys(data);
+                const idsOfStudentsInSession = Object.keys(data['activeStudents']);
                 const allUsers = get(child(ref(db), 'users/')).then((snapshot) => {
                     if (snapshot.exists()) {
 
-
                         let studentNameList = [];
 
-                        console.log(currentQuestionIndex);
-                        idsOfStudentsInSession.forEach(element => console.log(data[element]['responses']));
-
                         // if not in anonymous session, show student answers in list of students in session
-                        if (!isAnonymousOn) {
-                            idsOfStudentsInSession.forEach(element => studentNameList.push([snapshot.val()[element]['name'], data[element]['responses'][currentQuestionIndex]]));
+                        if (!anonymousState) {
+                            idsOfStudentsInSession.forEach(element => studentNameList.push([snapshot.val()[element]['name'], data['activeStudents'][element]['responses'][currentQuestionIndex - 1]]));
                         } else {
                             // otherwise, show a checkmark indicating student has answered
-                            console.log("checkmarkkkkkk");
-                            idsOfStudentsInSession.forEach(element => studentNameList.push([snapshot.val()[element]['name'], "✅"]));
+                            idsOfStudentsInSession.forEach(element => studentNameList.push([snapshot.val()[element]['name'], "✅"]));    
                         }
 
-                        console.log(studentNameList);
                         setStudentsInSession(studentNameList);
 
                         return snapshot.val();
@@ -307,7 +299,7 @@ const InstructorSessionView = () => {
                 });
             }
         });
-    }, []);
+    }, [currentQuestionIndex]);
 
     const backNavigate = e => {
         navigate('/Class');
