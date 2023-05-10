@@ -104,8 +104,13 @@ const RealTimeData = () => {
         get(child(ref(getDatabase()), 'classes/' + selectedClassID)).then((snapshot) => {
             if (snapshot.exists()) {
                 // if the user is an instructor or a TA of a class, navigate to the class page
-                if ((snapshot.val()['admin'].includes(userTable.user.uid)) || (snapshot.val()['tas'].hasOwnProperty(userTable.user.uid))) {
+                if (snapshot.val()['admin'].includes(userTable.user.uid)) {
                     navigate('/class');
+                }
+                else if (snapshot.val()['tas']) {
+                    if (snapshot.val()['tas'].hasOwnProperty(userTable.user.uid)) {
+                        navigate('/class');
+                    }
                 }
                 // if student, move to session page if class session is active
                 else if (snapshot.val()['sessionActive']['sessionActive'] === true) {
