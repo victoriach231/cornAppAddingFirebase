@@ -100,12 +100,11 @@ const RealTimeData = () => {
 
     // navigate to the class page, depending on whether the user is an instructor or student
     const goToClassPage = (selectedClassID) => {
-        // TODO check if user logged in is a class instructor or a student
         // if admin, move to class page
         get(child(ref(getDatabase()), 'classes/' + selectedClassID)).then((snapshot) => {
-
             if (snapshot.exists()) {
-                if (snapshot.val()['admin'].includes(userTable.user.uid)) {
+                // if the user is an instructor or a TA of a class, navigate to the class page
+                if ((snapshot.val()['admin'].includes(userTable.user.uid)) || (snapshot.val()['tas'].hasOwnProperty(userTable.user.uid))) {
                     navigate('/class');
                 }
                 // if student, move to session page if class session is active
