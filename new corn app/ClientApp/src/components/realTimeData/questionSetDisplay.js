@@ -31,6 +31,7 @@ const QSetRealTimeData = () => {
             get(child(ref(getDatabase()), 'classes/' + currClass + '/sessionActive')).then((snapshot) => {
                 if (snapshot.exists()) {                    
                     set(ref(getDatabase(), 'classes/' + currClass + '/sessionActive'), {
+                        activeQSet: selectedLaunchQSetKey,
                         sessionActive: true,
                         currentQuestion: 0,
                         timerToggled: false

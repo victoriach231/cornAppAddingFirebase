@@ -7,7 +7,6 @@ import { Button } from 'react-bootstrap';
 import ReactDOM from 'react-dom';
 import Countdown from 'react-countdown';
 import { useNavigate } from 'react-router-dom';
-import { selectedQSetKey } from './realTimeData/questionSetDisplay';
 import './CSS/StudentSessionView.css'
 
 const db = getDatabase();
@@ -29,7 +28,12 @@ const StudentSessionView = () => {
     });
 
     // get the id of the currently selected question set
-    const chosenQuestionSet = selectedQSetKey;
+    let chosenQuestionSet = "";
+    const sessionQSetRef = ref(db, 'classes/' + chosenClass + "/sessionActive/")
+    onValue(sessionQSetRef, (snapshot) => {
+        chosenQuestionSet = snapshot.val()['activeQSet']
+    })
+
 
     // current question displayed to students
     const [currQuestion, setCurrQuestion] = useState();
