@@ -1,5 +1,5 @@
 ﻿import { useState, useEffect } from 'react';
-import Button from 'react-bootstrap/Button';
+import { Modal, Button } from 'react-bootstrap';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { newClass } from './realTimeData/index';
 import { launchedQSetKey } from './realTimeData/questionSetDisplay';
@@ -9,7 +9,6 @@ import Form from 'react-bootstrap/Form';
 import { useNavigate } from 'react-router-dom';
 import Badge from 'react-bootstrap/Badge';
 import './CSS/InstructorSessionView.css'
-
 
 //TODO: solve -1 error for seeing last questions responses
 const sessionFunctions = require('./EndOfSessionFunctions');
@@ -55,6 +54,11 @@ const InstructorSessionView = () => {
     // keep track of question answers (all of the possible answer options)
     const [currQuestionAnswers, setCurrQuestionAnswers] = useState([]);
 
+    // showing end session popup 
+    const [showEndSession, setShowEndSession] = useState(false);
+    const handleCloseEndSession = () => setShowEndSession(false);
+    const handleShowEndSession = () => setShowEndSession(true);
+
     // for timer
     let isSwitchOn = false;
 
@@ -93,6 +97,7 @@ const InstructorSessionView = () => {
         updates['classes/' + chosenClass + '/sessionActive/currentQuestion'] = newIndex;
         update(ref(db), updates);
     };
+
 
     // get student answers to curr question 
     const getStudentAnswers = () => {
@@ -290,7 +295,7 @@ const InstructorSessionView = () => {
 
                         // if not in anonymous session, show student answers in list of students in session
                         if (!anonymousState) {
-                            idsOfStudentsInSession.forEach(element => studentNameList.push([snapshot.val()[element]['name'], data['activeStudents'][element]['responses'][currentQuestionIndex - 1]]));
+                            idsOfStudentsInSession.forEach(element => studentNameList.push([snapshot.val()[element]['name'], data['activeStudents'][element]['responses'][currentQuestionIndex]]));
                         } else {
                             // otherwise, show a checkmark indicating student has answered
                             idsOfStudentsInSession.forEach(element => studentNameList.push([snapshot.val()[element]['name'], "✅"]));    
@@ -427,6 +432,23 @@ const InstructorSessionView = () => {
             
 
             <button class="btn btn-primary" onClick={() => { sessionFunctions.download(["a", "b"], "filee") }}>Download CSV</button>
+            <Button onClick={handleShowEndSession}>Endd Session</Button>
+
+            <Modal show={showEndSession} onHide={handleCloseEndSession}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Modal heading</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseEndSession}>
+                        Close
+                </Button>
+                    <Button variant="primary" onClick={handleCloseEndSession}>
+                        Save Changes
+                </Button>
+                </Modal.Footer>
+            </Modal>
+
         </div>
     );
 };
