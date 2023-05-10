@@ -398,7 +398,7 @@ const InstructorSessionView = () => {
             <div className='aBox'>
             <div className = 'questions'>
                     <p><b>Next question:</b></p>
-                    <p>{nextQuestion}</p>
+                    <h1>{nextQuestion}</h1>
                 </div>
             <div className='switches'>
             <Form.Check // prettier-ignore
