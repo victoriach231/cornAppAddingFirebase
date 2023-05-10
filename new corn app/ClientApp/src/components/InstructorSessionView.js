@@ -2,6 +2,7 @@
 import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { newClass } from './realTimeData/index';
+import { launchedQSetKey } from './realTimeData/questionSetDisplay';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { getDatabase, ref, child, get, onValue, update } from "firebase/database";
 import Form from 'react-bootstrap/Form';
@@ -39,7 +40,7 @@ const InstructorSessionView = () => {
     const handleStudentBarShow = () => setShowStudentsBar(true);
 
     // get the id of the currently selected question set
-    const chosenQuestionSet = '-NV0XiVh5AW93RezT5NF';
+    const chosenQuestionSet = launchedQSetKey;
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [nextQuestionIndex, setNextQuestionIndex] = useState(0);
     const [currQuestionType, setCurrQuestionType] = useState();
