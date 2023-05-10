@@ -10,3 +10,10 @@
 .btn:disabled {
     background-color: #b0b1b2;
 }
+
+div.header {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
