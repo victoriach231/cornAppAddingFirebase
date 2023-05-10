@@ -121,6 +121,15 @@ const RealTimeData = () => {
                         setNoSession(true);
                     }
                 }
+                // if student, move to session page if class session is active
+                else if (snapshot.val()['sessionActive']['sessionActive'] === true) {
+                    joinSession(selectedClassID);
+                    navigate('/session-student-view');
+                }
+                // user is a student and session not active, TODO display popup that session not started
+                else {
+                    setNoSession(true);
+                }
                 
             } else {
                 console.log("No data available");
