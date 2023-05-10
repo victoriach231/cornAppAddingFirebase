@@ -99,15 +99,16 @@ const QSetRealTimeData = () => {
 
     // navigate to the qSetEditor, saving the key as we go
     const goToQSetEditor = (text) => {
+        isNewSet = false;
         selectedEditQSetKey = text
-        isNewSet = false
         navigate('/edit-questions')
     }
     
     //navigate to qSetEditor, with 
     const createNewQSet = () => {
         isNewSet = true;
-        goToQSetEditor("")
+        selectedEditQSetKey = ""
+        navigate('/edit-questions')
     }
 
     return(

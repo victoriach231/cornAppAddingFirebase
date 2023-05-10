@@ -30,6 +30,7 @@ const QuestionSetEdit = () => {
 
     //geneeric save function
     const saveQuestion = (key) => {
+        console.log(key)
         //set rewrites the entire key, update adds to the key (and/or rewrites children)
         //we will use set since we are basically rewriting question sets in order to edit them
         set(ref(getDatabase(), 'questionSets/' + key), {name: qSetName, qSet: questionSet});
@@ -324,6 +325,8 @@ const QuestionSetEdit = () => {
         console.log(currQSetKey)
         console.log("question set")
         console.log(questionSet)
+        console.log("isNewSet")
+        console.log(isNewQSet)
     }
     
     const logVars = () => {
