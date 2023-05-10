@@ -238,14 +238,15 @@ const Class = (props) => {
                     </button>
                 </div>
 
-                {/* TODO: Style Class Code so it isn't so janky'*/}
-                <h1 className='title'>Class Name: {chosenClassDisplayName}</h1>
-                <h2 className='title'> Class Code: {chosenClassCode}</h2>
+                
+                <div className='titles'>
+                <h2 className='className'>{chosenClassDisplayName}</h2>
+                    <h1 className='classCode'> Class Code: {chosenClassCode}</h1>
+                </div>
 
 
             </div>
 
-            <p>Hi welcome to your class</p>
             <br />
 
             <QSetRealTimeData />
@@ -307,15 +308,18 @@ const Class = (props) => {
 
             <br />
             <div className="sessionActivity">
-            <button className="btn btn-primary" onClick={startSession}>DEBUG: toggle session</button>
-                <p>Session Active: {sessionActive} </p>
+                {/*<button className="btn btn-primary" onClick={startSession}>DEBUG: toggle session</button>
+                <p>Session Active: {sessionActive} </p>*/}
             </div>
+            {/* 
             <button className="btn btn-primary" onClick={goToSessionPage}>Visit session page</button>
             <br />
+            
             <button className="btn btn-primary" onClick={getCurrClassID}>
                 TESTING: click to see class id
 
             </button>
+            */}
         </div>
     );
 };

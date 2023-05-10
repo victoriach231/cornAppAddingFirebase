@@ -8,6 +8,7 @@ import { getDatabase, ref, child, get, onValue, update } from "firebase/database
 import Form from 'react-bootstrap/Form';
 import { useNavigate } from 'react-router-dom';
 import Badge from 'react-bootstrap/Badge';
+import './CSS/InstructorSessionView.css'
 
 
 //TODO: solve -1 error for seeing last questions responses
@@ -321,14 +322,15 @@ const InstructorSessionView = () => {
                         </svg>
 
                     </button>
-                </div>
-            </div>
-            <p> Instructor Session View: {chosenClassDisplayName} </p>
-            <br />
 
-            <Button variant="primary" onClick={handleStudentBarShow}>
-                See Students in Session
-            </Button>
+                </div>
+                <h1> Instructor Session View: {chosenClassDisplayName} </h1>
+                
+
+                
+            </div>
+           
+            
 
             <Offcanvas show={showStudentsBar} onHide={handleStudentBarClose}>
                 <Offcanvas.Header closeButton>
@@ -350,9 +352,11 @@ const InstructorSessionView = () => {
                     </Offcanvas.Body>
                 </div>
             </Offcanvas>
-            <p>Current question:</p>
-            <p>{currQuestion}</p>
-            <br />
+            <div className='box'>
+            <div className='questions'>
+            <p><b>Current question:</b></p>
+            <h1>{currQuestion}</h1>
+            
             {
                 (currQuestionType === "short") ?
                     <div>
@@ -380,19 +384,23 @@ const InstructorSessionView = () => {
                             })}
 
                         </ListGroup>
-                        <p>hiii</p>
-                        <p>{currQuestionAnswers}</p>
-                        <p>{console.log(currQuestionAnswers)}</p>
-                        <p>{console.log(currentQuestionIndex)}</p>
+                            <Button class="btn btn-primary" onClick={getStudentAnswers}>See Current Student Responses</Button>
+                        
+                        
 
 
                     </div>
-            }
+                    }
+                </div>
+                </div>
 
             <br />
-
-            <p>Next question:</p>
-            <p>{nextQuestion}</p>
+            <div className='aBox'>
+            <div className = 'questions'>
+                    <p><b>Next question:</b></p>
+                    <p>{nextQuestion}</p>
+                </div>
+            <div className='switches'>
             <Form.Check // prettier-ignore
                 type="switch"
                 id="custom-switch"
@@ -407,10 +415,14 @@ const InstructorSessionView = () => {
             />
             <Button onClick={() => { setNextQuestionIndex(nextQuestionIndex + 1); setAnswerCountMap(new Map()) }}>Display Next Question</Button>
 
-           
-            
+                    
+           </div>
+            </div>
             <br />
-            <Button class="btn btn-primary" onClick={getStudentAnswers}>See Current Student Responses</Button>
+            <Button variant="primary" onClick={handleStudentBarShow}>
+                See Students in Session
+                            </Button>
+            
 
             
 
