@@ -92,7 +92,9 @@ const QSetRealTimeData = () => {
         //get and set session active
         const sessionDBRef = ref(db, 'classes/' + currClass + '/sessionActive/sessionActive');
         onValue(sessionDBRef, (snapshot) => {
-            setSessionActive(snapshot.val())
+            if(snapshot.exists()) {
+                setSessionActive(snapshot.val())
+            }
         })
 
     }, [])
