@@ -63,7 +63,9 @@ const InstructorSessionView = () => {
         setShowEndSession(true)
     }
 
-
+    // for the csv formatted data
+    const [csvFormattedData, setCsvFormattedData] = useState([]);
+    let date = new Date().toJSON().slice(0, 10);
 
     // for timer
     let isSwitchOn = false;
@@ -379,8 +381,16 @@ const InstructorSessionView = () => {
         
         console.log(answerData)
         setStudentScores(answerData)
+        formatStudentScores()
     }
 
+
+    // convert studentScores into an array that the csv download can read
+    const formatStudentScores = () => {
+        let csvData = [];
+        studentScores.forEach(student => csvData.push([student.name, student.score]));
+        setCsvFormattedData(csvData);
+    }
 
 
 
@@ -500,8 +510,8 @@ const InstructorSessionView = () => {
 
             
 
-            <button class="btn btn-primary" onClick={() => { sessionFunctions.download(["a", "b"], "filee") }}>Download CSV</button>
-            <Button onClick={handleShowEndSession}>Endd Session</Button>
+            <button class="btn btn-primary" onClick={() => { sessionFunctions.download(csvFormattedData, chosenClassDisplayName + " on " + date) }}>Download CSV</button>
+            <Button onClick={handleShowEndSession}>End Session</Button>
 
             <Modal show={showEndSession} onHide={handleCloseEndSession}>
                 <Modal.Header closeButton>
