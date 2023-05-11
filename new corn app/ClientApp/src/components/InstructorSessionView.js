@@ -358,20 +358,20 @@ const InstructorSessionView = () => {
     const [numQuestions, setNumQuestions] = useState(0)
 
     //student score functions
-    const getStudentResults = () => {
+    const getStudentResults = async () => {
         console.log("getStudentResults")
         //format student answer json and true answer json into proper format for function
         let trueAnswers = []
         let numShort = 0
-        onValue(ref(db, 'questionSets/' + chosenQuestionSet + '/qSet'), (snapshot) => {
-            snapshot.forEach((question) => {
-                let answer = question.val().trueAnswer.label
-                if(answer === "") {
-                    numShort++
-                }
-                trueAnswers.push(answer)
-            })
+        const snapshot = await get(ref(db, 'questionSets/' + chosenQuestionSet + '/qSet'));
+        snapshot.forEach((question) => {
+            let answer = question.val().trueAnswer.label
+            if(answer === "") {
+                numShort++
+            }
+            trueAnswers.push(answer)
         })
+        
 
         setNumQuestions(trueAnswers.length)
         setNumShort(numShort)
