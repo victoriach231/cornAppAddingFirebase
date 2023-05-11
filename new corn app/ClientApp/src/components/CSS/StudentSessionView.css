@@ -17,3 +17,16 @@ div.header {
     flex-direction: column;
     align-items: center;
 }
+
+div.sQuestions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-left: 60px;
+    padding-right: 60px;
+}
+
+button.submit{
+    justify-content:center;
+}
+

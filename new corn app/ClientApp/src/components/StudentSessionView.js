@@ -159,24 +159,13 @@ const StudentSessionView = () => {
                         </svg>
 
                     </button>
+
                 </div>
+                
+
+
+
             </div>
-
-            {
-                timerState ? 
-                <Countdown
-                        key={restartTimer}
-                        date={restartTimer + 10000}
-                        onComplete={() => { setSubmitAnswerDisabled(true) }}
-                />
-                : null
-            }
-            
-            <br />
-
-            <h1>Class: {chosenClassDisplayName}</h1>
-            <p>student session view</p>
-
             <div className='drop'>
                 <Button>
                     <div className='userInfo'>
@@ -186,40 +175,68 @@ const StudentSessionView = () => {
                     </div>
                 </Button>
             </div>
+            
+            
+          
+            <div className="titles">
+            <h2>Class: {chosenClassDisplayName}</h2>
+            <h1>Student Session</h1>
+            </div>
 
-            <p>{currQuestion}</p>
+            
             <br />
+            <div className='box'>
+                
+            <div className='sQuestions'>
+            <p><b>Current question:</b></p>
+            <h1>{currQuestion}</h1>
+            
+                    {
+                        isFRQ ?
+                            <div>
+                                <input type="text" onChange={handleClassInputChange} value={inputText} />
+                                <Button disabled={submitAnswerDisabled} onClick={() => { registerUserAnswer(inputText) }}>Submit Answer</Button>
+                            </div>
 
-            {
-                isFRQ ?
-                    <div>
-                    <input type="text" onChange={handleClassInputChange} value={inputText} />
-                        <Button disabled={submitAnswerDisabled} onClick={() => { registerUserAnswer(inputText) }}>Submit Answer</Button>
-                    </div>
+                            :
+                            <div className='q'>
+                                <ListGroup>
 
-                    :
-                    <div>
-                    <ListGroup>
-                        {currQuestionAnswers.map((element, index) => {
-                            return (
-                                <div key={index}>
-                                    <ListGroup.Item action active={String(element) == answerSelected} onClick={() => { setAnswerSelected(element) }}>{String(element)}</ListGroup.Item>
-                                </div>
-                            );
-                            
-                            
-                        })}
+                                    {currQuestionAnswers.map((element, index) => {
+                                        return (
+                                            <div key={index}>
+                                                <ListGroup.Item action active={String(element) == answerSelected} onClick={() => { setAnswerSelected(element) }}>{String(element)}</ListGroup.Item>
+                                            </div>
+                                        );
 
-                    </ListGroup>
-                     <Button disabled={submitAnswerDisabled} onClick={() => { registerUserAnswer(answerSelected) }}>Submit Answer</Button>
-                     </div>
-            }
+
+                                    })}
+                                    
+                                        
+                                    
+
+                                </ListGroup>
+                                <Button className='submit' disabled={submitAnswerDisabled} onClick={() => { registerUserAnswer(answerSelected) }}>Submit Answer</Button>
+                            </div>
+                    }
+                </div>
+                
+            </div>
 
             
 
-
+            {
+                timerState ?
+                    <Countdown
+                        key={restartTimer}
+                        date={restartTimer + 10000}
+                        onComplete={() => { setSubmitAnswerDisabled(true) }}
+                    />
+                    : null
+            }
 
         </div>
+
         
     );
 };
