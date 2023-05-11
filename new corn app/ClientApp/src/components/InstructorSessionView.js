@@ -267,7 +267,7 @@ const InstructorSessionView = () => {
             console.log('for real');
             const data = snapshot.val();
             console.log(data['activeStudents']);
-            if (data != null) {
+            if (data['activeStudents'] != null) {
                 
 
                 //// count of responses
@@ -304,7 +304,15 @@ const InstructorSessionView = () => {
                             idsOfStudentsInSession.forEach(element => studentNameList.push([snapshot.val()[element]['name'], data['activeStudents'][element]['responses'][currentQuestionIndex]]));
                         } else {
                             // otherwise, show a checkmark indicating student has answered
-                            idsOfStudentsInSession.forEach(element => studentNameList.push([snapshot.val()[element]['name'], "✅"]));    
+                            // check that student has answered first
+                            idsOfStudentsInSession.forEach(element => {
+                                if (data['activeStudents'][element]['responses'][currentQuestionIndex] != null) {
+                                    idsOfStudentsInSession.forEach(element => studentNameList.push([snapshot.val()[element]['name'], "✅"]));
+                                } else {
+                                    // otherwise, push student names but no checkmark (because hasn't answered yet)
+                                    idsOfStudentsInSession.forEach(element => studentNameList.push([snapshot.val()[element]['name'], ""]));
+                                }
+                            });
                         }
 
                         setStudentsInSession(studentNameList);
@@ -316,7 +324,7 @@ const InstructorSessionView = () => {
                 });
             }
         });
-    }, [currentQuestionIndex]);
+    }, [currentQuestionIndex, anonymousState]);
 
     const backNavigate = e => {
         navigate('/Class');
