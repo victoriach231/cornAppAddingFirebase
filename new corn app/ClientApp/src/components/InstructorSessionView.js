@@ -351,7 +351,7 @@ const InstructorSessionView = () => {
         console.log("trueAnswers")
         console.log(trueAnswers)
 
-        let answerData = {}
+        let answerData = []
         onValue(ref(db, 'classes/' + chosenClass + '/sessionActive/'), (snapshot) => {
             if(snapshot.child('activeStudents').exists()) {
                 console.log("answer")
@@ -363,14 +363,14 @@ const InstructorSessionView = () => {
 
                     
 
-                    answerData[student.key] = {score: calculateScore(student.val().responses, trueAnswers), name: student.val().user}
+                    answerData.push({score: calculateScore(student.val().responses, trueAnswers), name: student.val().user})
 
                 })
             }
         })
         
         console.log(answerData)
-
+        setStudentScores(answerData)
     }
 
 
@@ -500,11 +500,13 @@ const InstructorSessionView = () => {
                     <Modal.Title>Modal heading</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
+                
                 <ListGroup>
+                    <div>potato</div>
                     {studentScores.map((student, index) => {
                         return (
                             <div key={index}>
-                                <ListGroup.Item>{student.scoreText}</ListGroup.Item>
+                                <ListGroup.Item>{student.name} got {student.score}/{numGraded} + {numShort} ungraded short responses</ListGroup.Item>
                             </div>
                         )
                     })}
