@@ -292,7 +292,7 @@ const InstructorSessionView = () => {
                 //console.log('ansswers.....');
                 //console.log(answerCountMap);
 
-
+                
  
 
                 const idsOfStudentsInSession = Object.keys(data['activeStudents']);
@@ -303,16 +303,25 @@ const InstructorSessionView = () => {
 
                         // if not in anonymous session, show student answers in list of students in session
                         if (!anonymousState) {
-                            idsOfStudentsInSession.forEach(element => studentNameList.push([snapshot.val()[element]['name'], data['activeStudents'][element]['responses'][currentQuestionIndex]]));
+                            idsOfStudentsInSession.forEach((studentKey) => {
+                                //need to check if responses table exists
+                                if(data['activeStudents'][studentKey]['responses'] !== undefined) {
+                                    studentNameList.push([snapshot.val()[studentKey]['name'], data['activeStudents'][studentKey]['responses'][currentQuestionIndex]])
+                                }
+                                else {
+                                    studentNameList.push([snapshot.val()[studentKey]['name']])
+                                }
+
+                            });
                         } else {
                             // otherwise, show a checkmark indicating student has answered
                             // check that student has answered first
-                            idsOfStudentsInSession.forEach(element => {
-                                if (data['activeStudents'][element]['responses'][currentQuestionIndex] != null) {
-                                    idsOfStudentsInSession.forEach(element => studentNameList.push([snapshot.val()[element]['name'], "✅"]));
+                            idsOfStudentsInSession.forEach(studentKey => {
+                                if (data['activeStudents'][studentKey]['responses'][currentQuestionIndex] != null) {
+                                    idsOfStudentsInSession.forEach(studentKey => studentNameList.push([snapshot.val()[studentKey]['name'], "✅"]));
                                 } else {
                                     // otherwise, push student names but no checkmark (because hasn't answered yet)
-                                    idsOfStudentsInSession.forEach(element => studentNameList.push([snapshot.val()[element]['name'], ""]));
+                                    idsOfStudentsInSession.forEach(studentKey => studentNameList.push([snapshot.val()[studentKey]['name'], ""]));
                                 }
                             });
                         }
@@ -365,13 +374,7 @@ const InstructorSessionView = () => {
         onValue(ref(db, 'classes/' + chosenClass + '/sessionActive/'), (snapshot) => {
             if(snapshot.child('activeStudents').exists()) {
                 console.log("answer")
-                snapshot.child('activeStudents').forEach((student) => {
-                    console.log(student.key)
-                    console.log(student.val().responses)
-                    
-                    console.log(student.val().responses[0] === trueAnswers[0])
-
-                    
+                snapshot.child('activeStudents').forEach((student) => {           
 
                     answerData.push({score: calculateScore(student.val().responses, trueAnswers), name: student.val().name})
 
