@@ -369,7 +369,7 @@ const InstructorSessionView = () => {
                 if(answer === "") {
                     numShort++
                 }
-                trueAnswers[question.key] = answer
+                trueAnswers.push(answer)
             })
         })
 
@@ -383,7 +383,6 @@ const InstructorSessionView = () => {
         let answerData = []
         onValue(ref(db, 'classes/' + chosenClass + '/sessionActive/'), (snapshot) => {
             if(snapshot.child('activeStudents').exists()) {
-                console.log("answer")
                 snapshot.child('activeStudents').forEach((student) => {           
 
                     answerData.push({score: calculateScore(student.val().responses, trueAnswers), name: student.val().name})
