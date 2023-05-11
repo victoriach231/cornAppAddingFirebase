@@ -128,9 +128,9 @@ const InstructorSessionView = () => {
                                     console.log(" curr index");
                                     console.log(currentQuestionIndex);
                                     // TODO add an if check to handle if one of the students in the sesion hasn't answered the curr question yet
-                                    console.log(childSnapshot.val()['responses'][currentQuestionIndex][currentQuestionIndex]);
+                                    console.log(childSnapshot.val()['responses'][currentQuestionIndex]);
                                     console.log(currQuestionAnswers);
-                                    const filteredArray = currQuestionAnswers.filter(value => childSnapshot.val()['responses'][currentQuestionIndex][currentQuestionIndex].includes(value));
+                                    const filteredArray = currQuestionAnswers.filter(value => childSnapshot.val()['responses'][currentQuestionIndex].includes(value));
                                     console.log("filtered Array");
                                     console.log(filteredArray);
 
@@ -373,7 +373,7 @@ const InstructorSessionView = () => {
 
                     
 
-                    answerData.push({score: calculateScore(student.val().responses, trueAnswers), name: student.val().user})
+                    answerData.push({score: calculateScore(student.val().responses, trueAnswers), name: student.val().name})
 
                 })
             }

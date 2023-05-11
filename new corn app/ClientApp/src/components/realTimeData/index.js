@@ -80,9 +80,11 @@ const RealTimeData = () => {
             if (snapshot.exists()) {
                 if (snapshot.val()['sessionActive'] === true) {
                     const newStudent = {
-                        user: userTable.user.displayName
+                        user: userTable.user.uid,
+                        name: userTable.user.displayName
                     };
-                    
+
+
                     const updates = {};
                     updates['classes/' + selectedClassID + '/sessionActive/activeStudents/' + userTable.user.uid] = newStudent;
 
