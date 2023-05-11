@@ -110,6 +110,10 @@ const InstructorSessionView = () => {
         const updates = {};
         updates['classes/' + chosenClass + '/sessionActive/currentQuestion'] = newIndex;
         update(ref(db), updates);
+
+        const updates2 = {};
+        updates2['classes/' + chosenClass + '/sessionActive/nextQuestion'] = newIndex + 1;
+        update(ref(db), updates2);
     };
 
 
@@ -158,7 +162,7 @@ const InstructorSessionView = () => {
                         if (childSnapshot.val()) {
                             if (childSnapshot.val()['responses']) {
                                 if (childSnapshot.val()['responses'][currentQuestionIndex]) {
-                                    studentFRQAnswers.push(childSnapshot.val()['responses'][currentQuestionIndex][currentQuestionIndex]);
+                                    studentFRQAnswers.push(childSnapshot.val()['responses'][currentQuestionIndex]);
                                     setFRQResponses(studentFRQAnswers);
                                 }
                             }
@@ -461,6 +465,7 @@ const InstructorSessionView = () => {
                             })}
 
                         </ListGroup>
+                        <Button class="btn btn-primary" onClick={getStudentAnswers}>See Current Student Responses</Button>
                     </div>
 
                     :
