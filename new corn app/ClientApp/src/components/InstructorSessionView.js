@@ -361,7 +361,9 @@ const InstructorSessionView = () => {
                     
                     console.log(student.val().responses[0] === trueAnswers[0])
 
-                    answerData[student.key] = {score: calculateScore(student.val().responses, trueAnswers)}
+                    
+
+                    answerData[student.key] = {score: calculateScore(student.val().responses, trueAnswers), name: student.val().user}
 
                 })
             }
