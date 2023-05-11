@@ -57,7 +57,12 @@ const InstructorSessionView = () => {
     // showing end session popup 
     const [showEndSession, setShowEndSession] = useState(false);
     const handleCloseEndSession = () => setShowEndSession(false);
-    const handleShowEndSession = () => setShowEndSession(true);
+    const handleShowEndSession = () => {
+        getStudentResults()
+        setShowEndSession(true)
+    }
+
+
 
     // for timer
     let isSwitchOn = false;
@@ -316,6 +321,29 @@ const InstructorSessionView = () => {
         navigate('/Class');
     };
     
+    //score list
+    const [studentScores, setStudentScores] = useState([])
+
+    //student score functions
+    const getStudentResults = () => {
+        console.log("getStudentResults")
+        //format answer json and correct answer json into proper format for function
+        let formatted = {}
+        let answerData = {}
+        onValue(ref(db, 'classes/' + chosenClass + '/sessionActive/'), (snapshot) => {
+            if(snapshot.child('activeStudents').exists()) {
+                answerData = snapshot.child('activeStudents').val()
+            }
+        })
+
+        answerData.forEach((data) => {
+            console.log(data)
+        })
+
+        console.log("answerData")
+        console.log(answerData)
+    }
+
 
     return (
         <div>
@@ -438,7 +466,17 @@ const InstructorSessionView = () => {
                 <Modal.Header closeButton>
                     <Modal.Title>Modal heading</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+                <Modal.Body>
+                <ListGroup>
+                    {studentScores.map((student, index) => {
+                        return (
+                            <div key={index}>
+                                <ListGroup.Item>{student.scoreText}</ListGroup.Item>
+                            </div>
+                        )
+                    })}
+                </ListGroup>
+                </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleCloseEndSession}>
                         Close
