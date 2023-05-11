@@ -524,13 +524,13 @@ const InstructorSessionView = () => {
 
             <Modal show={showEndSession} onHide={handleCloseEndSession}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Modal heading</Modal.Title>
+                    <Modal.Title>Session Summary</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                 
                 <ListGroup>
                     {/* the divs should look distict from the listgroup.item but still look similar */}
-                    <div>Student Scores</div>
+                    <h1>Student Scores</h1>
                     {studentScores.map((student, index) => {
                         return (
                             <div key={index}>
