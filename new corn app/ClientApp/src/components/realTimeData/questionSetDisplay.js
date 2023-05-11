@@ -21,6 +21,7 @@ const stopSession = (currClass) => {
             set(ref(getDatabase(), 'classes/' + currClass + '/sessionActive'), {
                 sessionActive: false,
                 currentQuestion: 0,
+                nextQuestion: 0,
                 timerToggled: false
             });
         } else {
@@ -51,6 +52,7 @@ const QSetRealTimeData = () => {
                         activeQSet: selectedLaunchQSetKey,
                         sessionActive: true,
                         currentQuestion: 0,
+                        nextQuestion: 0,
                         timerToggled: false
                     });
                 } else {

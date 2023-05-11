@@ -8,6 +8,7 @@ import ReactDOM from 'react-dom';
 import Countdown from 'react-countdown';
 import { useNavigate } from 'react-router-dom';
 import './CSS/StudentSessionView.css'
+import Spinner from 'react-bootstrap/Spinner';
 
 const db = getDatabase();
 
@@ -37,7 +38,8 @@ const StudentSessionView = () => {
 
     // current question displayed to students
     const [currQuestion, setCurrQuestion] = useState();
-    const [currQuestionIndex, setCurrQuestionIndex] = useState();
+    const [currQuestionIndex, setCurrQuestionIndex] = useState(0);
+    const [nextQuestionIndex, setNextQuestionIndex] = useState(0);
 
     // keep track of question answers
     const [currQuestionAnswers, setCurrQuestionAnswers] = useState([]);
@@ -74,6 +76,20 @@ const StudentSessionView = () => {
     //        return null;
     //    }
     //};
+
+    // get next question index
+    useEffect(() => {
+        const nextQuestionIndexRef = ref(db, 'classes/' + chosenClass + '/sessionActive/nextQuestion');
+        onValue(nextQuestionIndexRef, (snapshot) => {
+            const data = snapshot.val();
+            console.log("here is data");
+            console.log(data);
+            if (data != null) {
+                setNextQuestionIndex(data);
+
+            }
+        });
+    }, [nextQuestionIndex]);
 
     // update displayed question prompt to match currQuestion index in DB
     useEffect(() => {
@@ -189,37 +205,49 @@ const StudentSessionView = () => {
                 
             <div className='sQuestions'>
             <p><b>Current question:</b></p>
-            <h1>{currQuestion}</h1>
-            
-                    {
-                        isFRQ ?
-                            <div>
-                                <input type="text" onChange={handleClassInputChange} value={inputText} />
-                                <Button disabled={submitAnswerDisabled} onClick={() => { registerUserAnswer(inputText) }}>Submit Answer</Button>
-                            </div>
-
-                            :
-                            <div className='q'>
-                                <ListGroup>
-
-                                    {currQuestionAnswers.map((element, index) => {
-                                        return (
-                                            <div key={index}>
-                                                <ListGroup.Item action active={String(element) == answerSelected} onClick={() => { setAnswerSelected(element) }}>{String(element)}</ListGroup.Item>
-                                            </div>
-                                        );
+                    <div>
+                        {
+                            (nextQuestionIndex > 0) ?
 
 
-                                    })}
-                                    
-                                        
-                                    
+                                (
+                                    isFRQ ?
+                                        <div>
+                                            <p>{currQuestion}</p>
+                                            <input type="text" onChange={handleClassInputChange} value={inputText} />
+                                            <Button disabled={submitAnswerDisabled} onClick={() => { registerUserAnswer(inputText) }}>Submit Answer</Button>
+                                        </div>
 
-                                </ListGroup>
-                                <Button className='submit' disabled={submitAnswerDisabled} onClick={() => { registerUserAnswer(answerSelected) }}>Submit Answer</Button>
-                            </div>
-                    }
-                </div>
+                                        :
+                                        <div>
+                                            <p>{currQuestion}</p>
+
+                                            <ListGroup>
+                                                {currQuestionAnswers.map((element, index) => {
+                                                    return (
+                                                        <div key={index}>
+                                                            <ListGroup.Item action active={String(element) == answerSelected} onClick={() => { setAnswerSelected(element) }}>{String(element)}</ListGroup.Item>
+                                                        </div>
+                                                    );
+
+
+                                                })}
+
+                                            </ListGroup>
+                                            <Button disabled={submitAnswerDisabled} onClick={() => { registerUserAnswer(answerSelected) }}>Submit Answer</Button>
+                                        </div>
+                                )
+                                :
+                                <div>
+                                    <p> Waiting for your instructor to ask a question...</p>
+                                    <Spinner animation="border" role="status">
+                                        <span className="visually-hidden">Loading...</span>
+                                    </Spinner>
+
+                                </div>
+                        }
+                    </div>
+            </div>
                 
             </div>
 

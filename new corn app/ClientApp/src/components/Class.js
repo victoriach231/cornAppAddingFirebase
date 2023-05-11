@@ -83,11 +83,12 @@ const Class = (props) => {
             if (snapshot.exists()) {
                 console.log(snapshot.val()['sessionActive']);
                 setSessionActive((!snapshot.val()['sessionActive']).toString());
-                
+
                 set(ref(getDatabase(), 'classes/' + chosenClass + '/sessionActive'), {
 
                     sessionActive: !snapshot.val()['sessionActive'],
                     currentQuestion: 0,
+                    nextQuestion: 0,
                     timerToggled: false
                 });
 
