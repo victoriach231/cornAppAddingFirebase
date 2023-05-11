@@ -14,6 +14,23 @@ let isNewSet = false;
 
 let selectedLaunchQSetKey = "";
 
+const stopSession = (currClass) => {
+    //stop session logic
+    get(child(ref(getDatabase()), 'classes/' + currClass + '/sessionActive')).then((snapshot) => {
+        if (snapshot.exists()) {                    
+            set(ref(getDatabase(), 'classes/' + currClass + '/sessionActive'), {
+                sessionActive: false,
+                currentQuestion: 0,
+                timerToggled: false
+            });
+        } else {
+            console.log("No data available");
+        }
+    }).catch((error) => {
+        console.error(error);
+    });
+}
+
 const QSetRealTimeData = () => {
     const [tableData, setTableData] = useState([]);
 
@@ -50,24 +67,6 @@ const QSetRealTimeData = () => {
             //error logic
             console.log("Question Set not selected")
         }
-    }
-
-    const stopSession = () => {
-        //stop session logic
-        get(child(ref(getDatabase()), 'classes/' + currClass + '/sessionActive')).then((snapshot) => {
-            if (snapshot.exists()) {                    
-                set(ref(getDatabase(), 'classes/' + currClass + '/sessionActive'), {
-                    sessionActive: false,
-                    currentQuestion: 0,
-                    timerToggled: false
-                });
-            } else {
-                console.log("No data available");
-            }
-        }).catch((error) => {
-            console.error(error);
-        });
-        setSessionActive(false)
     }
 
     const goToSession = () => {
@@ -148,9 +147,9 @@ const QSetRealTimeData = () => {
             <button className="btn btn-primary" onClick={startSession} disabled={sessionActive}>Start session</button>
                 <p>Session Active: {sessionActive.toString()} </p>
             </div>
-            <button onClick={stopSession} disabled={!sessionActive}>Stop Session</button>
+            <button onClick={() => {setSessionActive(false); stopSession(currClass); }} disabled={!sessionActive}>Stop Session</button>
         </div>
     )
 }
 
-export { QSetRealTimeData, selectedEditQSetKey as selectedQSetKey, isNewSet, selectedLaunchQSetKey as launchedQSetKey };
+export { QSetRealTimeData, selectedEditQSetKey as selectedQSetKey, isNewSet, selectedLaunchQSetKey as launchedQSetKey, stopSession };

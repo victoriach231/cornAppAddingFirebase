@@ -2,7 +2,7 @@
 import { Modal, Button } from 'react-bootstrap';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { newClass } from './realTimeData/index';
-import { launchedQSetKey } from './realTimeData/questionSetDisplay';
+import { launchedQSetKey, stopSession } from './realTimeData/questionSetDisplay';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { getDatabase, ref, child, get, onValue, update } from "firebase/database";
 import Form from 'react-bootstrap/Form';
@@ -61,6 +61,12 @@ const InstructorSessionView = () => {
     const handleShowEndSession = () => {
         getStudentResults()
         setShowEndSession(true)
+    }
+
+    //end session
+    const handleEndSession = () => {
+        stopSession(chosenClass)
+        navigate('/class')
     }
 
     // for the csv formatted data
@@ -355,7 +361,7 @@ const InstructorSessionView = () => {
         let numShort = 0
         onValue(ref(db, 'questionSets/' + chosenQuestionSet + '/qSet'), (snapshot) => {
             snapshot.forEach((question) => {
-                let answer = question.child('trueAnswer').child('label').val()
+                let answer = question.val().trueAnswer.label
                 if(answer === "") {
                     numShort++
                 }
@@ -523,22 +529,25 @@ const InstructorSessionView = () => {
                 <Modal.Body>
                 
                 <ListGroup>
-                    <div>potato</div>
+                    {/* the divs should look distict from the listgroup.item but still look similar */}
+                    <div>Student Scores</div>
                     {studentScores.map((student, index) => {
                         return (
                             <div key={index}>
-                                <ListGroup.Item>{student.name} got {student.score}/{numGraded} + {numShort} ungraded short responses</ListGroup.Item>
+                                <ListGroup.Item>{student.name} got {student.score}/{numGraded}</ListGroup.Item>
                             </div>
                         )
                     })}
+                    <div>There are {numShort} ungraded short response questions</div>
                 </ListGroup>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleCloseEndSession}>
                         Close
                 </Button>
-                    <Button variant="primary" onClick={handleCloseEndSession}>
-                        Save Changes
+                    <Button onClick={() => { sessionFunctions.download(csvFormattedData, chosenClassDisplayName + " on " + date) }}>Download CSV</Button>
+                    <Button variant="primary" onClick={handleEndSession}>
+                        End Session
                 </Button>
                 </Modal.Footer>
             </Modal>
