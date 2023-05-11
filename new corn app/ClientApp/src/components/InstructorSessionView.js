@@ -140,7 +140,7 @@ const InstructorSessionView = () => {
                                     // TODO add an if check to handle if one of the students in the sesion hasn't answered the curr question yet
                                     console.log(childSnapshot.val()['responses'][currentQuestionIndex]);
                                     console.log(currQuestionAnswers);
-                                    const filteredArray = currQuestionAnswers.filter(value => childSnapshot.val()['responses'][currentQuestionIndex].includes(value));
+                                    const filteredArray = currQuestionAnswers.filter(value => childSnapshot.val()['responses'][currentQuestionIndex] === value);
                                     console.log("filtered Array");
                                     console.log(filteredArray);
 
