@@ -417,11 +417,13 @@ const InstructorSessionView = () => {
                 id="custom-switch"
                 label="Anonymous Session?"
                 onChange={onAnonymousAction}
-            />
+                    />
+                </div>
+                <div class="text-center">
             <Button onClick={() => { setNextQuestionIndex(nextQuestionIndex + 1); setAnswerCountMap(new Map()) }}>Display Next Question</Button>
-
+            </div>
                     
-           </div>
+           
             </div>
             <br />
             <Button variant="primary" onClick={handleStudentBarShow}>
