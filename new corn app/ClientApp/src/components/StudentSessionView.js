@@ -133,12 +133,8 @@ const StudentSessionView = () => {
         //set(ref(db, 'classes/' + chosenClass + '/sessionActive/activeStudents/' + user.uid + '/responses'), {
         //    [currQuestionIndex]: answer
         //});
-
-        const newResponse = {
-            [currQuestionIndex]: answer,
-        };
         const updates = {};
-        updates['classes/' + chosenClass + '/sessionActive/activeStudents/' + user.uid + '/responses/' + currQuestionIndex] = newResponse;
+        updates['classes/' + chosenClass + '/sessionActive/activeStudents/' + user.uid + '/responses/' + currQuestionIndex] = answer;
         // updates['classes/' + chosenClass + '/sessionActive/activeStudents/ + user.uid + /responses/' + user.uid + '/' + currQuestionIndex]
         update(ref(db), updates);
 

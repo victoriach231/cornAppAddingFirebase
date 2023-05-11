@@ -8,6 +8,7 @@ import { getDatabase, ref, child, get, onValue, update } from "firebase/database
 import Form from 'react-bootstrap/Form';
 import { useNavigate } from 'react-router-dom';
 import Badge from 'react-bootstrap/Badge';
+import { calculateScore } from './EndOfSessionFunctions';
 import './CSS/InstructorSessionView.css'
 
 //TODO: solve -1 error for seeing last questions responses
@@ -323,26 +324,54 @@ const InstructorSessionView = () => {
     
     //score list
     const [studentScores, setStudentScores] = useState([])
+    const [numShort, setNumShort] = useState(0)
+    const [numGraded, setNumGraded] = useState(0)
+    const [numQuestions, setNumQuestions] = useState(0)
 
     //student score functions
     const getStudentResults = () => {
         console.log("getStudentResults")
-        //format answer json and correct answer json into proper format for function
-        let formatted = {}
+        //format student answer json and true answer json into proper format for function
+        let trueAnswers = []
+        let numShort = 0
+        onValue(ref(db, 'questionSets/' + chosenQuestionSet + '/qSet'), (snapshot) => {
+            snapshot.forEach((question) => {
+                let answer = question.child('trueAnswer').child('label').val()
+                if(answer === "") {
+                    numShort++
+                }
+                trueAnswers[question.key] = answer
+            })
+        })
+
+        setNumQuestions(trueAnswers.length)
+        setNumShort(numShort)
+        setNumGraded(trueAnswers.length - numShort)
+
+        console.log("trueAnswers")
+        console.log(trueAnswers)
+
         let answerData = {}
         onValue(ref(db, 'classes/' + chosenClass + '/sessionActive/'), (snapshot) => {
             if(snapshot.child('activeStudents').exists()) {
-                answerData = snapshot.child('activeStudents').val()
+                console.log("answer")
+                snapshot.child('activeStudents').forEach((student) => {
+                    console.log(student.key)
+                    console.log(student.val().responses)
+                    
+                    console.log(student.val().responses[0] === trueAnswers[0])
+
+                    answerData[student.key] = {score: calculateScore(student.val().responses, trueAnswers)}
+
+                })
             }
         })
-
-        answerData.forEach((data) => {
-            console.log(data)
-        })
-
-        console.log("answerData")
+        
         console.log(answerData)
+
     }
+
+
 
 
     return (
