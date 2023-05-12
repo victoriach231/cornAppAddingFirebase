@@ -11,15 +11,14 @@ This project is simple Lorem ipsum dolor generator.
 	
 ## Technologies
 Project is created with:
-* Lorem version: 12.3
-* Ipsum version: 2.33
-* Ament library version: 999
+* React version: 18
+* Firebase: 9.32
+* React Bootstrap: 2.7
 	
 ## Setup
-To run this project, install it locally using npm:
-
+To run this project, run on your local machine npm install.
 ```
-$ cd ../lorem
+$ cd ../ClientApp
 $ npm install
 $ npm start
 ```
