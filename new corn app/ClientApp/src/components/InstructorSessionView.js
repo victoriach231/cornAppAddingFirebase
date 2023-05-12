@@ -230,7 +230,7 @@ const InstructorSessionView = () => {
 
                     setCurrQuestion(snapshot.val()[currIndex]["qText"]);
                     setCurrQuestionType(snapshot.val()[currIndex]["qType"]["value"]);
-                    setNextQuestion();
+                    setNextQuestion("");
                 }
                 else {
                     // no more questions left
@@ -364,13 +364,13 @@ const InstructorSessionView = () => {
         let trueAnswers = []
         let numShort = 0
         onValue(ref(db, 'questionSets/' + chosenQuestionSet + '/qSet'), (snapshot) => {
-            snapshot.forEach((question) => {
-                let answer = question.val().trueAnswer.label
-                if(answer === "") {
-                    numShort++
-                }
-                trueAnswers.push(answer)
-            })
+        snapshot.forEach((question) => {
+            let answer = question.val().trueAnswer.label
+            if(answer === "") {
+                numShort++
+            }
+            trueAnswers.push(answer)
+        })
         })
 
         setNumQuestions(trueAnswers.length)
@@ -510,7 +510,7 @@ const InstructorSessionView = () => {
                     />
                 </div>
                 <div class="text-center">
-            <Button onClick={() => { setNextQuestionIndex(nextQuestionIndex + 1); setAnswerCountMap(new Map()) }}>Display Next Question</Button>
+            <Button onClick={() => { setNextQuestionIndex(nextQuestionIndex + 1); setAnswerCountMap(new Map()) }} disabled={nextQuestion === ""}>Display Next Question</Button>
             </div>
                     
            
