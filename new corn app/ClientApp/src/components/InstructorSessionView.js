@@ -327,18 +327,17 @@ const InstructorSessionView = () => {
                             // otherwise, show a checkmark indicating student has answered
                             // check that student has answered first
                             idsOfStudentsInSession.forEach(studentKey => {
-                                if (data['activeStudents'][studentKey]['responses'][currentQuestionIndex] != null) {
-                                    idsOfStudentsInSession.forEach(studentKey => studentNameList.push([snapshot.val()[studentKey]['name'], "✅"]));
+                                if (data['activeStudents'][studentKey]['responses'][currentQuestionIndex] !== undefined) {
+                                    studentNameList.push([snapshot.val()[studentKey]['name'], "✅"])
                                 } else {
                                     // otherwise, push student names but no checkmark (because hasn't answered yet)
-                                    idsOfStudentsInSession.forEach(studentKey => studentNameList.push([snapshot.val()[studentKey]['name'], ""]));
+                                    studentNameList.push([snapshot.val()[studentKey]['name'], ""])
                                 }
                             });
                         }
 
                         setStudentsInSession(studentNameList);
 
-                        return snapshot.val();
                     } else {
                         console.log("No data available");
                     }
