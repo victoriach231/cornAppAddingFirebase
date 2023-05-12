@@ -173,7 +173,7 @@ const Account = () => {
                 position-absolute
                 top-30 start-50
                 translate-middle-x">
-            <Toast onClose={() => setCreate(false)} show={showCreateToast} delay={3000} autohide='true'>
+                <Toast onClose={() => setCreate(false)} show={showCreateToast} delay={3000} bg="white" autohide='true'>
                 <Toast.Header>
                     <strong className="me-auto">Class Creation</strong>
                 </Toast.Header>
@@ -185,7 +185,7 @@ const Account = () => {
                 position-absolute
                 top-30 start-50
                 translate-middle-x">
-                <Toast onClose={() => setJoin(false)} show={showJoinToast} delay={3000} autohide='true'>
+                <Toast onClose={() => setJoin(false)} show={showJoinToast} delay={3000} bg="white" autohide='true'>
                     <Toast.Header>
                         <strong className="me-auto">Joining Class</strong>
                     </Toast.Header>
