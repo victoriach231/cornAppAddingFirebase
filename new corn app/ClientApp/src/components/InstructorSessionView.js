@@ -70,7 +70,7 @@ const InstructorSessionView = () => {
     }
 
     // for the csv formatted data
-    const [csvFormattedData, setCsvFormattedData] = useState([]);
+    const [csvFormattedData, setCsvFormattedData] = useState(["a", "b"]);
     let date = new Date().toJSON().slice(0, 10);
 
     // for timer
@@ -358,12 +358,11 @@ const InstructorSessionView = () => {
     const [numQuestions, setNumQuestions] = useState(0)
 
     //student score functions
-    const getStudentResults = () => {
-        console.log("getStudentResults")
+    const getStudentResults = async () => {
         //format student answer json and true answer json into proper format for function
         let trueAnswers = []
         let numShort = 0
-        onValue(ref(db, 'questionSets/' + chosenQuestionSet + '/qSet'), (snapshot) => {
+        const snapshot = await get(ref(db, 'questionSets/' + chosenQuestionSet + '/qSet'));
         snapshot.forEach((question) => {
             let answer = question.val().trueAnswer.label
             if(answer === "") {
@@ -371,36 +370,31 @@ const InstructorSessionView = () => {
             }
             trueAnswers.push(answer)
         })
-        })
+        
 
         setNumQuestions(trueAnswers.length)
         setNumShort(numShort)
         setNumGraded(trueAnswers.length - numShort)
 
-        console.log("trueAnswers")
-        console.log(trueAnswers)
-
         let answerData = []
-        onValue(ref(db, 'classes/' + chosenClass + '/sessionActive/'), (snapshot) => {
-            if(snapshot.child('activeStudents').exists()) {
-                snapshot.child('activeStudents').forEach((student) => {           
+        const snapshot2 = await get(ref(db, 'classes/' + chosenClass + '/sessionActive/'));
+        if (snapshot2.child('activeStudents').exists()) {
+            snapshot2.child('activeStudents').forEach((student) => {           
 
-                    answerData.push({score: calculateScore(student.val().responses, trueAnswers), name: student.val().name})
+                answerData.push({score: calculateScore(student.val().responses, trueAnswers), name: student.val().name})
 
-                })
-            }
-        })
+            })
+        }
         
-        console.log(answerData)
         setStudentScores(answerData)
-        formatStudentScores()
+        formatStudentScores(answerData)
     }
 
 
     // convert studentScores into an array that the csv download can read
-    const formatStudentScores = () => {
+    const formatStudentScores = (studentAnswerData) => {
         let csvData = [];
-        studentScores.forEach(student => csvData.push([student.name, student.score]));
+        studentAnswerData.forEach(student => csvData.push([student.name, student.score]));
         setCsvFormattedData(csvData);
     }
 
@@ -410,12 +404,7 @@ const InstructorSessionView = () => {
         <div>
             <div class='header'>
                 <div class='corner'>
-                    <button onClick={backNavigate}>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="arrow-back" viewBox="0 0 16 16">
-                            <path fillRule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
-                        </svg>
-
-                    </button>
+                   
 
                 </div>
                 <h1> Instructor Session View: {chosenClassDisplayName} </h1>
