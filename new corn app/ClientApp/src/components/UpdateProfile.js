@@ -23,17 +23,17 @@ const UpdateProfile = () => {
 
     // update the input field to show what was typed
     const handleNameInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-        // 👇 Store the input value to local state
+        // store the input value to local state
         setNewNameInput(e.target.value);
     };
 
     const handleEmailInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-        // 👇 Store the input value to local state
+        // store the input value to local state
         setNewEmailInput(e.target.value);
     };
 
     const handlePasswordInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-        // 👇 Store the input value to local state
+        // store the input value to local state
         setNewPasswordInput(e.target.value);
     };
 
@@ -82,9 +82,6 @@ const UpdateProfile = () => {
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-
-
-
 
     const [image, setImage] = useState({ imageSelected: "./images/default.png", another: "another" });
 
@@ -238,13 +235,10 @@ const UpdateProfile = () => {
                             <Button variant="primary" type="submit" onClick={() => { handleForm(); setToastShow(true) }}>
                             Submit
                         </Button>
-                    </form>
-                </Modal.Body>
-                
-                    </Modal>
-                
+                        </form>
+                    </Modal.Body>
+                </Modal>
             </div>
-
         </div>
     );
 };

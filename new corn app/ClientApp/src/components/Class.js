@@ -10,7 +10,6 @@ import { useState, useEffect } from 'react';
 import { Modal } from 'react-bootstrap';
 import './CSS/Class.css'
 
-
 const Class = (props) => {
     const db = getDatabase();
 
@@ -57,18 +56,6 @@ const Class = (props) => {
         navigate('/account');
     };
 
-    const getCurrClassID = () => {
-        console.log(chosenClass);
-    };
-
-    /*const getCurrClassDispayName = () => {
-        const displayNameRef = ref(db, 'classes/' + chosenClass + "/className/");
-        onValue(displayNameRef, (snapshot) => {
-            const data = snapshot.val();
-            chosenClassDisplayname = data;
-        });
-    }; */
-
     const goToSessionPage = () => {
         navigate('/session-instructor-view');
     };
@@ -81,17 +68,14 @@ const Class = (props) => {
     const startSession = () => {
         get(child(ref(getDatabase()), 'classes/' + chosenClass + '/sessionActive')).then((snapshot) => {
             if (snapshot.exists()) {
-                console.log(snapshot.val()['sessionActive']);
                 setSessionActive((!snapshot.val()['sessionActive']).toString());
 
                 set(ref(getDatabase(), 'classes/' + chosenClass + '/sessionActive'), {
-
                     sessionActive: !snapshot.val()['sessionActive'],
                     currentQuestion: 0,
                     nextQuestion: 0,
                     timerToggled: false
                 });
-
             } else {
                 console.log("No data available");
             }
@@ -102,7 +86,6 @@ const Class = (props) => {
 
     // grab the students that are in the class
     useEffect(() => {
-
         const studentsRef = ref(getDatabase(), 'classes/' + chosenClass + '/students');
         onValue(studentsRef, (snapshot) => {
             const data = snapshot.val();
@@ -116,7 +99,6 @@ const Class = (props) => {
                 const idsOfStudentsInClass = Object.keys(data);
                 const allUsers = get(child(ref(db), 'users/')).then((snapshot) => {
                     if (snapshot.exists()) {
-
                         let studentNameList = [];
 
                         idsOfStudentsInClass.forEach(element => studentNameList.push(snapshot.val()[element]['name']));
@@ -132,11 +114,7 @@ const Class = (props) => {
                         setStudentNameIDMap(new Map());
                     }
                 });
-
-            } else {
-                console.log('were here');
             }
-
         });
 
         // grab current tas in class
@@ -172,9 +150,7 @@ const Class = (props) => {
                 const idsOfInstructorInClass = data;
                 const allUsers = get(child(ref(db), 'users/')).then((snapshot) => {
                     if (snapshot.exists()) {
-
                         let instructorNameList = [];
-                        console.log(idsOfInstructorInClass);
                         idsOfInstructorInClass.forEach(element => instructorNameList.push(snapshot.val()[element]['name']));
 
                         setClassInstructor(instructorNameList);
@@ -185,10 +161,9 @@ const Class = (props) => {
                 });
             }
         });
-
-
     }, []);
 
+    // make a student a ta
     const makeStudentTA = () => {
         let studentName = window.selectedStudentG;
         if (studentNameIDMap) {
@@ -196,8 +171,6 @@ const Class = (props) => {
 
             get(child(ref(getDatabase()), 'classes/' + chosenClass)).then((snapshot) => {
                 if (snapshot.exists()) {
-                    console.log(snapshot.val());
-
                     // add student to ta list
                     const newTA = {
                         ta: studentID,
@@ -209,10 +182,9 @@ const Class = (props) => {
                     update(ref(getDatabase()), updates).then(() => {
                         // remove that student from the students list
                         remove(ref(db, 'classes/' + chosenClass + '/students/' + studentID)).then(() => {
-                            console.log("deleted");
+                            console.log("Deleted student");
                         });
                     });
-
                 } else {
                     console.log("No data available");
                 }
@@ -309,18 +281,7 @@ const Class = (props) => {
 
             <br />
             <div className="sessionActivity">
-                {/*<button className="btn btn-primary" onClick={startSession}>DEBUG: toggle session</button>
-                <p>Session Active: {sessionActive} </p>*/}
             </div>
-            {/* 
-            <button className="btn btn-primary" onClick={goToSessionPage}>Visit session page</button>
-            <br />
-            
-            <button className="btn btn-primary" onClick={getCurrClassID}>
-                TESTING: click to see class id
-
-            </button>
-            */}
         </div>
     );
 };

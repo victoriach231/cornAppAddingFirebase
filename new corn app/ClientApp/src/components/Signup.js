@@ -19,7 +19,7 @@ const Signup = () => {
     function writeNewUser(user, displayNameInput, email, userPhotoURL) {
         const db = getDatabase();
 
-        // A user entry.
+        // a user entry
         const userData = {
             name: displayNameInput,
             email: email,
@@ -28,10 +28,10 @@ const Signup = () => {
             classesAdmin: []
         };
 
-        // Get a key for a new user.
+        // get a key for a new user
         const newPostKey = user.uid;
 
-        // Write the new post's data simultaneously in the posts list and the user's post list.
+        // write the new post's data simultaneously in the posts list and the user's post list
         const updates = {};
         updates['users/' + newPostKey] = userData;
 
@@ -53,8 +53,6 @@ const Signup = () => {
                     writeNewUser(user, displayNameInput, email, "");
                 }
             });
-
-
 
             navigate('/account')
 
@@ -104,8 +102,8 @@ const Signup = () => {
                     
                 </div>
                     <button className="button">
-                <span>Sign Up</span>
-        </button>
+                        <span>Sign Up</span>
+                    </button>
             </form>
             <p>
                 Already have an account?{' '}

@@ -13,7 +13,6 @@ import Toast from 'react-bootstrap/Toast';
 
 const classFunctions = require('./AddingClassFunctionality');
 const Account = () => {
-
     const { user, logout } = UserAuth();
     const navigate = useNavigate();
 
@@ -27,13 +26,13 @@ const Account = () => {
     const newClassKey = push(child(ref(getDatabase()), 'classes')).key;
 
     const handleClassInputChange = (e) => {
-        // 👇 Store the input value to local state
+        // store the input value to local state
         setInputText(e.target.value);
     };
 
     // input to store class code entered
     const handleClassCodeInputChange = (e) => {
-        // 👇 Store the input value to local state
+        // store the input value to local state
         setClassCodeInput(e.target.value);
     };
 
@@ -67,48 +66,15 @@ const Account = () => {
         });
     };
 
-    
-
-
-    /* // TESTING PURPOSES
-    const nameList = []
-    const dbRef = ref(getDatabase());
-    get(child(dbRef, `classes`)).then((snapshot) => {
-        if (snapshot.exists()) {
-            let test = snapshot.val();
-            for (let key in test) {
-                console.log(test[key].className);
-                nameList.push(test[key].className);
-
-            }
-        } else {
-            console.log("No data available");
-        }
-    }).catch((error) => {
-        console.error(error);
-    }); */
-
 
     // join a already existing class
     const joinClass = () => {
         get(child(ref(getDatabase()), 'classes/')).then((snapshot) => {
             if (snapshot.exists()) {
-                console.log(snapshot.val());
-                console.log(snapshot.val()[0]);
                 let classMatch = false;
 
                 snapshot.forEach((childSnapshot) => {
                     if (childSnapshot.val().classCode === classCodeInput) {
-                        console.log(childSnapshot.val().classCode);
-                        console.log(childSnapshot.key);
-
-                        // TODO: add class to user list and update class rosters
-                        //childSnapshot.classesEnrolled
-
-
-                        /*)
-                        const postListRef = ref(getDatabase(), 'classes/' + childSnapshot.key + '/students'); */
-
                         // add student to class list
                         const newStudent = {
                             user: user.uid
@@ -129,11 +95,7 @@ const Account = () => {
 
                         update(ref(getDatabase()), update2);
                         classMatch = true;
-                        
-
-
                     }
-                    
                 });
                 if (classMatch == false) {
                     setJoin(false);
@@ -147,7 +109,6 @@ const Account = () => {
             console.error(error);
             setJoin(false)
         });
-
     };
 
 
@@ -161,12 +122,12 @@ const Account = () => {
     const handleClassJoinClose = () => setShowJoinClass(false);
     const handleClassJoinShow = () => setShowJoinClass(true);
 
+    // set up toasts
     const [showCreateToast, setCreate] = useState(false);
     const [showJoinToast, setJoin] = useState(false);
     const [showIncorrectJoin, setIncorrectJoin] = useState(false);
 
     return (
-       
         <div>
             {/* Confirmation of Class Creation */}
             <div className="toast-container
@@ -230,9 +191,7 @@ const Account = () => {
             </div>
             <h1>Account</h1>
             
-            
-            <br />           
-
+            <br />      
 
             <h2>Classes Enrolled</h2>
             <RealTimeData />
@@ -277,7 +236,6 @@ const Account = () => {
                 </Modal.Body>
 
             </Modal>
-
 
             <br />
             

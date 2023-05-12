@@ -52,7 +52,6 @@ const StudentSessionView = () => {
 
     const [restartTimer, setRestartTimer] = useState(Date.now());
 
-    //let timerState = false;
     const [timerState, setTimerState] = useState();
 
     const [isFRQ, setIsFRQ] = useState();
@@ -60,30 +59,11 @@ const StudentSessionView = () => {
     // user free response q answer
     const [inputText, setInputText] = useState("");
 
-
-    //function timerTest({ timerStat }) {
-    //    if (timerState) {
-    //        console.log(" add timer");
-    //        return <Countdown
-    //            key={restartTimer}
-    //            date={restartTimer + 10000}
-    //            onComplete={() => { setSubmitAnswerDisabled(true); }}
-    //        />;
-    //    }
-    //    else {
-    //        console.log("dont add timer");
-
-    //        return null;
-    //    }
-    //};
-
     // get next question index
     useEffect(() => {
         const nextQuestionIndexRef = ref(db, 'classes/' + chosenClass + '/sessionActive/nextQuestion');
         onValue(nextQuestionIndexRef, (snapshot) => {
             const data = snapshot.val();
-            console.log("here is data");
-            console.log(data);
             if (data != null) {
                 setNextQuestionIndex(data);
 
@@ -95,11 +75,8 @@ const StudentSessionView = () => {
     useEffect(() => {
         const questionSetAll = get(child(ref(db), 'questionSets/' + chosenQuestionSet + '/qSet')).then((snapshot2) => {
             if (snapshot2.exists()) {
-                console.log(snapshot2.val());
                 return snapshot2.val();
                 let studentNameList = [];
-
-
             } else {
                 console.log("No data available");
             }
@@ -115,7 +92,6 @@ const StudentSessionView = () => {
 
                 if (questionSetAll[currentQuestion]['qType']['value'] === "short") {
                     setIsFRQ(true);
-
                 }
                 else {
                     setIsFRQ(false);
@@ -126,13 +102,10 @@ const StudentSessionView = () => {
                     questionAnswers.forEach(element => answerList.push(element['label']));
                     setCurrQuestionAnswers(answerList);
                 }
-                
             });
         }).then(() => {
             const timerRef = ref(db, 'classes/' + chosenClass + '/sessionActive/');
             onValue(timerRef, (snapshot) => {
-                console.log(snapshot.val()['timerToggled']);
-                //timerState = snapshot.val()['timerToggled'];
                 setTimerState(snapshot.val()['timerToggled']);
             });
         });
@@ -141,23 +114,14 @@ const StudentSessionView = () => {
     // add user's answer to firebase
     const registerUserAnswer = (answer) => {
         setSubmitAnswerDisabled(true);
-        console.log('registerUserAnswer');
-        console.log(answer);
-        console.log(chosenClass);
-        console.log(user.uid);
-        console.log(currQuestionIndex);
-        //set(ref(db, 'classes/' + chosenClass + '/sessionActive/activeStudents/' + user.uid + '/responses'), {
-        //    [currQuestionIndex]: answer
-        //});
         const updates = {};
         updates['classes/' + chosenClass + '/sessionActive/activeStudents/' + user.uid + '/responses/' + currQuestionIndex] = answer;
-        // updates['classes/' + chosenClass + '/sessionActive/activeStudents/ + user.uid + /responses/' + user.uid + '/' + currQuestionIndex]
         update(ref(db), updates);
 
     };
 
     const handleClassInputChange = (e) => {
-        // 👇 Store the input value to local state
+        // store the input value to local state
         setInputText(e.target.value);
     };
 
@@ -175,13 +139,9 @@ const StudentSessionView = () => {
                         </svg>
 
                     </button>
-
                 </div>
-                
-
-
-
             </div>
+
             <div className='drop'>
                 <Button>
                     <div className='userInfo'>
@@ -191,14 +151,11 @@ const StudentSessionView = () => {
                     </div>
                 </Button>
             </div>
-            
-            
           
             <div className="titles">
             <h2>Class: {chosenClassDisplayName}</h2>
             <h1>Student Session</h1>
             </div>
-
             
             <br />
             <div className='box'>
@@ -208,8 +165,6 @@ const StudentSessionView = () => {
                     <div>
                         {
                             (nextQuestionIndex > 0) ?
-
-
                                 (
                                     isFRQ ?
                                         <div>
@@ -248,11 +203,7 @@ const StudentSessionView = () => {
                         }
                     </div>
             </div>
-                
             </div>
-
-            
-
             {
                 timerState ?
                     <Countdown
@@ -262,21 +213,8 @@ const StudentSessionView = () => {
                     />
                     : null
             }
-
         </div>
-
-        
     );
 };
 
 export default StudentSessionView;
-
-//{
-//    timerState &&
-//        <Countdown
-//            key={restartTimer}
-//            date={restartTimer + 10000}
-//            onComplete={() => { setSubmitAnswerDisabled(true); }}
-//        />
-
-//}

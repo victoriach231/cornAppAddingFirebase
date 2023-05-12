@@ -13,6 +13,7 @@ let newClass = "";
 
 const RealTimeData = () => {
     const [tableData, setTableData] = useState([]);
+
     // store the class selected within the table, local
     const [chosenClass, setChosenClass] = useState('');
 
@@ -34,7 +35,6 @@ const RealTimeData = () => {
 
             // get all classes in firebase
             const dbRef2 = sRef(db, 'classes/');
-
 
             onValue(dbRef2, (snapshot) => {
                 let records = [];
@@ -65,6 +65,7 @@ const RealTimeData = () => {
         newClass = chosenClass;
     }, [chosenClass]);
 
+
     // get the display name of the currently selected class
     let chosenClassDisplayName = "";
     const displayNameRef = ref(db, 'classes/' + chosenClass + "/className/");
@@ -73,8 +74,8 @@ const RealTimeData = () => {
         chosenClassDisplayName = data;
     });
 
+
     // join a session
-    // TODO use selected class ID
     const joinSession = (selectedClassID) => {
         get(child(ref(getDatabase()), 'classes/' + selectedClassID + '/sessionActive')).then((snapshot) => {
             if (snapshot.exists()) {
@@ -84,22 +85,19 @@ const RealTimeData = () => {
                         name: userTable.user.displayName
                     };
 
-
                     const updates = {};
                     updates['classes/' + selectedClassID + '/sessionActive/activeStudents/' + userTable.user.uid] = newStudent;
 
                     update(ref(getDatabase()), updates);
                 }
-
-
             } else {
                 console.log("No data available");
             }
         }).catch((error) => {
             console.error(error);
         });
-
     };
+
 
     // navigate to the class page, depending on whether the user is an instructor or student
     const goToClassPage = (selectedClassID) => {
@@ -119,7 +117,7 @@ const RealTimeData = () => {
                         joinSession(selectedClassID);
                         navigate('/session-student-view');
                     }
-                    // user is a student and session not active, TODO display popup that session not started
+                    // user is a student and session not active
                     else {
                         setNoSession(true);
                     }
@@ -129,11 +127,10 @@ const RealTimeData = () => {
                     joinSession(selectedClassID);
                     navigate('/session-student-view');
                 }
-                // user is a student and session not active, TODO display popup that session not started
+                // user is a student and session not active
                 else {
                     setNoSession(true);
                 }
-                
             } else {
                 console.log("No data available");
             }
@@ -142,6 +139,7 @@ const RealTimeData = () => {
         });
     };
     const [showNoSession, setNoSession] = useState(false);
+
 
     return (
         <div>
@@ -182,5 +180,3 @@ const RealTimeData = () => {
 }
 
 export { RealTimeData, newClass };
-
-

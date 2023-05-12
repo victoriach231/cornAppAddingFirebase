@@ -3,7 +3,6 @@
 const MAX_CLASSCODE = 99999;
 const MIN_CLASSCODE = 10000;
 
-
 describe("test created class code correctly", function () {
     test('test that generated code is greater than the min code', () => {
         const generatedCodeAsInt = parseInt(classFunctions.generateClassCode());

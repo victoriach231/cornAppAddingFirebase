@@ -7,7 +7,6 @@ import { Table } from 'react-bootstrap';
 
 const db = getDatabase()
 
-
 // store the currently selected qSet and export it to other files
 let selectedEditQSetKey = "";
 let isNewSet = false;
@@ -38,8 +37,7 @@ const QSetRealTimeData = () => {
     const navigate = useNavigate();
     const currClass = newClass
 
-    //for selecting QSet for session
-
+    // for selecting QSet for session
     const [selectedQSet, setSelectedQSet] = useState({value:'', label:''})
     const [sessionActive, setSessionActive] = useState(false)
 
@@ -66,7 +64,7 @@ const QSetRealTimeData = () => {
             goToSession()
         }
         else {
-            //error logic
+            // error logic
             console.log("Question Set not selected")
         }
     }
@@ -76,7 +74,7 @@ const QSetRealTimeData = () => {
     }
 
 
-    //do all onload stuff
+    // do all onload stuff
     useEffect(() => {
         // get all question sets in this class to populate table
         const qSetDBRef = ref(db, 'classes/'+ currClass +'/questionSets');
@@ -91,14 +89,13 @@ const QSetRealTimeData = () => {
             setTableData(records)
         })
 
-        //get and set session active
+        // get and set session active
         const sessionDBRef = ref(db, 'classes/' + currClass + '/sessionActive/sessionActive');
         onValue(sessionDBRef, (snapshot) => {
             if(snapshot.exists()) {
                 setSessionActive(snapshot.val())
             }
         })
-
     }, [])
 
     // navigate to the qSetEditor, saving the key as we go
@@ -108,7 +105,7 @@ const QSetRealTimeData = () => {
         navigate('/edit-questions')
     }
     
-    //navigate to qSetEditor, with 
+    // navigate to qSetEditor
     const createNewQSet = () => {
         isNewSet = true;
         selectedEditQSetKey = ""

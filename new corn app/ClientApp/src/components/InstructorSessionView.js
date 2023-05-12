@@ -11,12 +11,8 @@ import Badge from 'react-bootstrap/Badge';
 import { calculateScore } from './EndOfSessionFunctions';
 import './CSS/InstructorSessionView.css'
 
-//TODO: solve -1 error for seeing last questions responses
 const sessionFunctions = require('./EndOfSessionFunctions');
-// TODO import selected question set from class page
 const db = getDatabase();
-
-
 
 const InstructorSessionView = () => {
     const navigate = useNavigate();
@@ -81,12 +77,9 @@ const InstructorSessionView = () => {
 
     const [answerCountMap, setAnswerCountMap] = useState();
 
-    // TODO is this timer code used?? or just student session view timer code?
     // for timer
     const onSwitchAction = () => {
-        console.log('IN THE TIMER SWITCH FUNCTION');
         isSwitchOn = !isSwitchOn;
-        console.log(isSwitchOn);
 
         const updates = {};
         updates['classes/' + chosenClass + '/sessionActive/timerToggled'] = isSwitchOn;
@@ -116,45 +109,26 @@ const InstructorSessionView = () => {
         update(ref(db), updates2);
     };
 
-
     // get student answers to curr question 
     const getStudentAnswers = () => {
-        console.log("qtype");
-        console.log(currQuestionType);
-
         get(child(ref(db), 'classes/' + chosenClass + '/sessionActive/activeStudents')).then((snapshot) => {
             if (snapshot.exists()) {
-
-
                 if ((currQuestionType === 'multi') || (currQuestionType === 'TF')) {
                     let answerCount = new Map();
-                    //answerList.forEach(answer => answerCount.set(answer, 0));
                     currQuestionAnswers.forEach(answerOption => answerCount.set(answerOption, 0));
 
                     snapshot.forEach((childSnapshot) => {
                         if (childSnapshot.val()) {
                             if (childSnapshot.val()['responses']) {
                                 if (childSnapshot.val()['responses'][currentQuestionIndex]) {
-                                    console.log(" curr index");
-                                    console.log(currentQuestionIndex);
-                                    // TODO add an if check to handle if one of the students in the sesion hasn't answered the curr question yet
-                                    console.log(childSnapshot.val()['responses'][currentQuestionIndex]);
-                                    console.log(currQuestionAnswers);
                                     const filteredArray = currQuestionAnswers.filter(value => childSnapshot.val()['responses'][currentQuestionIndex] === value);
-                                    console.log("filtered Array");
-                                    console.log(filteredArray);
-
+                                 
                                     filteredArray.forEach((answer => answerCount.set(answer, answerCount.get(answer) + 1)));
-                                    console.log("ansewr count");
-                                    console.log(answerCount);
                                     setAnswerCountMap(answerCount);
                                 }
                             }
                         }
                     });
-
-                    console.log(answerCount);
-                    //setAnswerCountMap(answerCount);
                 }
                 else if (currQuestionType === "short") {
                     let studentFRQAnswers = [];
@@ -169,8 +143,6 @@ const InstructorSessionView = () => {
                         }
                     });
                 }
-
-
             } else {
                 console.log("No data available");
             }
@@ -182,51 +154,25 @@ const InstructorSessionView = () => {
     // get all the question set data, swap current / next question labels
     useEffect(() => {
         get(child(ref(getDatabase()), 'questionSets/' + chosenQuestionSet + '/qSet')).then((snapshot) => {
-
             if (snapshot.exists()) {
                 let currIndex = nextQuestionIndex - 1;
-                console.log(currIndex);
                 if (nextQuestionIndex < snapshot.val().length) {
-
-
                     // displays first question in question set in the "next question" field
                     setNextQuestion(snapshot.val()[nextQuestionIndex]["qText"]);
                     if (nextQuestionIndex !== 0) {
-
-                        console.log("curr index");
-                        console.log(currentQuestionIndex);
                         setCurrentQuestionIndex(currIndex);
-                        console.log(currentQuestionIndex);
-                        console.log("next index");
-                        console.log(nextQuestionIndex);
                         updateCurrQuestionIndexDB(currIndex);
-                        console.log(nextQuestionIndex);
-                        console.log(currentQuestionIndex);
-
 
                         const currQJSON = snapshot.val()
-                        console.log(currQJSON[currentQuestionIndex].qText)
                         setCurrQuestion(currQJSON[currIndex].qText);
 
-                        // TODO PRINTING ONE QUESTION BEHIND
                         setCurrQuestionType(snapshot.val()[currIndex]["qType"]["value"]);
-                        console.log(snapshot.val()[currIndex]["qType"]["value"]);
-                        console.log(currQuestionType);
-
-
                     }
-
-                    //return snapshot.val();
                 }
                 // last swap
                 else if (nextQuestionIndex === snapshot.val().length) {
-                    console.log("curr index");
-                    console.log(currentQuestionIndex);
-
                     setCurrentQuestionIndex(currIndex);
-                    console.log(currentQuestionIndex);
                     updateCurrQuestionIndexDB(currIndex)
-                    console.log(currentQuestionIndex);
 
                     setCurrQuestion(snapshot.val()[currIndex]["qText"]);
                     setCurrQuestionType(snapshot.val()[currIndex]["qType"]["value"]);
@@ -234,11 +180,10 @@ const InstructorSessionView = () => {
                 }
                 else {
                     // no more questions left
-                    console.log("in else");
+                    console.log("No More Questions in Set");
                 }
 
                 // make curr question answer options show up
-                // || nextQuestionIndex === snapshot.val().length
                 if (nextQuestionIndex !== 0 || nextQuestionIndex === snapshot.val().length) {
                     // question is MC or TF
                     if (snapshot.val()[currIndex]['answers']) {
@@ -246,23 +191,11 @@ const InstructorSessionView = () => {
                         const questionAnswers = snapshot.val()[currIndex]['answers'];
                         questionAnswers.forEach(element => answerList.push(element['label']));
                         setCurrQuestionAnswers(answerList);
-
-                        //let answerCount = new Map();
-                        //answerList.forEach(answer => answerCount.set(answer, 0));
-                        //console.log("ANSWER COUNT");
-                        //console.log(answerCount);
-                        //setAnswerCountMap(answerCount);
-                        //console.log(answerCountMap);
                     }
                     else {
-                        console.log("why HERE");
                         setCurrQuestionAnswers([]);
                     }
-
-
                 }
-
-
             } else {
                 console.log("No data available");
             }
@@ -276,52 +209,22 @@ const InstructorSessionView = () => {
     useEffect(() => {
         const studentsRef = ref(db, 'classes/' + chosenClass + '/sessionActive');
         onValue(studentsRef, (snapshot) => {
-            console.log('for real');
             const data = snapshot.val();
-            console.log(data['activeStudents']);
             if (data['activeStudents'] != null) {
-                
-
-                //// count of responses
-                //console.log(data);
-                //console.log(currentQuestionIndex)
-                //console.log(Object.values(data));
-                //console.log('8888888888888');
-                ////Object.values(data).forEach(user => console.log(user['responses'][currentQuestionIndex]));
-
-                //Object.values(data).forEach(user => {
-                //    //console.log(user['responses'][currentQuestionIndex]);
-                //    //console.log(user['responses'][currentQuestionIndex][currentQuestionIndex]);
-                //    let response = user['responses'][currentQuestionIndex][currentQuestionIndex];
-
-                //    answerCountMap.set(response, answerCountMap.get(response) + 1);
-
-                //});
-                //answerCountMap.get(currentQuestionIndex)
-
-                //console.log('ansswers.....');
-                //console.log(answerCountMap);
-
-                
- 
-
                 const idsOfStudentsInSession = Object.keys(data['activeStudents']);
                 const allUsers = get(child(ref(db), 'users/')).then((snapshot) => {
                     if (snapshot.exists()) {
-
                         let studentNameList = [];
 
                         // if not in anonymous session, show student answers in list of students in session
                         if (!anonymousState) {
                             idsOfStudentsInSession.forEach((studentKey) => {
-                                //need to check if responses table exists
+                                // need to check if responses table exists
                                 if(data['activeStudents'][studentKey]['responses'] !== undefined) {
                                     studentNameList.push([snapshot.val()[studentKey]['name'], data['activeStudents'][studentKey]['responses'][currentQuestionIndex]])
-                                }
-                                else {
+                                } else {
                                     studentNameList.push([snapshot.val()[studentKey]['name']])
                                 }
-
                             });
                         } else {
                             // otherwise, show a checkmark indicating student has answered
@@ -335,9 +238,7 @@ const InstructorSessionView = () => {
                                 }
                             });
                         }
-
                         setStudentsInSession(studentNameList);
-
                     } else {
                         console.log("No data available");
                     }
@@ -364,13 +265,12 @@ const InstructorSessionView = () => {
         const snapshot = await get(ref(db, 'questionSets/' + chosenQuestionSet + '/qSet'));
         snapshot.forEach((question) => {
             let answer = question.val().trueAnswer.label
-            if(answer === "") {
+            if (answer === "") {
                 numShort++
             }
             trueAnswers.push(answer)
         })
         
-
         setNumQuestions(trueAnswers.length)
         setNumShort(numShort)
         setNumGraded(trueAnswers.length - numShort)
@@ -378,13 +278,10 @@ const InstructorSessionView = () => {
         let answerData = []
         const snapshot2 = await get(ref(db, 'classes/' + chosenClass + '/sessionActive/'));
         if (snapshot2.child('activeStudents').exists()) {
-            snapshot2.child('activeStudents').forEach((student) => {           
-
+            snapshot2.child('activeStudents').forEach((student) => {         
                 answerData.push({score: calculateScore(student.val().responses, trueAnswers), name: student.val().name})
-
             })
         }
-        
         setStudentScores(answerData)
         formatStudentScores(answerData)
     }
@@ -398,22 +295,14 @@ const InstructorSessionView = () => {
     }
 
 
-
     return (
         <div>
             <div class='header'>
                 <div class='corner'>
-                   
-
                 </div>
                 <h1> Instructor Session View: {chosenClassDisplayName} </h1>
-                
-
-                
             </div>
            
-            
-
             <Offcanvas show={showStudentsBar} onHide={handleStudentBarClose}>
                 <Offcanvas.Header closeButton>
                     <Offcanvas.Title>Students in the session:</Offcanvas.Title>
@@ -429,7 +318,6 @@ const InstructorSessionView = () => {
                                     </div>
                                 );
                             })}
-
                         </ListGroup>
                     </Offcanvas.Body>
                 </div>
@@ -468,15 +356,10 @@ const InstructorSessionView = () => {
 
                         </ListGroup>
                             <Button class="btn btn-primary" onClick={getStudentAnswers}>See Current Student Responses</Button>
-                        
-                        
-
-
                     </div>
                     }
                 </div>
                 </div>
-
             <br />
             <div className='aBox'>
             <div className = 'questions'>
@@ -507,10 +390,6 @@ const InstructorSessionView = () => {
             <Button variant="primary" onClick={handleStudentBarShow}>
                 See Students in Session
                             </Button>
-            
-
-            
-
             
             <Button onClick={handleShowEndSession}>End Session</Button>
 
@@ -548,4 +427,3 @@ const InstructorSessionView = () => {
     );
 };
 export default InstructorSessionView;
-

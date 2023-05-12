@@ -64,10 +64,4 @@ const download = (data, fileName) => {
     document.body.removeChild(a);
 };
 
-//const downloadCSVFileNotAnonymousPolling = (rows) => {
-//    return "";
-//};
-
 module.exports = { calculateScore, getSessionExportCSVDataNotAnonymousPolling, getSessionExportCSVDataHeaders, download }
-
-

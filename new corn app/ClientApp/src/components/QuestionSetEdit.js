@@ -10,33 +10,32 @@ const QuestionSetEdit = () => {
     const navigate = useNavigate();
 
     const currClass = newClass 
-    const currQSetKey = selectedQSetKey //existing key
+    const currQSetKey = selectedQSetKey // existing key
 
     const isNewQSet = isNewSet
 
-    //default multiple choice options
+    // default multiple choice options
     const defaultChoices = [
         { value: '', label: '' },
         { value: '', label: '' }
     ]
 
-    const [questionIndex, setQuestionIndex] = useState(-1) //should change depending on the question selected
+    const [questionIndex, setQuestionIndex] = useState(-1) // should change depending on the question selected
 
     const [questionSet, setQuestionSet] = useState([])
-    const [qSetName, setQSetName] = useState("") //default should be whatever is passed on navigate
+    const [qSetName, setQSetName] = useState("") // default should be whatever is passed on navigate
 
 
-    //FIREBASE FUNCTIONALITY
+    // FIREBASE FUNCTIONALITY
 
-    //geneeric save function
+    // generic save function
     const saveQuestion = (key) => {
-        console.log(key)
-        //set rewrites the entire key, update adds to the key (and/or rewrites children)
-        //we will use set since we are basically rewriting question sets in order to edit them
+        // set rewrites the entire key, update adds to the key (and/or rewrites children)
+        // we will use set since we are basically rewriting question sets in order to edit them
         set(ref(getDatabase(), 'questionSets/' + key), {name: qSetName, qSet: questionSet});
     }
 
-    //for new sets
+    // for new sets
     const addNewQuestionSet = () => {
         const newKey = push(child(ref(getDatabase()), 'questionSets')).key
 
@@ -67,20 +66,18 @@ const QuestionSetEdit = () => {
 
     //save question handler
     const saveQuestionSetHandler = () => {
-        if(validateQSet()) {
+        if (validateQSet()) {
             if(isNewQSet) {
                 addNewQuestionSet()
-            }
-            else {
+            } else {
                 saveExistingQuestionSet()
             }
-        }
-        else {
+        } else {
             console.log("qset or name is empty")
         }
     }
 
-    //cancel question edit
+    // cancel question edit
     const cancel = () => {
         navigate('/class')
     }
@@ -98,18 +95,17 @@ const QuestionSetEdit = () => {
         setCorrectAnswer({value:"", label:""})
         setQuestionText("")
         setQuestionIndex(-1)
-        //close popup
+        // close popup
         setShowAddQuestionField(false)
     };
     const handleShow = () => setShowAddQuestionField(true);
 
     const openQuestionAtIndex = (index, e) => {
-        //set curr index
-        console.log(index)
+        // set curr index
         setQuestionIndex(index)
-        //get json
+        // get json
         let question = questionSet[index]
-        //set variables
+        // set variables
         setQuestionType(question.qType)
         setQuestionText(question.qText)
         setChoices(question.answers)
@@ -119,8 +115,7 @@ const QuestionSetEdit = () => {
         handleShow()
     }
 
-    //handle save question
-
+    // handle save question
     const handleSaveQuesiton = () => {
         if(ensureFilled()) {
             let questionJSON = {
@@ -129,10 +124,7 @@ const QuestionSetEdit = () => {
                 answers: answerOptions,
                 trueAnswer: correctAnswer  
             }
-            console.log(questionJSON)
-            console.log(questionIndex)
             
-            //TODO: add edit question functionality
             if (questionIndex === -1) {
                 setQuestionSet([...questionSet, questionJSON])
             }
@@ -142,20 +134,15 @@ const QuestionSetEdit = () => {
                     questionJSON,
                     ...questionSet.slice(questionIndex + 1)
                 ]
-
-                console.log("old")
-                console.log(questionSet)
-                console.log("new")
-                console.log(newSet)
                 setQuestionSet(newSet)
             }
             handleClose()
         }
     }
 
-    //quick check for filled
+    // quick check for filled
     const ensureFilled = () => {
-        if ((questionText !== "") && (questionType != null)) { //this needs to be changed to allow the user to understand whats wrong
+        if ((questionText !== "") && (questionType != null)) {
             let allgood = true
             switch (questionType.value) {
                 case "multi":
@@ -165,7 +152,6 @@ const QuestionSetEdit = () => {
                 case "short":
                     return allgood
                 default:
-                    console.log("how")
                     return false
             }
         }
@@ -175,47 +161,44 @@ const QuestionSetEdit = () => {
         }
     }
 
-    //ensure each option is filled
+    // ensure each option is filled
     const checkAnswerChoices = () => {
         let filled = true
         answerOptions.forEach((e) => filled = (!filled || e.value !== ""))
         return filled
     }
-
-    //delete question function
+     
+    // delete question function
     const deleteQuestion = (index) => {
         let data = [...questionSet]
         data.splice(index, 1)
         setQuestionSet(data)
     }
 
-    //QUESTION EDIT FUNCTIONS
+    // QUESTION EDIT FUNCTIONS
 
-    //question type variable
+    // question type variable
     const [questionType, setQuestionType] = useState({ value: '', label: ''})
 
-    //qType event handler
+    // qType event handler
     const handleTypeChange = (e) => {
         setQuestionType(e)
-        //test if changed
+        // test if changed
         if (e.value !== questionType.value) {
-            //show and hide structures based on new Qtype --- done with jsx
-            //clear correct answer
+            // show and hide structures based on new Qtype --- done with jsx
+            // clear correct answer
             setCorrectAnswer({value:'', label:''})
-            //update correct answer options --- done in switch statement
-            //clear multi-choices
+            // update correct answer options --- done in switch statement
+            // clear multi-choices
             setChoices(defaultChoices)
             switch (e.value) {
                 case "multi":
-                    console.log("multi-switch")
                     setAnswerOptions(choices)
                     break;
                 case "TF":
-                    console.log("tf-switch")
                     setAnswerOptions(tfAnswerOptions)
                     break;
                 case "short":
-                    console.log("short-switch")
                     setAnswerOptions([])
                     break;
             }
@@ -224,32 +207,32 @@ const QuestionSetEdit = () => {
 
     let qte = "default"
 
-    //question text variable
+    // question text variable
     const [questionText, setQuestionText] = useState("")
 
-    //handle question text update
+    // handle question text update
     const handleQTextChange = (e) => setQuestionText(e.target.value)
 
-    //qType options
+    // qType options
     const questionTypeOptions = [
         { value: "multi", label: "Multiple Choice" },
         { value: "short", label: "Short Answer" },
         { value: "TF", label: "True/False" }
     ]
 
-    //correct answer selection (dependent on active qType)
+    // correct answer selection (dependent on active qType)
     const [correctAnswer, setCorrectAnswer] = useState({ value: '', label: ''})
 
-    //correct answer options
+    // correct answer options
     const [answerOptions, setAnswerOptions] = useState([])
 
-    //MULTIPLE CHOICE
+    // MULTIPLE CHOICE
 
-    //multiple choice variable
+    // multiple choice variable
     const [choices, setChoices] = useState(defaultChoices)
 
 
-    //handle options change
+    // handle options change
     const handleOptionChange = (index, event) => {
         let data = [...choices]
         data[index]['value'] = event.target.value
@@ -258,14 +241,14 @@ const QuestionSetEdit = () => {
         setAnswerOptions(choices)
     }
 
-    //add additional multi-choice fields
+    // add additional multi-choice fields
     const addFields = () => {
         let newChoice = { value: '', label:'' }
         setChoices([...choices, newChoice])
         setAnswerOptions(choices)
     }
 
-    //remove multi-choice fields
+    // remove multi-choice fields
     const removeFields = (index) => {
         let data = [...choices]
         if (data.length > 2) {
@@ -274,22 +257,21 @@ const QuestionSetEdit = () => {
             setAnswerOptions(choices)
         }
         else {
-            //TODO: Show Error message, have to have at least 2 options
             console.log("have to have at least 2 questions")
         }
     }
 
-    //TRUE FALSE
-    //hard-coded T/F options
+    // TRUE FALSE
+    // hard-coded T/F options
     const tfAnswerOptions = [
         { value: true, label: "True" },
         { value: false, label: "False" }
     ]
 
 
-    //populate fields on load
+    // populate fields on load
     
-    //get questionSet 
+    // get questionSet 
     useEffect(() => {
         if(!isNewQSet) {
             let newSet = []
@@ -308,14 +290,11 @@ const QuestionSetEdit = () => {
                         }
                         newSet.push(question)
                     })
-
                 }
             })
             setQuestionSet(newSet)
         }    
     }, [])
-
-
 
     
     return (
@@ -338,25 +317,16 @@ const QuestionSetEdit = () => {
                         </div>
                     )
                 })}
-                {/* {questionSet.length === 0 ? <div><ListGroup.Item></ListGroup.Item></div> : questionSet.map((set, index) => {
-                            return (
-                                <div key={index}>
-                                    <ListGroup.Item onClick={(e) => openQuestionAtIndex(index, e)}>{set.qText}</ListGroup.Item>
-                                </div>
-                            )
-                        })} // this is for creating an empty default listing (doesn't work, will be smushed)*/}
             </ListGroup>
             
             <Button variant="primary" onClick={handleShow}>Add Question</Button>
 
-         
-            
+           
             <div>
                 <Button onClick={cancel} variant='secondary'>Cancel</Button>
                 <Button onClick={saveQuestionSetHandler} variant='primary'>Save & Exit</Button>
             </div>
             
-
 
 
             <Modal show={showAddQuestionField} onHide={handleClose}>
@@ -422,7 +392,6 @@ const QuestionSetEdit = () => {
             </Modal>
 
         </div>
-  
     );
 }
 
