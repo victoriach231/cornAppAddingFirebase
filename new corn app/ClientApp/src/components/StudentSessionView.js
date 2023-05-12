@@ -238,7 +238,7 @@ const StudentSessionView = () => {
                                         </div>
                                 )
                                 :
-                                <div>
+                                <div className='waiting'>
                                     <p> Waiting for your instructor to ask a question...</p>
                                     <Spinner animation="border" role="status">
                                         <span className="visually-hidden">Loading...</span>

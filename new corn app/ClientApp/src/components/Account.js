@@ -137,11 +137,9 @@ const Account = () => {
                 });
                 if (classMatch == false) {
                     setJoin(false);
-                    console.log("incorrect");
                     setIncorrectJoin(true);
                 }
             } else {
-                console.log("No data available");
                 setJoin(false);
             }
         }).catch((error) => {

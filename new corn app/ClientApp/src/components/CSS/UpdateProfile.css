@@ -33,3 +33,9 @@ em.passfield-spacing{
     padding-right: 31px;
 }
 
+.toast-container{
+    margin-bottom: 0px;
+}
+    .toast-container > :not(:last-child) {
+        margin-bottom: 0px;
+    }

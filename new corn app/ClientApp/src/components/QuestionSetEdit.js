@@ -315,30 +315,9 @@ const QuestionSetEdit = () => {
         }    
     }, [])
 
-    const logQSet = () => {
-        // console.log(questionSet)
-        // console.log(questionIndex)
-        // testQuestion()
-        console.log("currclass")
-        console.log(currClass)
-        console.log("qsetkey")
-        console.log(currQSetKey)
-        console.log("question set")
-        console.log(questionSet)
-        console.log("isNewSet")
-        console.log(isNewQSet)
-    }
+
+
     
-    const logVars = () => {
-        console.log(questionType)
-        console.log(correctAnswer)
-        console.log("index")
-        console.log(questionIndex)
-    }
-
-
-    //TODO: css: make <form> background transparent
-    //TODO: html: make buttons look better
     return (
         <div className="App">
 
@@ -370,8 +349,8 @@ const QuestionSetEdit = () => {
             
             <Button variant="primary" onClick={handleShow}>Add Question</Button>
 
-            <br/>
-            <button onClick={logQSet}>test button</button>
+         
+            
             <div>
                 <Button onClick={cancel} variant='secondary'>Cancel</Button>
                 <Button onClick={saveQuestionSetHandler} variant='primary'>Save & Exit</Button>
@@ -433,7 +412,7 @@ const QuestionSetEdit = () => {
                     </div>}
 
                     <br/>
-                    <button onClick={logVars}>logVars</button>
+                    
 
                 </Modal.Body>
                 <Modal.Footer>

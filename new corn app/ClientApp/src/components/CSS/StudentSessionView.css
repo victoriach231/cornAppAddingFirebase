@@ -30,3 +30,8 @@ button.submit{
     justify-content:center;
 }
 
+div.waiting {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
