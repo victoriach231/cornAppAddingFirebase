@@ -150,7 +150,7 @@ const RealTimeData = () => {
                 position-absolute
                 top-30 start-50
                 translate-middle-x">
-                <Toast onClose={() => setNoSession(false)} show={showNoSession} delay={3000} autohide='true'>
+                <Toast onClose={() => setNoSession(false)} show={showNoSession} delay={3000} bg="white" autohide='true'>
                     <Toast.Header>
                         <strong className="me-auto">Class Session</strong>
                     </Toast.Header>
