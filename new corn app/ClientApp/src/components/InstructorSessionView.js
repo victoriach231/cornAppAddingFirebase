@@ -70,7 +70,7 @@ const InstructorSessionView = () => {
     }
 
     // for the csv formatted data
-    const [csvFormattedData, setCsvFormattedData] = useState([]);
+    const [csvFormattedData, setCsvFormattedData] = useState(["a", "b"]);
     let date = new Date().toJSON().slice(0, 10);
 
     // for timer
@@ -359,7 +359,6 @@ const InstructorSessionView = () => {
 
     //student score functions
     const getStudentResults = async () => {
-        console.log("getStudentResults")
         //format student answer json and true answer json into proper format for function
         let trueAnswers = []
         let numShort = 0
@@ -377,30 +376,25 @@ const InstructorSessionView = () => {
         setNumShort(numShort)
         setNumGraded(trueAnswers.length - numShort)
 
-        console.log("trueAnswers")
-        console.log(trueAnswers)
-
         let answerData = []
-        onValue(ref(db, 'classes/' + chosenClass + '/sessionActive/'), (snapshot) => {
-            if(snapshot.child('activeStudents').exists()) {
-                snapshot.child('activeStudents').forEach((student) => {           
+        const snapshot2 = await get(ref(db, 'classes/' + chosenClass + '/sessionActive/'));
+        if (snapshot2.child('activeStudents').exists()) {
+            snapshot2.child('activeStudents').forEach((student) => {           
 
-                    answerData.push({score: calculateScore(student.val().responses, trueAnswers), name: student.val().name})
+                answerData.push({score: calculateScore(student.val().responses, trueAnswers), name: student.val().name})
 
-                })
-            }
-        })
+            })
+        }
         
-        console.log(answerData)
         setStudentScores(answerData)
-        formatStudentScores()
+        formatStudentScores(answerData)
     }
 
 
     // convert studentScores into an array that the csv download can read
-    const formatStudentScores = () => {
+    const formatStudentScores = (studentAnswerData) => {
         let csvData = [];
-        studentScores.forEach(student => csvData.push([student.name, student.score]));
+        studentAnswerData.forEach(student => csvData.push([student.name, student.score]));
         setCsvFormattedData(csvData);
     }
 
