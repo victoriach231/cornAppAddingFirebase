@@ -3,6 +3,7 @@ import { UserAuth } from '../context/AuthContext';
 import { getDatabase, ref, set, update, get, child} from "firebase/database";
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import Toast from 'react-bootstrap/Toast';
 import './CSS/UpdateProfile.css';
 
 const UpdateProfile = () => {
@@ -77,6 +78,7 @@ const UpdateProfile = () => {
     };
 
     const [show, setShow] = useState(false);
+    const [toastShow, setToastShow] = useState(false);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -98,24 +100,35 @@ const UpdateProfile = () => {
         }));
     };
 
-    const handleSubmit = e => {
+    const handleSubmit = async e => {
         e.preventDefault();
-        alert(`${imageSelected}`);
+        //alert(`${imageSelected}`);
         updateProfilePicture(imageSelected);
 
         const updates = {};
         updates['users/' + user.uid + '/picture'] = imageSelected;
-        update(ref(getDatabase()), updates);
+        await update(ref(getDatabase()), updates);
     };
 
     const backNavigate = e => {
         navigate('/account');
     };
 
+    const handleForm = e => {
+        handleSubmit();
+        setShow(false);
+    }
+
 
     return (
-
         <div>
+            <Toast className="toast-container position-absolute top-30 start-50 translate-middle-x" bg="white" onClose={() => setToastShow(false)} show={toastShow} delay={2000} autohide>
+                <Toast.Header>
+                    <strong>Changes Saved</strong>
+                </Toast.Header>
+                <Toast.Body>Profile Photo Updated</Toast.Body>
+            </Toast>
+
             <div className='header'>
                 <div className='corner'>
                 <button onClick={backNavigate}>
@@ -179,8 +192,8 @@ const UpdateProfile = () => {
                 <Modal.Header closeButton>
                     <Modal.Title>Change Your Profile Photo</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
-                    <form onSubmit={handleSubmit}>
+                    <Modal.Body>
+                        <form onSubmit={handleSubmit}>
                         <Form.Group controlId="imageSelected">
                             <Form.Check
                                 value="./images/default.png"
@@ -223,7 +236,7 @@ const UpdateProfile = () => {
                                 checked={imageSelected === "./images/bobSpaghetti.png"}
                             />
                         </Form.Group>
-                        <Button variant="primary" type="submit">
+                            <Button variant="primary" type="submit" onClick={() => { handleForm(); setToastShow(true) }}>
                             Submit
                         </Button>
                     </form>
