@@ -230,7 +230,7 @@ const InstructorSessionView = () => {
 
                     setCurrQuestion(snapshot.val()[currIndex]["qText"]);
                     setCurrQuestionType(snapshot.val()[currIndex]["qType"]["value"]);
-                    setNextQuestion();
+                    setNextQuestion("");
                 }
                 else {
                     // no more questions left
@@ -327,18 +327,17 @@ const InstructorSessionView = () => {
                             // otherwise, show a checkmark indicating student has answered
                             // check that student has answered first
                             idsOfStudentsInSession.forEach(studentKey => {
-                                if (data['activeStudents'][studentKey]['responses'][currentQuestionIndex] != null) {
-                                    idsOfStudentsInSession.forEach(studentKey => studentNameList.push([snapshot.val()[studentKey]['name'], "✅"]));
+                                if (data['activeStudents'][studentKey]['responses'][currentQuestionIndex] !== undefined) {
+                                    studentNameList.push([snapshot.val()[studentKey]['name'], "✅"])
                                 } else {
                                     // otherwise, push student names but no checkmark (because hasn't answered yet)
-                                    idsOfStudentsInSession.forEach(studentKey => studentNameList.push([snapshot.val()[studentKey]['name'], ""]));
+                                    studentNameList.push([snapshot.val()[studentKey]['name'], ""])
                                 }
                             });
                         }
 
                         setStudentsInSession(studentNameList);
 
-                        return snapshot.val();
                     } else {
                         console.log("No data available");
                     }
@@ -499,7 +498,7 @@ const InstructorSessionView = () => {
                     />
                 </div>
                 <div class="text-center">
-            <Button onClick={() => { setNextQuestionIndex(nextQuestionIndex + 1); setAnswerCountMap(new Map()) }}>Display Next Question</Button>
+            <Button onClick={() => { setNextQuestionIndex(nextQuestionIndex + 1); setAnswerCountMap(new Map()) }} disabled={nextQuestion === ""}>Display Next Question</Button>
             </div>
                     
            
