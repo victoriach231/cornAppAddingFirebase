@@ -102,7 +102,6 @@ const UpdateProfile = () => {
 
     const handleSubmit = async e => {
         e.preventDefault();
-        //alert(`${imageSelected}`);
         updateProfilePicture(imageSelected);
 
         const updates = {};
