@@ -247,7 +247,7 @@ const Account = () => {
                 <Modal.Body>
                 <div className='accountClass'>
                     <h6>Enter class name:</h6>
-                        <input className= 'createClass' type="text" onChange={handleClassInputChange} value={inputText} />
+                        <input className='createClass' type="text" onChange={handleClassInputChange} value={inputText} placeholder="enter class name" />
                     
                     <div className='mbtn'>
                         <button className="m" onClick={() => { createClass(); setCreate(true); handleClose() }}>Create Class</button>
@@ -269,7 +269,7 @@ const Account = () => {
                 <Modal.Body>
                 <div className='accountClass'>
                     <h6>Enter the class code:</h6>
-                    <input type="text" onChange={handleClassCodeInputChange} value={classCodeInput} />
+                        <input type="text" onChange={handleClassCodeInputChange} value={classCodeInput} placeholder="enter class code"/>
                     <div className='mbtn'>
                         <button className="m" onClick={() => { joinClass(); setJoin(true); handleClassJoinClose() }}>Join Class</button>
                         </div>

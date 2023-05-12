@@ -79,7 +79,8 @@ const Signup = () => {
                     
                     <input
                         onChange={(e) => setDisplayNameInput(e.target.value)}
-                        type='displayNameInput'
+                                type='displayNameInput'
+                                placeholder="display name"
                         />
                     
                 </div>
@@ -87,7 +88,8 @@ const Signup = () => {
                     <label>Email Address</label>
                     <input
                         onChange={(e) => setEmail(e.target.value)}
-                        type='email'
+                                type='email'
+                                placeholder="email"
                     />
                 </div>
                 <div>
@@ -96,7 +98,8 @@ const Signup = () => {
                     
                     <input
                         onChange={(e) => setPassword(e.target.value)}
-                        type='password'
+                                type='password'
+                                placeholder="password"
                         />
                     
                 </div>

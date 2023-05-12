@@ -148,7 +148,7 @@ const UpdateProfile = () => {
             <div>
                 <em className="nfield-spacing">Enter your new display name: </em>
             
-                <input type="text" onChange={handleNameInputChange} value={newNameInput} />
+                <input type="text" onChange={handleNameInputChange} value={newNameInput} placeholder="new display name"/>
             
                 <button onClick={handleNameChange}>Save new name</button>
             </div>
@@ -156,7 +156,7 @@ const UpdateProfile = () => {
             <div>
             <em className="emailfield-spacing">Enter your new email address: </em>
             
-                <input type="text" onChange={handleEmailInputChange} value={newEmailInput} />
+                <input type="text" onChange={handleEmailInputChange} value={newEmailInput} placeholder="new email" />
                 <button onClick={handleEmailChange}>Save new email address</button>
             </div>
             
@@ -164,7 +164,7 @@ const UpdateProfile = () => {
             <div>
             <em className="passfield-spacing">Enter your new password: </em>
             
-                <input type="text" onChange={handlePasswordInputChange} value={newPasswordInput} />
+                <input type="text" onChange={handlePasswordInputChange} value={newPasswordInput} placeholder="new password"/>
             
             <button onClick={handlePasswordChange}>Save new password</button>
             </div>

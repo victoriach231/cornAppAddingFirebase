@@ -47,12 +47,12 @@ const Signin = () => {
                 <form onSubmit={handleSubmit}>
                     <div>
                         <label>Email Address</label>
-                        <input onChange={(e) => setEmail(e.target.value)} type='email' />
+                            <input onChange={(e) => setEmail(e.target.value)} type='email' placeholder="email"/>
                      </div>
                     <div>
                                 <label className='passInput'>Password</label>
                                 
-                                    <input onChange={(e) => setPassword(e.target.value)} type='password'  />
+                            <input onChange={(e) => setPassword(e.target.value)} type='password' placeholder="password"/>
                             
                     </div>
                         <button className= "button">

@@ -512,7 +512,7 @@ const InstructorSessionView = () => {
 
             
 
-            <button class="btn btn-primary" onClick={() => { sessionFunctions.download(csvFormattedData, chosenClassDisplayName + " on " + date) }}>Download CSV</button>
+            
             <Button onClick={handleShowEndSession}>End Session</Button>
 
             <Modal show={showEndSession} onHide={handleCloseEndSession}>
