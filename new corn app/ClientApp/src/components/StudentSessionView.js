@@ -1,4 +1,4 @@
-﻿import { newClass } from './realTimeData/index';
+﻿import { newClass } from './realTimeData/ClassDisplay';
 import { getDatabase, ref, child, get, onValue, update, set } from "firebase/database";
 import { useState, useEffect } from 'react';
 import ListGroup from 'react-bootstrap/ListGroup';

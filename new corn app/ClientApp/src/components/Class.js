@@ -1,7 +1,7 @@
 ﻿import { Button } from 'react-bootstrap';
 import { Table } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { newClass } from './realTimeData/index';
+import { newClass } from './realTimeData/ClassDisplay';
 import { QSetRealTimeData } from './realTimeData/questionSetDisplay'
 import ListGroup from 'react-bootstrap/ListGroup';
 import Offcanvas from 'react-bootstrap/Offcanvas';

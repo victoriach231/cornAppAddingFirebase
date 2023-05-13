@@ -4,7 +4,7 @@ import { getDatabase, ref, set, child, get, push, update } from "firebase/databa
 import { React, useState, useEffect } from "react";
 import Select from 'react-select';
 import { Modal, Button, ListGroup } from 'react-bootstrap';
-import { newClass } from './realTimeData/index';
+import { newClass } from './realTimeData/ClassDisplay';
 
 const QuestionSetEdit = () => {
     const navigate = useNavigate();

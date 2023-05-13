@@ -1,7 +1,7 @@
 ﻿import { useState, useEffect } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-import { newClass } from './realTimeData/index';
+import { newClass } from './realTimeData/ClassDisplay';
 import { launchedQSetKey, stopSession } from './realTimeData/questionSetDisplay';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { getDatabase, ref, child, get, onValue, update } from "firebase/database";

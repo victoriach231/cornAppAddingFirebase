@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ref, onValue, getDatabase, get, child, set } from 'firebase/database';
 import Select from 'react-select'
-import { newClass } from './index';
+import { newClass } from './ClassDisplay';
 import { Table } from 'react-bootstrap';
 
 const sessionSetupFunctions = require('./StartingSessionSetupFunctions');
