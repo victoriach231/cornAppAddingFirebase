@@ -400,7 +400,6 @@ const InstructorSessionView = () => {
                 <Modal.Body>
                 
                 <ListGroup>
-                    {/* the divs should look distict from the listgroup.item but still look similar */}
                     <h1>Student Scores</h1>
                     {studentScores.map((student, index) => {
                         return (
