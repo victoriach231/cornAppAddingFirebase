@@ -36,7 +36,7 @@ const Signin = () => {
 
     return (
         <div>
-            <img src={logo} alt={"Cornhusker Clicker Logo"} width={304} height={120} />
+            <img src={'./images/CornHusker.png'} alt={"Cornhusker Clicker Logo"} width={304} height={120} />
             <div className='box'>
             <div>
                 <div>
