@@ -3,7 +3,6 @@ import { Link, useNavigate, Navigate} from 'react-router-dom';
 import { UserAuth } from '../context/AuthContext';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import './CSS/Signin.css';
-import logo from './images/CornHusker.png'
 
 const Signin = () => {
     const [email, setEmail] = useState('');
@@ -36,7 +35,7 @@ const Signin = () => {
 
     return (
         <div>
-            <img src={'./images/CornHusker.png'} alt={"Cornhusker Clicker Logo"} width={304} height={120} />
+            <img src={'./images/cornHusker.png'} alt={"Cornhusker Clicker Logo"} width={304} height={120} />
             <div className='box'>
             <div>
                 <div>

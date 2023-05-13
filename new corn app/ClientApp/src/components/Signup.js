@@ -4,7 +4,6 @@ import { UserAuth } from '../context/AuthContext';
 import { getDatabase, ref, child, push, update } from "firebase/database";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import './CSS/Signup.css';
-import logo from './images/CornHusker.png'
 
 const Signup = () => {
     const [email, setEmail] = useState('');
@@ -64,7 +63,7 @@ const Signup = () => {
 
     return (
         <div>
-            <img src={logo} alt={"Cornhusker Clicker Logo"} width={304} height={120} />
+            <img src={'./images/cornHusker.png'} alt={"Cornhusker Clicker Logo"} width={304} height={120} />
         <div className='box'>
         <div>
             <div>
