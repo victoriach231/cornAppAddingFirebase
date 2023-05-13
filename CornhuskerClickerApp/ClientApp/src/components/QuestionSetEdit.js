@@ -9,21 +9,21 @@ import { newClass } from './realTimeData/ClassDisplay';
 const QuestionSetEdit = () => {
     const navigate = useNavigate();
 
-    const currClass = newClass 
-    const currQSetKey = selectedQSetKey // existing key
+    const currClass = newClass;
+    const currQSetKey = selectedQSetKey; // existing key
 
-    const isNewQSet = isNewSet
+    const isNewQSet = isNewSet;
 
     // default multiple choice options
     const defaultChoices = [
         { value: '', label: '' },
         { value: '', label: '' }
-    ]
+    ];
 
-    const [questionIndex, setQuestionIndex] = useState(-1) // should change depending on the question selected
+    const [questionIndex, setQuestionIndex] = useState(-1); // should change depending on the question selected
 
-    const [questionSet, setQuestionSet] = useState([])
-    const [qSetName, setQSetName] = useState("") // default should be whatever is passed on navigate
+    const [questionSet, setQuestionSet] = useState([]);
+    const [qSetName, setQSetName] = useState(""); // default should be whatever is passed on navigate
 
 
     // FIREBASE FUNCTIONALITY
@@ -32,55 +32,55 @@ const QuestionSetEdit = () => {
     const saveQuestion = (key) => {
         // set rewrites the entire key, update adds to the key (and/or rewrites children)
         // we will use set since we are basically rewriting question sets in order to edit them
-        set(ref(getDatabase(), 'questionSets/' + key), {name: qSetName, qSet: questionSet});
-    }
+        set(ref(getDatabase(), 'questionSets/' + key), { name: qSetName, qSet: questionSet });
+    };
 
     // for new sets
     const addNewQuestionSet = () => {
-        const newKey = push(child(ref(getDatabase()), 'questionSets')).key
+        const newKey = push(child(ref(getDatabase()), 'questionSets')).key;
 
         //create new qset in database
-        saveQuestion(newKey)
+        saveQuestion(newKey);
 
         //add new qSet to class
-        update(ref(getDatabase(),'classes/' + currClass + '/questionSets/' + newKey), {name: qSetName})
+        update(ref(getDatabase(), 'classes/' + currClass + '/questionSets/' + newKey), { name: qSetName });
 
-        navigate('/class')
-    }
+        navigate('/class');
+    };
 
     //make sure no empty fields
     const validateQSet = () => {
-        return qSetName !== "" && questionSet.length != 0
-    }
+        return qSetName !== "" && questionSet.length != 0;
+    };
 
     //for existing sets
     const saveExistingQuestionSet = () => {
         //save qSet
-        saveQuestion(currQSetKey)
+        saveQuestion(currQSetKey);
 
         //change name
-        update(ref(getDatabase(),'classes/' + currClass + '/questionSets/' + currQSetKey), {name: qSetName})
+        update(ref(getDatabase(), 'classes/' + currClass + '/questionSets/' + currQSetKey), { name: qSetName });
 
-        navigate('/class')
-    }
+        navigate('/class');
+    };
 
     //save question handler
     const saveQuestionSetHandler = () => {
         if (validateQSet()) {
-            if(isNewQSet) {
-                addNewQuestionSet()
+            if (isNewQSet) {
+                addNewQuestionSet();
             } else {
-                saveExistingQuestionSet()
+                saveExistingQuestionSet();
             }
         } else {
-            console.log("qset or name is empty")
+            console.log("qset or name is empty");
         }
-    }
+    };
 
     // cancel question edit
     const cancel = () => {
-        navigate('/class')
-    }
+        navigate('/class');
+    };
 
     //POP-UP FUNCTIONS
     
@@ -89,212 +89,212 @@ const QuestionSetEdit = () => {
     // handle the popup open and close
     const handleClose = () => { 
         //clear all fields
-        setQuestionType({value:"", label:""})
-        setChoices(defaultChoices)
-        setAnswerOptions([])
-        setCorrectAnswer({value:"", label:""})
-        setQuestionText("")
-        setQuestionIndex(-1)
+        setQuestionType({ value: "", label: "" });
+        setChoices(defaultChoices);
+        setAnswerOptions([]);
+        setCorrectAnswer({ value: "", label: "" });
+        setQuestionText("");
+        setQuestionIndex(-1);
         // close popup
-        setShowAddQuestionField(false)
+        setShowAddQuestionField(false);
     };
     const handleShow = () => setShowAddQuestionField(true);
 
     const openQuestionAtIndex = (index, e) => {
         // set curr index
-        setQuestionIndex(index)
+        setQuestionIndex(index);
         // get json
-        let question = questionSet[index]
+        let question = questionSet[index];
         // set variables
-        setQuestionType(question.qType)
-        setQuestionText(question.qText)
-        setChoices(question.answers)
-        setAnswerOptions(question.answers)
-        setCorrectAnswer(question.trueAnswer)
-        
-        handleShow()
-    }
+        setQuestionType(question.qType);
+        setQuestionText(question.qText);
+        setChoices(question.answers);
+        setAnswerOptions(question.answers);
+        setCorrectAnswer(question.trueAnswer);
+
+        handleShow();
+    };
 
     // handle save question
     const handleSaveQuesiton = () => {
-        if(ensureFilled()) {
+        if (ensureFilled()) {
             let questionJSON = {
-                qText: questionText, 
+                qText: questionText,
                 qType: questionType,
                 answers: answerOptions,
-                trueAnswer: correctAnswer  
-            }
-            
+                trueAnswer: correctAnswer
+            };
+
             if (questionIndex === -1) {
-                setQuestionSet([...questionSet, questionJSON])
+                setQuestionSet([...questionSet, questionJSON]);
             }
             else {
                 let newSet = [
                     ...questionSet.slice(0, questionIndex),
                     questionJSON,
                     ...questionSet.slice(questionIndex + 1)
-                ]
-                setQuestionSet(newSet)
+                ];
+                setQuestionSet(newSet);
             }
-            handleClose()
+            handleClose();
         }
-    }
+    };
 
     // quick check for filled
     const ensureFilled = () => {
         if ((questionText !== "") && (questionType != null)) {
-            let allgood = true
+            let allgood = true;
             switch (questionType.value) {
                 case "multi":
-                    allgood = checkAnswerChoices()
+                    allgood = checkAnswerChoices();
                 case "TF":
-                    allgood = correctAnswer !== null
+                    allgood = correctAnswer !== null;
                 case "short":
-                    return allgood
+                    return allgood;
                 default:
-                    return false
+                    return false;
             }
         }
         else {
-            console.log("qtype or qtext empty")
-            return false
+            console.log("qtype or qtext empty");
+            return false;
         }
-    }
+    };
 
     // ensure each option is filled
     const checkAnswerChoices = () => {
-        let filled = true
-        answerOptions.forEach((e) => filled = (!filled || e.value !== ""))
-        return filled
-    }
+        let filled = true;
+        answerOptions.forEach((e) => filled = (!filled || e.value !== ""));
+        return filled;
+    };
      
     // delete question function
     const deleteQuestion = (index) => {
-        let data = [...questionSet]
-        data.splice(index, 1)
-        setQuestionSet(data)
-    }
+        let data = [...questionSet];
+        data.splice(index, 1);
+        setQuestionSet(data);
+    };
 
     // QUESTION EDIT FUNCTIONS
 
     // question type variable
-    const [questionType, setQuestionType] = useState({ value: '', label: ''})
+    const [questionType, setQuestionType] = useState({ value: '', label: '' });
 
     // qType event handler
     const handleTypeChange = (e) => {
-        setQuestionType(e)
+        setQuestionType(e);
         // test if changed
         if (e.value !== questionType.value) {
             // show and hide structures based on new Qtype --- done with jsx
             // clear correct answer
-            setCorrectAnswer({value:'', label:''})
+            setCorrectAnswer({ value: '', label: '' });
             // update correct answer options --- done in switch statement
             // clear multi-choices
-            setChoices(defaultChoices)
+            setChoices(defaultChoices);
             switch (e.value) {
                 case "multi":
-                    setAnswerOptions(choices)
+                    setAnswerOptions(choices);
                     break;
                 case "TF":
-                    setAnswerOptions(tfAnswerOptions)
+                    setAnswerOptions(tfAnswerOptions);
                     break;
                 case "short":
-                    setAnswerOptions([])
+                    setAnswerOptions([]);
                     break;
             }
         }
-    }
+    };
 
-    let qte = "default"
+    let qte = "default";
 
     // question text variable
-    const [questionText, setQuestionText] = useState("")
+    const [questionText, setQuestionText] = useState("");
 
     // handle question text update
-    const handleQTextChange = (e) => setQuestionText(e.target.value)
+    const handleQTextChange = (e) => setQuestionText(e.target.value);
 
     // qType options
     const questionTypeOptions = [
         { value: "multi", label: "Multiple Choice" },
         { value: "short", label: "Short Answer" },
         { value: "TF", label: "True/False" }
-    ]
+    ];
 
     // correct answer selection (dependent on active qType)
-    const [correctAnswer, setCorrectAnswer] = useState({ value: '', label: ''})
+    const [correctAnswer, setCorrectAnswer] = useState({ value: '', label: '' });
 
     // correct answer options
-    const [answerOptions, setAnswerOptions] = useState([])
+    const [answerOptions, setAnswerOptions] = useState([]);
 
     // MULTIPLE CHOICE
 
     // multiple choice variable
-    const [choices, setChoices] = useState(defaultChoices)
+    const [choices, setChoices] = useState(defaultChoices);
 
 
     // handle options change
     const handleOptionChange = (index, event) => {
-        let data = [...choices]
-        data[index]['value'] = event.target.value
-        data[index]['label'] = event.target.value
-        setChoices(data)
-        setAnswerOptions(choices)
-    }
+        let data = [...choices];
+        data[index]['value'] = event.target.value;
+        data[index]['label'] = event.target.value;
+        setChoices(data);
+        setAnswerOptions(choices);
+    };
 
     // add additional multi-choice fields
     const addFields = () => {
-        let newChoice = { value: '', label:'' }
-        setChoices([...choices, newChoice])
-        setAnswerOptions(choices)
-    }
+        let newChoice = { value: '', label: '' };
+        setChoices([...choices, newChoice]);
+        setAnswerOptions(choices);
+    };
 
     // remove multi-choice fields
     const removeFields = (index) => {
-        let data = [...choices]
+        let data = [...choices];
         if (data.length > 2) {
-            data.splice(index, 1)
-            setChoices(data)
-            setAnswerOptions(choices)
+            data.splice(index, 1);
+            setChoices(data);
+            setAnswerOptions(choices);
         }
         else {
-            console.log("have to have at least 2 questions")
+            console.log("have to have at least 2 questions");
         }
-    }
+    };
 
     // TRUE FALSE
     // hard-coded T/F options
     const tfAnswerOptions = [
         { value: true, label: "True" },
         { value: false, label: "False" }
-    ]
+    ];
 
 
     // populate fields on load
     
     // get questionSet 
     useEffect(() => {
-        if(!isNewQSet) {
-            let newSet = []
+        if (!isNewQSet) {
+            let newSet = [];
             get(child(ref(getDatabase()), 'questionSets/' + currQSetKey)).then((snapshot) => {
-                if(snapshot.exists() && snapshot.hasChildren()){
-                    let name = snapshot.child("name").val()
-                    setQSetName(name)
+                if (snapshot.exists() && snapshot.hasChildren()) {
+                    let name = snapshot.child("name").val();
+                    setQSetName(name);
                     snapshot.child("qSet").forEach(questionSnap => {
-                        let question = questionSnap.val()
-                        if(snapshot.child("answers").exists()) {
-                            let answerArr = []
+                        let question = questionSnap.val();
+                        if (snapshot.child("answers").exists()) {
+                            let answerArr = [];
                             questionSnap.child("answers").forEach((answer) => {
-                                answerArr.push(answer.val())
+                                answerArr.push(answer.val());
                             })
-                            question.answers = answerArr
+                            question.answers = answerArr;
                         }
-                        newSet.push(question)
+                        newSet.push(question);
                     })
                 }
             })
-            setQuestionSet(newSet)
-        }    
-    }, [])
+            setQuestionSet(newSet);
+        }
+    }, []);
 
     
     return (
