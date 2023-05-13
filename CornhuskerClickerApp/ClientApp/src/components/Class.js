@@ -1,16 +1,15 @@
 ﻿import { Button } from 'react-bootstrap';
-import { Table } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { newClass } from './realTimeData/ClassDisplay';
 import { QSetRealTimeData } from './realTimeData/QuestionSetDisplay'
 import ListGroup from 'react-bootstrap/ListGroup';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-import { getDatabase, ref, child, get, onValue, update, remove, set } from "firebase/database";
+import { getDatabase, ref, child, get, onValue, update, remove } from "firebase/database";
 import { useState, useEffect } from 'react';
 import { Modal } from 'react-bootstrap';
 import './CSS/Class.css'
 
-const Class = (props) => {
+const Class = () => {
     const db = getDatabase();
 
     // get the id of the currently selected class
@@ -39,8 +38,6 @@ const Class = (props) => {
 
     const [studentNameIDMap, setStudentNameIDMap] = useState();
 
-    const [selectedStudent, setSelectedStudent] = useState();
-
     // keep track of class tas
     const [tasInClass, setTasInClass] = useState([]);
 
@@ -48,21 +45,12 @@ const Class = (props) => {
 
     // toggle side bar that shows students currently in the session~
     const [showStudentsBar, setShowStudentsBar] = useState(false);
-    const [sessionActive, setSessionActive] = useState("false");
     const handleStudentBarClose = () => setShowStudentsBar(false);
     const handleStudentBarShow = () => setShowStudentsBar(true);
 
     const backNavigate = e => {
         navigate('/account');
     };
-
-    const goToSessionPage = () => {
-        navigate('/session-instructor-view');
-    };
-
-    const goToQuestionEdit = () => {
-        navigate('/edit-questions')
-    }
 
     // grab the students that are in the class
     useEffect(() => {
@@ -77,7 +65,7 @@ const Class = (props) => {
 
             if (data) {
                 const idsOfStudentsInClass = Object.keys(data);
-                const allUsers = get(child(ref(db), 'users/')).then((snapshot) => {
+                get(child(ref(db), 'users/')).then((snapshot) => {
                     if (snapshot.exists()) {
                         let studentNameList = [];
 

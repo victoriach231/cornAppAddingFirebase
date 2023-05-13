@@ -2,12 +2,10 @@
 import { RealTimeData } from "./realTimeData/ClassDisplay";
 import { useNavigate } from 'react-router-dom';
 import { UserAuth } from '../context/AuthContext';
-import { database } from '../firebase';
-import { getDatabase, ref, set, child, get, push, update, query, onValue  } from "firebase/database";
-import { ChangeEvent, useState } from "react";
+import { getDatabase, ref, set, child, get, push, update } from "firebase/database";
+import { useState } from "react";
 import './CSS/Account.css'
 import Dropdown from 'react-bootstrap/Dropdown';
-import DropdownButton from 'react-bootstrap/DropdownButton';
 import { Modal, Button } from 'react-bootstrap';
 import Toast from 'react-bootstrap/Toast';
 

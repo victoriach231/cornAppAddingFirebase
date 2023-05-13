@@ -1,6 +1,6 @@
 ﻿import React, { useState } from 'react';
 import { UserAuth } from '../context/AuthContext';
-import { getDatabase, ref, set, update, get, child} from "firebase/database";
+import { getDatabase, ref, update} from "firebase/database";
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import Toast from 'react-bootstrap/Toast';

@@ -43,8 +43,6 @@ const InstructorSessionView = () => {
     const [currQuestionType, setCurrQuestionType] = useState();
     const [FRQResponses, setFRQResponses] = useState([]);
 
-    const [currQuestionMap, setCurrQuestionMap] = useState();
-
     const [currQuestion, setCurrQuestion] = useState("");
     const [nextQuestion, setNextQuestion] = useState("");
 
@@ -90,12 +88,6 @@ const InstructorSessionView = () => {
     // for anonymous session
     const onAnonymousAction = () => {
         setAnonymousState(!anonymousState);
-    };
-
-    const clearQuestionIndexDB = () => {
-        const updates = {};
-        updates['classes/' + chosenClass + '/sessionActive/currentQuestion'] = 0;
-        update(ref(db), updates);
     };
 
     // update current question index in database
@@ -246,10 +238,6 @@ const InstructorSessionView = () => {
             }
         });
     }, [currentQuestionIndex, anonymousState]);
-
-    const backNavigate = e => {
-        navigate('/Class');
-    };
     
     //score list
     const [studentScores, setStudentScores] = useState([])

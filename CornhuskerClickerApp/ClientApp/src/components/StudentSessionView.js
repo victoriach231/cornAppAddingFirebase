@@ -1,10 +1,9 @@
 ﻿import { newClass } from './realTimeData/ClassDisplay';
-import { getDatabase, ref, child, get, onValue, update, set } from "firebase/database";
+import { getDatabase, ref, child, get, onValue, update } from "firebase/database";
 import { useState, useEffect } from 'react';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { UserAuth } from '../context/AuthContext';
 import { Button } from 'react-bootstrap';
-import ReactDOM from 'react-dom';
 import Countdown from 'react-countdown';
 import { useNavigate } from 'react-router-dom';
 import './CSS/StudentSessionView.css'
@@ -73,7 +72,7 @@ const StudentSessionView = () => {
 
     // update displayed question prompt to match currQuestion index in DB
     useEffect(() => {
-        const questionSetAll = get(child(ref(db), 'questionSets/' + chosenQuestionSet + '/qSet')).then((snapshot2) => {
+        get(child(ref(db), 'questionSets/' + chosenQuestionSet + '/qSet')).then((snapshot2) => {
             if (snapshot2.exists()) {
                 return snapshot2.val();
                 let studentNameList = [];

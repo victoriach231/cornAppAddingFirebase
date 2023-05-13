@@ -1,7 +1,7 @@
 ﻿import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserAuth } from '../context/AuthContext';
-import { getDatabase, ref, child, push, update } from "firebase/database";
+import { getDatabase, ref, update } from "firebase/database";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import './CSS/Signup.css';
 

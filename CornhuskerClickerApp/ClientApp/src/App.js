@@ -5,7 +5,7 @@ import Class from './components/Class';
 import Account from './components/Account';
 import UpdateProfile from './components/UpdateProfile';
 import InstructorSessionView from './components/InstructorSessionView';
-import { Route, Routes, Navigate } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { AuthContextProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import QuestionSetEdit from './components/QuestionSetEdit';
