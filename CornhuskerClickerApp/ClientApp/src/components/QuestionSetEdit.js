@@ -1,4 +1,4 @@
-﻿import { selectedQSetKey, isNewSet } from './realTimeData/questionSetDisplay';
+﻿import { selectedQSetKey, isNewSet } from './realTimeData/QuestionSetDisplay';
 import { useNavigate } from 'react-router-dom';
 import { getDatabase, ref, set, child, get, push, update } from "firebase/database";
 import { React, useState, useEffect } from "react";

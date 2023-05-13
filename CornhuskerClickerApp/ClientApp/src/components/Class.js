@@ -2,7 +2,7 @@
 import { Table } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { newClass } from './realTimeData/ClassDisplay';
-import { QSetRealTimeData } from './realTimeData/questionSetDisplay'
+import { QSetRealTimeData } from './realTimeData/QuestionSetDisplay'
 import ListGroup from 'react-bootstrap/ListGroup';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { getDatabase, ref, child, get, onValue, update, remove, set } from "firebase/database";

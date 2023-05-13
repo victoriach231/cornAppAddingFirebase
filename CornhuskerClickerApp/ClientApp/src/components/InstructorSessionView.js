@@ -2,7 +2,7 @@
 import { Modal, Button } from 'react-bootstrap';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { newClass } from './realTimeData/ClassDisplay';
-import { launchedQSetKey, stopSession } from './realTimeData/questionSetDisplay';
+import { launchedQSetKey, stopSession } from './realTimeData/QuestionSetDisplay';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { getDatabase, ref, child, get, onValue, update } from "firebase/database";
 import Form from 'react-bootstrap/Form';
