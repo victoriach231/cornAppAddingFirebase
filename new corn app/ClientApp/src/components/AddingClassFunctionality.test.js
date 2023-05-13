@@ -50,7 +50,7 @@ describe("testing setting up class info when a new class is created", function (
 
     });
 
-    test('test that generated class info is formatted well - has the correct number of elements', () => {
+    test('test that generated class info is formatted well - has fully correct elements and data types', () => {
         const inputedClassName = "my class name";
         const userID = "-ABC";
         const classCodeToJoin = "12345";
@@ -67,6 +67,29 @@ describe("testing setting up class info when a new class is created", function (
         };
 
         expect(generatedClassInfoJSON).toMatchObject(expectedClassInfoJSON);
+
+    });
+
+    test('test that generated class info is formatted well - has all needed keys', () => {
+        const inputedClassName = "my class name";
+        const userID = "-ABC";
+        const classCodeToJoin = "12345";
+
+        const generatedClassInfoJSON = classFunctions.createClassSetup(inputedClassName, userID, classCodeToJoin);
+        const generatedClassInfoJSONKeys = Object.keys(generatedClassInfoJSON);
+
+        const expectedClassInfoJSON = {
+            className: inputedClassName,
+            sessionActive: false,
+            students: [],
+            admin: [
+                userID
+            ],
+            classCode: classCodeToJoin
+        };
+        const expectedClassInfoJSONKeys = Object.keys(expectedClassInfoJSON);
+
+        expect(generatedClassInfoJSONKeys).toMatchObject(expectedClassInfoJSONKeys);
 
     });
 
