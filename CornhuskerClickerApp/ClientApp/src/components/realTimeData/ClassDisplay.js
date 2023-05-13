@@ -1,9 +1,8 @@
-﻿import React, { Component, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ref as sRef, onValue, getDatabase, get, child, ref, update } from 'firebase/database';
 import { UserAuth } from '../../context/AuthContext';
 import { Table } from 'react-bootstrap';
-import { database } from '../../firebase';
 import Toast from 'react-bootstrap/Toast';
 
 const db = getDatabase();
@@ -44,13 +43,13 @@ const RealTimeData = () => {
 
                     userRecords.forEach((userRecord) => {
                         // check if current class equals the current enrolled in class (to get display name)
-                        if (userRecord.key == classKeyName) {
+                        if (userRecord.key === classKeyName) {
                             records.push({ "key": classKeyName, "data": [classData, "🎓"] });
                         }
                     });
 
                     // check if current user is admin of the current class
-                    if (userTable.user.uid == classData.admin) {
+                    if (userTable.user.uid === classData.admin) {
                         records.push({ "key": classKeyName, "data": [classData, "🍎"] });
                     }
                 });

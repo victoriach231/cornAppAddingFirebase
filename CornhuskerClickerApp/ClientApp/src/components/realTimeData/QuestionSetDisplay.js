@@ -92,7 +92,7 @@ const QSetRealTimeData = () => {
                 setSessionActive(snapshot.val());
             }
         })
-    }, []);
+    }, [currClass]);
 
     // navigate to the qSetEditor, saving the key as we go
     const goToQSetEditor = (text) => {
