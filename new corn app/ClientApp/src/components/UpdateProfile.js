@@ -22,17 +22,17 @@ const UpdateProfile = () => {
     const [newPasswordInput, setNewPasswordInput] = useState("");
 
     // update the input field to show what was typed
-    const handleNameInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleNameInputChange = (e) => {
         // store the input value to local state
         setNewNameInput(e.target.value);
     };
 
-    const handleEmailInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleEmailInputChange = (e) => {
         // store the input value to local state
         setNewEmailInput(e.target.value);
     };
 
-    const handlePasswordInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handlePasswordInputChange = (e) => {
         // store the input value to local state
         setNewPasswordInput(e.target.value);
     };
