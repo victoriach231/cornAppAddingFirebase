@@ -27,6 +27,7 @@
     <None Remove="ClientApp\src\components\images\" />
     <None Remove="ClientApp\src\components\realTimeData\" />
     <None Remove="ClientApp\src\components\CSS\" />
+    <None Remove="ClientApp\src\components\tests\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,6 +35,7 @@
     <Folder Include="ClientApp\src\components\images\" />
     <Folder Include="ClientApp\src\components\realTimeData\" />
     <Folder Include="ClientApp\src\components\CSS\" />
+    <Folder Include="ClientApp\src\components\tests\" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="Properties\launchSettings.json">

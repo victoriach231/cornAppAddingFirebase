@@ -1,4 +1,4 @@
-﻿const classFunctions = require('./AddingClassFunctionality');
+﻿const classFunctions = require('../AddingClassFunctionality');
 
 const MAX_CLASSCODE = 99999;
 const MIN_CLASSCODE = 10000;

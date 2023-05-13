@@ -1,4 +1,4 @@
-﻿const startingSessionFunctions = require('./StartingSessionSetupFunctions');
+﻿const startingSessionFunctions = require('../realTimeData/StartingSessionSetupFunctions');
 
 describe("test session setup correctly", function () {
     test('test that generated session info is formatted well', () => {

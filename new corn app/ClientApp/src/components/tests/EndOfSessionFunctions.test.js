@@ -1,4 +1,4 @@
-﻿const sessionFunctions = require('./EndOfSessionFunctions');
+﻿const sessionFunctions = require('../EndOfSessionFunctions');
 
 describe("tests to calculate number of correct answers a users got after a session", function () {
     test('test multiple choice and T/F session answers', () => {
