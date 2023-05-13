@@ -64,26 +64,6 @@ const Class = (props) => {
         navigate('/edit-questions')
     }
 
-    // start/end a session
-    const startSession = () => {
-        get(child(ref(getDatabase()), 'classes/' + chosenClass + '/sessionActive')).then((snapshot) => {
-            if (snapshot.exists()) {
-                setSessionActive((!snapshot.val()['sessionActive']).toString());
-
-                set(ref(getDatabase(), 'classes/' + chosenClass + '/sessionActive'), {
-                    sessionActive: !snapshot.val()['sessionActive'],
-                    currentQuestion: 0,
-                    nextQuestion: 0,
-                    timerToggled: false
-                });
-            } else {
-                console.log("No data available");
-            }
-        }).catch((error) => {
-            console.error(error);
-        });
-    };
-
     // grab the students that are in the class
     useEffect(() => {
         const studentsRef = ref(getDatabase(), 'classes/' + chosenClass + '/students');
@@ -110,7 +90,6 @@ const Class = (props) => {
                         setStudentsInClass(studentNameList);
                         return snapshot.val();
                     } else {
-                        console.log("No data available");
                         setStudentNameIDMap(new Map());
                     }
                 });

@@ -51,19 +51,10 @@ const Account = () => {
         }
     };
 
-
     // creates/adds a new class to the database
     const createClass = () => {
-        set(ref(getDatabase(), 'classes/' + newClassKey), {
-            className: inputText,
-            sessionActive: false,
-            students: [],
-            admin: [
-                user.uid
-            ],
-            classCode: classFunctions.generateClassCode()
-        
-        });
+        const classCode = classFunctions.generateClassCode();
+        set(ref(getDatabase(), 'classes/' + newClassKey), classFunctions.createClassSetup(inputText, user.uid, classCode));
     };
 
 

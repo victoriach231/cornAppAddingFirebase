@@ -5,6 +5,8 @@ import Select from 'react-select'
 import { newClass } from './index';
 import { Table } from 'react-bootstrap';
 
+const sessionSetupFunctions = require('./StartingSessionSetupFunctions');
+
 const db = getDatabase()
 
 // store the currently selected qSet and export it to other files
@@ -46,13 +48,7 @@ const QSetRealTimeData = () => {
             //start session logic
             get(child(ref(getDatabase()), 'classes/' + currClass + '/sessionActive')).then((snapshot) => {
                 if (snapshot.exists()) {                    
-                    set(ref(getDatabase(), 'classes/' + currClass + '/sessionActive'), {
-                        activeQSet: selectedLaunchQSetKey,
-                        sessionActive: true,
-                        currentQuestion: 0,
-                        nextQuestion: 0,
-                        timerToggled: false
-                    });
+                    set(ref(getDatabase(), 'classes/' + currClass + '/sessionActive'), sessionSetupFunctions.createSessionSetup(selectedLaunchQSetKey));
                 } else {
                     console.log("No data available");
                 }

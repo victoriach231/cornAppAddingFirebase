@@ -28,3 +28,107 @@ describe("test created class code correctly", function () {
 
     });
 });
+
+describe("testing setting up class info when a new class is created", function () {
+    test('test that generated class info is formatted well', () => {
+        const inputedClassName = "my class name";
+        const userID = "-ABC";
+        const classCodeToJoin = "12345";
+
+        const generatedClassInfoJSON = classFunctions.createClassSetup(inputedClassName, userID, classCodeToJoin);
+        const expectedClassInfoJSON = {
+            className: inputedClassName,
+            sessionActive: false,
+            students: [],
+            admin: [
+                userID
+            ],
+            classCode: classCodeToJoin
+        };
+
+        expect(generatedClassInfoJSON).toEqual(expectedClassInfoJSON);
+
+    });
+
+    test('test that generated class info is formatted well - has the correct number of elements', () => {
+        const inputedClassName = "my class name";
+        const userID = "-ABC";
+        const classCodeToJoin = "12345";
+
+        const generatedClassInfoJSON = classFunctions.createClassSetup(inputedClassName, userID, classCodeToJoin);
+        const expectedClassInfoJSON = {
+            className: inputedClassName,
+            sessionActive: false,
+            students: [],
+            admin: [
+                userID
+            ],
+            classCode: classCodeToJoin
+        };
+
+        expect(generatedClassInfoJSON).toMatchObject(expectedClassInfoJSON);
+
+    });
+
+    test('test that generated class info is formatted well - fully check same structure and type', () => {
+        const inputedClassName = "my class name";
+        const userID = "-ABC";
+        const classCodeToJoin = "12345";
+
+        const generatedClassInfoJSON = classFunctions.createClassSetup(inputedClassName, userID, classCodeToJoin);
+        const expectedClassInfoJSON = {
+            className: inputedClassName,
+            sessionActive: false,
+            students: [],
+            admin: [
+                userID
+            ],
+            classCode: classCodeToJoin
+        };
+
+        expect(generatedClassInfoJSON).toStrictEqual(expectedClassInfoJSON);
+
+    });
+
+    test('test that generated class info is formatted well - no class name entered', () => {
+        const inputedClassName = "";
+        const userID = "-ABC";
+        const classCodeToJoin = "12345";
+
+        const generatedClassInfoJSON = classFunctions.createClassSetup(inputedClassName, userID, classCodeToJoin);
+        const expectedClassInfoJSON = {
+            className: "",
+            sessionActive: false,
+            students: [],
+            admin: [
+                userID
+            ],
+            classCode: classCodeToJoin
+        };
+
+        expect(generatedClassInfoJSON).toEqual(expectedClassInfoJSON);
+
+    });
+
+    test('test that generated class info is formatted well - objects fully equal structure, check undefined properties', () => {
+        const inputedClassName = undefined;
+        const userID = undefined;
+        const classCodeToJoin = undefined;
+
+        const generatedClassInfoJSON = classFunctions.createClassSetup(inputedClassName, userID, classCodeToJoin);
+        const expectedClassInfoJSON = {
+            className: inputedClassName,
+            sessionActive: false,
+            students: [],
+            admin: [
+                userID
+            ],
+            classCode: classCodeToJoin
+        };
+
+        expect(generatedClassInfoJSON).toStrictEqual(expectedClassInfoJSON);
+
+    });
+
+    
+});
