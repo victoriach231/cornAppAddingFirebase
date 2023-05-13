@@ -47,7 +47,7 @@ describe("test session setup correctly", function () {
             nextQuestion: 0,
             timerToggled: false
         };
-        const expectedSessionInfoJSONKeys = Object.keys(generatedSessionInfoJSON);
+        const expectedSessionInfoJSONKeys = Object.keys(expectedSessionInfoJSON);
 
         expect(generatedSessionInfoJSONKeys).toEqual(expectedSessionInfoJSONKeys);
 
