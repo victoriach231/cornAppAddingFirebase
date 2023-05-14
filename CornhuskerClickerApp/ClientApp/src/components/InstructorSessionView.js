@@ -204,7 +204,7 @@ const InstructorSessionView = () => {
             const data = snapshot.val();
             if (data['activeStudents'] != null) {
                 const idsOfStudentsInSession = Object.keys(data['activeStudents']);
-                const allUsers = get(child(ref(db), 'users/')).then((snapshot) => {
+                get(child(ref(db), 'users/')).then((snapshot) => {
                     if (snapshot.exists()) {
                         let studentNameList = [];
 
