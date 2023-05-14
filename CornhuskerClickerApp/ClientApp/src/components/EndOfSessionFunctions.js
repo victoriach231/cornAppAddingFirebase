@@ -16,40 +16,6 @@ const calculateScore = (studentResponses, sessionCorrectAnswers) => {
     return numQuestionsCorrect;
 }
 
-// creates the rows of data to export to csv file
-const getSessionExportCSVDataNotAnonymousPolling = (presentStudents, studentScores, studentResponses) => {
-
-    if ((presentStudents.length === studentResponses.length) && (presentStudents.length === studentScores.length)) {
-        const rows = [];
-
-
-        for (let i = 0; i < presentStudents.length; i++) {
-            // add the student's name and session score to a csv row
-            const row = [presentStudents[i], studentScores[i]];
-            // add all of the student's answers as seprate enties/cells in the csv
-            for (let j = 0; j < studentResponses[i].length; j++) {
-                row.push(studentResponses[i][j]);
-            }
-            rows.push(row);
-        }
-
-        return rows;
-    }
-    return [];
-};
-
-// create the headings for the exported csv file
-const getSessionExportCSVDataHeaders = (numQuestionsInSession) => {
-    const headers = ["Student Name", "Session Score"];
-
-    for (let i = 1; i <= numQuestionsInSession; i++) {
-        const questionHeader = "Question " + i;
-        headers.push(questionHeader);
-    }
-    return headers;
-
-};
-
 // downloads a csv file to the user's computer with the given data
 const download = (data, fileName) => {
     const blob = new Blob([data], { type: 'text/csv' });
@@ -64,4 +30,4 @@ const download = (data, fileName) => {
     document.body.removeChild(a);
 };
 
-module.exports = { calculateScore, getSessionExportCSVDataNotAnonymousPolling, getSessionExportCSVDataHeaders, download }
+module.exports = { calculateScore, download }
