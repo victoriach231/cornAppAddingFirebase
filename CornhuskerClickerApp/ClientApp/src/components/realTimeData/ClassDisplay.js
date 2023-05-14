@@ -43,13 +43,13 @@ const RealTimeData = () => {
 
                     userRecords.forEach((userRecord) => {
                         // check if current class equals the current enrolled in class (to get display name)
-                        if (userRecord.key === classKeyName) {
+                        if (userRecord.key == classKeyName) {
                             records.push({ "key": classKeyName, "data": [classData, "🎓"] });
                         }
                     });
 
                     // check if current user is admin of the current class
-                    if (userTable.user.uid === classData.admin) {
+                    if (userTable.user.uid == classData.admin) {
                         records.push({ "key": classKeyName, "data": [classData, "🍎"] });
                     }
                 });
