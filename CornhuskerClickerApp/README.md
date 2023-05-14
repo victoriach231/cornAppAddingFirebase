@@ -27,5 +27,6 @@ $ npm start
 
 ## Testing
 To run this project's tests, run the following commands on your local machine:
+$ cd ../ClientApp
 $ npm install --save-dev jest
 $ npm test
