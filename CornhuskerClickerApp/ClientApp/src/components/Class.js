@@ -115,7 +115,7 @@ const Class = () => {
 
             if (data != null) {
                 const idsOfInstructorInClass = data;
-                const allUsers = get(child(ref(db), 'users/')).then((snapshot) => {
+                get(child(ref(db), 'users/')).then((snapshot) => {
                     if (snapshot.exists()) {
                         let instructorNameList = [];
                         idsOfInstructorInClass.forEach(element => instructorNameList.push(snapshot.val()[element]['name']));
