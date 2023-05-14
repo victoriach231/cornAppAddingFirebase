@@ -7,7 +7,8 @@ A web-based student polling application.
 * [Setup](#setup)
 
 ## General info
-This project is simple Lorem ipsum dolor generator.
+This project is a simple, easy to use polling app. It is designed to allow instructors
+to create classes and question sets so that they can gauge student understanding of content during lectures. 
 	
 ## Technologies
 Project is created with:
