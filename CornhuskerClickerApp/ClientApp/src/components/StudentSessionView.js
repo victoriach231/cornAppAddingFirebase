@@ -75,7 +75,6 @@ const StudentSessionView = () => {
         get(child(ref(db), 'questionSets/' + chosenQuestionSet + '/qSet')).then((snapshot2) => {
             if (snapshot2.exists()) {
                 return snapshot2.val();
-                let studentNameList = [];
             } else {
                 console.log("No data available");
             }
